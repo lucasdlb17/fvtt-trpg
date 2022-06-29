@@ -1557,12 +1557,15 @@ export default class Actor5e extends Actor {
 		const curr = foundry.utils.deepClone(this.data.data.currency);
 		const convert = CONFIG.TRPG.currencyConversion;
 		for (let [c, t] of Object.entries(convert)) {
+		    if(t.into == "pp" && game.settings.get("trpg", "idjMode")){}
+		    else{
 			let change = Math.floor(curr[c] / t.each);
 			curr[c] -= change * t.each;
 			curr[t.into] += change;
+		    }
 		}
 		return this.update({ "data.currency": curr });
-	}
+    	}
 
 	/* -------------------------------------------- */
 
