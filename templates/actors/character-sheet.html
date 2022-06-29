@@ -174,8 +174,8 @@
 			<ul class="skills-list">
 			{{#each config.skills as |label s|}}
 			{{#with (lookup ../data.skills s) as |skill|}}
-				<li class="skill flexrow {{#if skill.value}}proficient{{/if}}" data-skill="{{s}}">
-					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
+				<li class="skill flexrow {{#if skill.proficient}}proficient{{/if}}" data-skill="{{s}}">
+					<input type="hidden" name="data.skills.{{s}}.proficient" value="{{skill.proficient}}" data-dtype="Number"/>
 					<a class="proficiency-toggle skill-proficiency" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{label}}{{#if skill.st}}*{{/if}}{{#if skill.pda}}+{{/if}}</h4>
 					<span class="skill-ability">{{skill.ability}}</span>
