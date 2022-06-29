@@ -8,20 +8,17 @@
             </a>
         </h3>
         {{#each data.currency as |v k|}}
-        <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
-        <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
+            {{#if (and (eq k "pp") (eq ../idj true))}}
+            {{else}}
+              {{#if (eq ../idj true)}}
+                 <label class="denomination {{k}}">{{ lookup ../config.currenciesIDJ k }}</label>
+              {{else}}
+                   <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
+              {{/if}}
+            <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
+            {{/if}}
         {{/each}}
     </ol>
-    {{/unless}}
-
-    {{#unless isVehicle}}
-    <ul class="filter-list flexrow" data-filter="inventory">
-        <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
-        <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
-        <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
-        <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
-        <li class="filter-item" data-filter="equipped">{{localize "TRPG.Equipped"}}</li>
-    </ul>
     {{/unless}}
 </div>
 
