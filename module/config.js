@@ -266,11 +266,10 @@ TRPG.armorTypes = {
  * @type {Object}
  */
 TRPG.equipmentTypes = {
-	bonus: "TRPG.EquipmentBonus",
-	clothing: "TRPG.EquipmentClothing",
-	trinket: "TRPG.EquipmentTrinket",
-	vehicle: "TRPG.EquipmentVehicle",
-	...TRPG.armorTypes,
+    bonus: "TRPG.EquipmentBonus",
+    clothing: "TRPG.EquipmentClothing",
+    trinket: "TRPG.EquipmentTrinket",
+    vehicle: "TRPG.EquipmentVehicle",
 };
 
 /* -------------------------------------------- */
@@ -292,10 +291,10 @@ TRPG.vehicleTypes = {
  * @type {Object}
  */
 TRPG.armorProficiencies = {
-	lgt: TRPG.equipmentTypes.light,
-	med: TRPG.equipmentTypes.medium,
-	hvy: TRPG.equipmentTypes.heavy,
-	shl: "TRPG.EquipmentShieldProficiency",
+    lgt: "TRPG.EquipmentLightProficiency",
+    med: "TRPG.EquipmentMediumProficiency",
+    hvy: "TRPG.EquipmentHeavyProficiency",
+    shl: "TRPG.EquipmentShieldProficiency",
 };
 
 /**
@@ -384,7 +383,7 @@ TRPG.consumableTypes = {
 /* -------------------------------------------- */
 
 /**
- * The valid currency denominations supported by the 5e system
+ * The valid currency denominations supported by the system
  * @type {Object}
  */
 TRPG.currencies = {
@@ -393,6 +392,16 @@ TRPG.currencies = {
 	// "ep": "TRPG.CurrencyEP",
 	sp: "TRPG.CurrencySP",
 	cp: "TRPG.CurrencyCP",
+};
+
+/**
+ * The valid currency denominations supported by the system
+ * @type {Object}
+ */
+TRPG.currenciesIdJ = {
+	gp: "TRPG.Currency¥o",
+	sp: "TRPG.Currency¥p",
+	cp: "TRPG.Currency¥",
 };
 
 /**
