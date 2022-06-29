@@ -116,10 +116,10 @@ export default class ActorSheet5e extends ActorSheet {
 		if (actorData.data.skills) {
 			for (let [s, skl] of Object.entries(actorData.data.skills)) {
 				skl.ability = CONFIG.TRPG.abilityAbbreviations[skl.ability];
-				skl.icon = this._getProficiencyIcon(skl.value);
-				skl.hover = CONFIG.TRPG.proficiencyLevels[skl.value];
+				skl.icon = this._getProficiencyIcon(skl.proficient);
+				skl.hover = CONFIG.TRPG.proficiencyLevels[skl.proficient];
 				skl.label = CONFIG.TRPG.skills[s];
-				skl.baseValue = source.skills[s].value;
+				skl.baseValue = source.skills[s].proficient;
 			}
 		}
 
