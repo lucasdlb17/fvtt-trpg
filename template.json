@@ -373,10 +373,10 @@
 					"max": 300
 				},
 				"appearance": "",
-				"trait": "",
-				"ideal": "",
-				"bond": "",
-				"flaw": "",
+				"personality": "",
+				"backstory": "",
+				"ally": "",
+				"honor": "",
 				"showSpells": true
 			},
 			"resources": {
