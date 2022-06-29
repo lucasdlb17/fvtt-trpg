@@ -140,124 +140,150 @@
 					"acr": {
 						"value": 0,
 						"ability": "dex",
+						"proficient": 0,
 						"pda": true
 					},
 					"ani": {
 						"value": 0,
 						"ability": "wis",
+						"proficient": 0,
 						"st": true
 					},
 					"ath": {
 						"value": 0,
 						"ability": "str",
+						"proficient": 0,
 						"pda": true
 					},
 					"atu": {
 						"value": 0,
-						"ability": "cha"
+						"ability": "cha",
+						"proficient": 0
 					},
 					"conArc": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conEng": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conGeo": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conHis": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conNat": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conNob": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conRel": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"conTor": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"ide": {
 						"value": 0,
 						"ability": "int",
+						"proficient": 0,
 						"st": true
 					},
 					"obinf": {
 						"value": 0,
-						"ability": "int"
+						"ability": "int",
+						"proficient": 0
 					},
 					"ofi": {
 						"value": 0,
-						"ability": "int"
+						"ability": "int",
+						"proficient": 0
 					},
 					"cav": {
 						"value": 0,
-						"ability": "dex"
+						"ability": "dex",
+						"proficient": 0
 					},
 					"cur": {
 						"value": 0,
-						"ability": "wis"
+						"ability": "wis",
+						"proficient": 0
 					},
 					"dip": {
 						"value": 0,
-						"ability": "cha"
+						"ability": "cha",
+						"proficient": 0
 					},
 					"eng": {
 						"value": 0,
 						"ability": "cha",
+						"proficient": 0,
 						"dishonor": true
 					},
 					"fur": {
 						"value": 0,
 						"ability": "dex",
+						"proficient": 0,
 						"pda": true,
 						"dishonor": true
 					},
 					"init": {
 						"value": 0,
-						"ability": "dex"
+						"ability": "dex",
+						"proficient": 0
 					},
 					"intu": {
 						"value": 0,
-						"ability": "wis"
+						"ability": "wis",
+						"proficient": 0
 					},
 					"inti": {
 						"value": 0,
-						"ability": "cha"
+						"ability": "cha",
+						"proficient": 0
 					},
 					"lad": {
 						"value": 0,
 						"ability": "dex",
+						"proficient": 0,
 						"st": true,
 						"pda": true,
 						"dishonor": true
 					},
 					"prc": {
 						"value": 0,
-						"ability": "wis"
+						"ability": "wis",
+						"proficient": 0
 					},
 					"sur": {
 						"value": 0,
-						"ability": "wis"
+						"ability": "wis",
+						"proficient": 0
 					}
 				},
 				"traits": {
