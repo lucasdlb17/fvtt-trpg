@@ -420,28 +420,28 @@ export default class Actor5e extends Actor {
 		const observant = flags.observantFeat;
 		const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) : 0;
 		for (let [id, skl] of Object.entries(data.skills)) {
-			skl.value = Math.clamped(Number(skl.value).toNearest(0.5), 0, 2) ?? 0;
+			skl.proficient = Math.clamped(Number(skl.proficient).toNearest(0.5), 0, 2) ?? 0;
 
 			// Remarkable
-			if (athlete && skl.value < 0.5 && feats.remarkableAthlete.abilities.includes(skl.ability)) {
-				skl.value = 0.5;
+			if (athlete && skl.proficient < 0.5 && feats.remarkableAthlete.abilities.includes(skl.ability)) {
+				skl.proficient = 0.5;
 			}
 
 			// Jack of All Trades
-			if (joat && skl.value < 0.5) {
-				skl.value = 0.5;
+			if (joat && skl.proficient < 0.5) {
+				skl.proficient = 0.5;
 			}
 
 			// Polymorph Skill Proficiencies
 			if (originalSkills) {
-				skl.value = Math.max(skl.value, originalSkills[id].value);
+				skl.proficient = Math.max(skl.proficient, originalSkills[id].proficient);
 			}
 
 			// Compute modifier
 			skl.bonus = checkBonus + skillBonus;
 			skl.mod = data.abilities[skl.ability].mod;
-			skl.prof = skl.value ? 3 + data.details.level : Math.floor(data.details.level / 2);
-			skl.total = skl.mod + skl.prof + skl.bonus;
+			skl.prof = skl.proficient ? 3 + data.details.level : Math.floor(data.details.level / 2);
+			skl.total = skl.mod + skl.prof + skl.bonus + skl.value;
 
 			// Compute passive bonus
 			// const passive = observant && (feats.observantFeat.skills.includes(id)) ? 5 : 0;
@@ -863,7 +863,7 @@ export default class Actor5e extends Actor {
 		}
 
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		const reliableTalent = skl.value >= 1 && this.getFlag("trpg", "reliableTalent");
+		const reliableTalent = skl.proficient >= 1 && this.getFlag("trpg", "reliableTalent");
 
 		// Roll and return
 		const rollData = foundry.utils.mergeObject(options, {
@@ -1674,7 +1674,7 @@ export default class Actor5e extends Actor {
 		if (keepSkills) d.data.skills = o.data.skills;
 		else if (mergeSkills) {
 			for (let [k, s] of Object.entries(d.data.skills)) {
-				s.value = Math.max(s.value, o.data.skills[k].value);
+				s.proficient = Math.max(s.proficient, o.data.skills[k].proficient);
 			}
 		}
 
