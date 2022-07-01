@@ -119,7 +119,7 @@ export default class ActorSheet5e extends ActorSheet {
 				skl.icon = this._getProficiencyIcon(skl.proficient);
 				skl.hover = CONFIG.TRPG.proficiencyLevels[skl.proficient];
 				skl.label = CONFIG.TRPG.skills[s];
-				skl.baseValue = source.skills[s].proficient;
+				skl.baseProf = source.skills[s].proficient;
 			}
 		}
 
@@ -687,7 +687,7 @@ export default class ActorSheet5e extends ActorSheet {
 
 		// Cycle to the next or previous skill level
 		const levels = [0, 1];
-		let idx = levels.indexOf(source.value);
+		let idx = levels.indexOf(source.proficient);
 		const next = idx ? 0 : 1;
 		field.value = levels[next];
 
