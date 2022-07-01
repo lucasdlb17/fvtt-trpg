@@ -20,6 +20,16 @@
         {{/each}}
     </ol>
     {{/unless}}
+
+    {{#unless isVehicle}}
+    <ul class="filter-list flexrow" data-filter="inventory">
+        <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
+        <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
+        <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
+        <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
+        <li class="filter-item" data-filter="equipped">{{localize "TRPG.Equipped"}}</li>
+    </ul>
+    {{/unless}}
 </div>
 
 <ol class="items-list inventory-list">
