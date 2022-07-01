@@ -591,16 +591,20 @@ TRPG.skills = {
 	acr: "TRPG.SkillAcr", //Acrobacia
 	ani: "TRPG.SkillAni", //Adestrar Animais
 	ath: "TRPG.SkillAth", //Atletismo
-	atu: "TRPG.SkillAtu", //Atuação
+	atuArt: "TRPG.SkillAtuArt", //Arte Tradicional
+	atuDra: "TRPG.SkillAtuDra", //Dramaturgia
+	atuDan: "TRPG.SkillAtuDan", //Dança
+	atuMus: "TRPG.SkillAtuMus", //Música
+	atuOra: "TRPG.SkillAtuOra", //Oratória
 	cav: "TRPG.SkilLCav", //Cavalgar
-	conArc: "TRPG.SkillArc", //Arcanismo
+	conArc: "TRPG.SkillConArc", //Arcanismo
 	conEng: "TRPG.SkillConEng", //Engenharia
-	conGeo: "TRPG.SkillGeo", //Geografia
-	conHis: "TRPG.SkillHis", //História
-	conNat: "TRPG.SkillNat", //Natureza
-	conNob: "TRPG.SkillNob", //Nobreza
-	conRel: "TRPG.SkillRel", //Religião
-	conTor: "TRPG.SkillTor", //Tormenta
+	conGeo: "TRPG.SkillConGeo", //Geografia
+	conHis: "TRPG.SkillConHis", //História
+	conNat: "TRPG.SkillConNat", //Natureza
+	conNob: "TRPG.SkillConNob", //Nobreza
+	conRel: "TRPG.SkillConRel", //Religião
+	conTor: "TRPG.SkillConTor", //Tormenta
 	cur: "TRPG.SkillCur", //Cura
 	dip: "TRPG.SkillDip", //Diplomacia
 	eng: "TRPG.SkillEng", //Enganação
@@ -611,7 +615,13 @@ TRPG.skills = {
 	intu: "TRPG.SkillIntu", //Intuição
 	lad: "TRPG.SkillLad", //Ladinagem
 	obinf: "TRPG.SkillObinf", //Obter Informação
-	ofi: "TRPG.SkillOfi", //Ofício
+	ofiAlq: "TRPG.SkillOfiAlq", //Alquimia
+	ofiAlv: "TRPG.SkillOfiAlv", //Alvenaria
+	ofiCar: "TRPG.SkillOfiCar", //Carpintaria
+	ofiJoa: "TRPG.SkillOfiJoa", //Joalheria
+	ofiMet: "TRPG.SkillOfiMet", //Metalurgia
+	ofiArt: "TRPG.SkillOfiArt", //Uma arte
+	ofiPro: "TRPG.SkillOfiPro", //Uma profissão
 	prc: "TRPG.SkillPrc", //Percepção
 	sur: "TRPG.SkillSur", //Sobrevivência
 };
@@ -722,7 +732,7 @@ TRPG.spellSchools = {
 	enc: "TRPG.SchoolEncantamento",
 	escuro: "TRPG.SchoolEscuridao",
 	luz: "TRPG.SchoolLuz",
-	ilu: "TRPG.SchoolIllusao",
+	ilu: "TRPG.SchoolIlusao",
 	inv: "TRPG.SchoolInvocacao",
 	medo: "TRPG.SchoolMedo",
 	nec: "TRPG.SchoolNecromancia",
@@ -740,7 +750,7 @@ TRPG.jutsuSchools = {
 	frio: "TRPG.SchoolFrio",
 	vento: "TRPG.SchoolVento",
 	enc: "TRPG.SchoolEncantamento",
-	ilu: "TRPG.SchoolIllusao",	
+	ilu: "TRPG.SchoolIlusao",	
 	inv: "TRPG.SchoolInvocacao",
 	luz: "TRPG.SchoolLuz",
 	trs: "TRPG.SchoolTransmutacao",
