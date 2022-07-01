@@ -443,7 +443,7 @@
 		}
 	},
 	"Item": {
-		"types": ["weapon", "equipment", "consumable", "loot", "class", "spell", "feat", "backpack"],
+		"types": ["weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack"],
 		"templates": {
 			"itemDescription": {
 				"description": {
@@ -583,6 +583,7 @@
 		},
 		"feat": {
 			"templates": ["itemDescription", "activatedEffect", "action"],
+			"featList": "",
 			"requirements": "",
 			"recharge": {
 				"value": null,
@@ -612,6 +613,14 @@
 				"material": false,
 				"ritual": false,
 				"concentration": false
+			},
+			"jutsu": {
+				"templates": ["itemDescription", "activatedEffect", "action"],
+				"chacras": "",
+				"grau": 1,
+				"enhancement": "",
+				"descriptors": "",
+				"specialCosts": ""
 			},
 			"materials": {
 				"value": "",
