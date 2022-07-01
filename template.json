@@ -155,7 +155,27 @@
 						"proficient": 0,
 						"pda": true
 					},
-					"atu": {
+					"atuArt": {
+						"value": 0,
+						"ability": "cha",
+						"proficient": 0
+					},
+					"atuDra": {
+						"value": 0,
+						"ability": "cha",
+						"proficient": 0
+					},
+					"atuDan": {
+						"value": 0,
+						"ability": "cha",
+						"proficient": 0
+					},
+					"atuMus": {
+						"value": 0,
+						"ability": "cha",
+						"proficient": 0
+					},
+					"atuOra": {
 						"value": 0,
 						"ability": "cha",
 						"proficient": 0
@@ -219,7 +239,37 @@
 						"ability": "int",
 						"proficient": 0
 					},
-					"ofi": {
+					"ofiAlq": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiAlv": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiCar": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiJoa": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiMet": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiArt": {
+						"value": 0,
+						"ability": "int",
+						"proficient": 0
+					},
+					"ofiPro": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0
