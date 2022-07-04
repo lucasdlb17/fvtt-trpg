@@ -1,0 +1,83 @@
+<div class="inventory-filters spellbook-filters flexrow">
+
+    <ul class="filter-list flexrow" data-filter="jutsuslist">
+        <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
+        <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
+        <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
+        <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
+        <li class="filter-item" data-filter="concentration">{{localize "TRPG.AbbreviationConc"}}</li>
+        <li class="filter-item" data-filter="prepared">{{localize "TRPG.Prepared"}}{{#if preparedSpells}} ({{preparedSpells}}){{/if}}</li>
+    </ul>
+</div>
+
+<ol class="items-list inventory-list">
+{{#each jutsuslist as |section|}}
+    <li class="items-header spellbook-header flexrow">
+        <div class="item-name flexrow">
+            <h3>{{section.label}}</h3>
+        </div>
+        <div class="jutsu-school">{{localize "TRPG.JutsuSchool"}}</div>
+        <div class="jutsu-action">{{localize "TRPG.JutsuUsage"}}</div>
+        <div class="jutsu-target">{{localize "TRPG.JutsuTarget"}}</div>
+
+        <div class="item-controls flexrow">
+            {{#if section.canCreate}}
+            <a class="item-control item-create" title="{{localize 'TRPG.JutsuCreate'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+                <i class="fas fa-plus"></i> {{localize "TRPG.Add"}}
+            </a>
+            {{/if}}
+        </div>
+    </li>
+
+    <ol class="item-list">
+    {{#each section.jutsus as |item i|}}
+        <li class="item flexrow" data-item-id="{{item._id}}">
+            <div class="item-name flexrow rollable">
+                <div class="item-image" style="background-image: url('{{item.img}}')"></div>
+                <h4>{{item.name}}</h4>
+                {{#if item.data.uses.per }}
+                <div class="item-detail jutsu-uses">Uses {{item.data.uses.value}} / {{item.data.uses.max}}</div>
+                {{/if}}
+                <div class="jutsu-comps">
+                    {{#each labels.components}}
+                    <span class="jutsu-component {{this}}">{{this}}</span>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="jutsu-school">{{labels.school}}</div>
+            <div class="jutsu-action">{{labels.activation}}</div>
+            <div class="jutsu-target" title="{{localize 'TRPG.Range'}}: {{labels.range}}">
+                {{#if labels.target}}
+                {{labels.target}}
+                {{else}}{{localize 'TRPG.None'}}
+                {{/if}}
+            </div>
+
+            {{#if ../../owner}}
+            <div class="item-controls flexrow">
+                {{#if section.canPrepare}}
+                <a class="item-control item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
+                {{/if}}
+                <a class="item-control item-edit" title="Editar Item"><i class="fas fa-edit"></i></a>
+                <a class="item-control item-delete" title="Deletar Item"><i class="fas fa-trash"></i></a>
+            </div>
+            {{/if}}
+        </li>
+    {{/each}}
+    </ol>
+{{else}}
+    {{#if owner}}
+    {{#if filters.jutsuslist.size}}
+    <li class="item flexrow"><p class="notes">{{localize "TRPG.FilterNoJutsu"}}</p></li>
+    {{else}}
+    <li class="item flexrow inventory-header spellbook-header spellbook-empty">
+        <div class="item-controls flexrow">
+            <a class="item-control item-create" title="{{localize 'TRPG.JutsuCreate'}}" data-type="jutsu"
+               data-level="{{lvl}}"><i class="fas fa-plus"></i> {{localize "TRPG.JutsuAdd"}}</a>
+        </div>
+    </li>
+    <li class="item flexrow"><p class="notes">{{localize "TRPG.NoJutsuLevels"}}</p></li>
+    {{/if}}
+    {{/if}}
+{{/each}}
+</ol>
