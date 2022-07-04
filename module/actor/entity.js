@@ -78,6 +78,17 @@ export default class Actor5e extends Actor {
 			}
 		}
 
+		const resistances = this.data.data.traits.resistance;
+		for (let key in resistances) {
+			let resistance = resistances[key];
+			let bonus = this.getFlag("trpg", `${key}.resistance-bonus`) || 0;
+			let bonusAsInt = parseInt(Number(bonus));
+			if (!isNaN(bonusAsInt)) {
+				resistance.value += bonusAsInt;
+			}
+		}
+
+
 		// iterate over owned items and recompute attributes that depend on prepared actor data
 		this.items.forEach((item) => item.prepareFinalAttributes());
 	}
@@ -153,7 +164,7 @@ export default class Actor5e extends Actor {
 			abl.mod = Math.floor((data.abilities[abl.ability].value - 10) / 2);
 			abl.prof = abl.proficient ? 3 + data.details.level : Math.floor(data.details.level / 2);
 			abl.saveBonus = saveBonus;
-			abl.save = abl.mod + abl.prof + abl.saveBonus;
+			abl.save = abl.mod + abl.prof + abl.saveBonus + abl.value;
 
 			// If we merged saves when transforming, take the highest bonus here.
 			if (originalSaves && abl.proficient) {
@@ -420,28 +431,28 @@ export default class Actor5e extends Actor {
 		const observant = flags.observantFeat;
 		const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) : 0;
 		for (let [id, skl] of Object.entries(data.skills)) {
-			skl.value = Math.clamped(Number(skl.value).toNearest(0.5), 0, 2) ?? 0;
+			skl.proficient = Math.clamped(Number(skl.proficient).toNearest(0.5), 0, 2) ?? 0;
 
 			// Remarkable
-			if (athlete && skl.value < 0.5 && feats.remarkableAthlete.abilities.includes(skl.ability)) {
-				skl.value = 0.5;
+			if (athlete && skl.proficient < 0.5 && feats.remarkableAthlete.abilities.includes(skl.ability)) {
+				skl.proficient = 0.5;
 			}
 
 			// Jack of All Trades
-			if (joat && skl.value < 0.5) {
-				skl.value = 0.5;
+			if (joat && skl.proficient < 0.5) {
+				skl.proficient = 0.5;
 			}
 
 			// Polymorph Skill Proficiencies
 			if (originalSkills) {
-				skl.value = Math.max(skl.value, originalSkills[id].value);
+				skl.proficient = Math.max(skl.proficient, originalSkills[id].proficient);
 			}
 
 			// Compute modifier
 			skl.bonus = checkBonus + skillBonus;
 			skl.mod = data.abilities[skl.ability].mod;
-			skl.prof = skl.value ? 3 + data.details.level : Math.floor(data.details.level / 2);
-			skl.total = skl.mod + skl.prof + skl.bonus;
+			skl.prof = skl.proficient ? 3 + data.details.level : Math.floor(data.details.level / 2);
+			skl.total = skl.mod + skl.prof + skl.bonus + skl.value;
 
 			// Compute passive bonus
 			// const passive = observant && (feats.observantFeat.skills.includes(id)) ? 5 : 0;
@@ -863,7 +874,7 @@ export default class Actor5e extends Actor {
 		}
 
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		const reliableTalent = skl.value >= 1 && this.getFlag("trpg", "reliableTalent");
+		const reliableTalent = skl.proficient >= 1 && this.getFlag("trpg", "reliableTalent");
 
 		// Roll and return
 		const rollData = foundry.utils.mergeObject(options, {
@@ -1557,12 +1568,15 @@ export default class Actor5e extends Actor {
 		const curr = foundry.utils.deepClone(this.data.data.currency);
 		const convert = CONFIG.TRPG.currencyConversion;
 		for (let [c, t] of Object.entries(convert)) {
+		    if(t.into == "pp" && game.settings.get("trpg", "idjMode")){}
+		    else{
 			let change = Math.floor(curr[c] / t.each);
 			curr[c] -= change * t.each;
 			curr[t.into] += change;
+		    }
 		}
 		return this.update({ "data.currency": curr });
-	}
+    	}
 
 	/* -------------------------------------------- */
 
@@ -1674,7 +1688,7 @@ export default class Actor5e extends Actor {
 		if (keepSkills) d.data.skills = o.data.skills;
 		else if (mergeSkills) {
 			for (let [k, s] of Object.entries(d.data.skills)) {
-				s.value = Math.max(s.value, o.data.skills[k].value);
+				s.proficient = Math.max(s.proficient, o.data.skills[k].proficient);
 			}
 		}
 

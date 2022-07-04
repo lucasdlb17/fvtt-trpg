@@ -1,5 +1,6 @@
 export const registerSystemSettings = function() {
 
+const reload = foundry.utils.debounce(() => window.location.reload(), 250);
   /**
    * Track the system version upon which point a migration was last applied
    */
@@ -54,6 +55,7 @@ export const registerSystemSettings = function() {
       config: true,
       default: false,
       type: Boolean,
+      onChange: reload
     });
 
   /**
