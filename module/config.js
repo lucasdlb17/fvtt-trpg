@@ -110,6 +110,7 @@ TRPG.timePeriods = {
 	year: "TRPG.TimeYear",
 	perm: "TRPG.TimePerm",
 	spec: "TRPG.Special",
+	scene: "TRPG.Scene"
 };
 
 /* -------------------------------------------- */
@@ -637,13 +638,29 @@ TRPG.spellPreparationModes = {
 	innate: "TRPG.SpellPrepInnate",
 };
 
+TRPG.jutsuPreparationModes = {
+	prepared: "TRPG.JutsuPrepPrepared",
+	always: "TRPG.JutsuPrepAlways",
+	atwill: "TRPG.JutsuPrepAtWill",
+	innate: "TRPG.JutsuPrepInnate",
+};
+
 TRPG.spellUpcastModes = ["always", "prepared"];
+
+TRPG.jutsuUpcastModes = ["always", "prepared"];
 
 TRPG.spellProgression = {
 	none: "TRPG.SpellNone",
 	full: "TRPG.SpellProgFull",
 	twoThirds: "TRPG.SpellProgTwoThirds",
 	half: "TRPG.SpellProgHalf",
+};
+
+TRPG.jutsuProgression = {
+	none: "TRPG.JutsuNone",
+	full: "TRPG.JutsuProgFull",
+	twoThirds: "TRPG.JutsuProgTwoThirds",
+	half: "TRPG.JutsuProgHalf",
 };
 
 /* -------------------------------------------- */
@@ -656,6 +673,16 @@ TRPG.spellScalingModes = {
 	none: "TRPG.SpellNone",
 	cantrip: "TRPG.SpellCantrip",
 	level: "TRPG.SpellLevel",
+};
+
+/**
+ * The available choices for how jutsu damage scaling may be computed
+ * @type {Object}
+ */
+TRPG.jutsuScalingModes = {
+	none: "TRPG.JutsuNone",
+	cantrip: "TRPG.JutsuCantrip",
+	level: "TRPG.JutsuLevel",
 };
 
 /* -------------------------------------------- */
@@ -707,12 +734,30 @@ TRPG.spellComponents = {
 	M: "TRPG.ComponentMaterial",
 };
 
+// Jutsu Components
+TRPG.JutsuComponents = {
+	V: "TRPG.ComponentVerbal",
+	S: "TRPG.ComponentSomatic",
+	M: "TRPG.ComponentMaterial",
+};
+
 // Spell Lists
 TRPG.spellLists = {
-	univ: "Universal",
-	arcana: "Arcana",
-	divina: "Divina",
+	uni: "TRPG.SpellListsUniversal",
+	arc: "TRPG.SpellListsArcane",
+	div: "TRPG.SpellListsDivine",
 };
+
+// Jutsu Lists
+TRPG.jutsuLists = {
+	arm: "TRPG.JutsuListsArms",
+	leg: "TRPG.JutsuListsLegs",
+	tor: "TRPG.JutsuListsTorso",
+	min: "TRPG.JutsuListsMind",
+	spi: "TRPG.JutsuListsSpirit",
+	emo: "TRPG.JutsuListsEmotions",
+};
+
 // Spell Schools
 TRPG.spellSchools = {
 	abj: "TRPG.SchoolAbjuracao",
@@ -754,6 +799,7 @@ TRPG.jutsuSchools = {
 	enc: "TRPG.SchoolEncantamento",
 	ilu: "TRPG.SchoolIlusao",	
 	inv: "TRPG.SchoolInvocacao",
+	ninja: "TRPG.SchoolNinja",
 	luz: "TRPG.SchoolLuz",
 	trs: "TRPG.SchoolTransmutacao",
 	trevas: "TRPG.SchoolTrevas",
@@ -781,11 +827,24 @@ TRPG.jutsuLevels = {
 	2: "TRPG.JutsuLevel2",
 	3: "TRPG.JutsuLevel3",
 	4: "TRPG.JutsuLevel4",
-	5: "TRPG.JutsuLevel5",
 };
 
 // Spell Scroll Compendium UUIDs
 TRPG.spellScrollIds = {
+	0: "rQ6sO7HDWzqMhSI3",
+	1: "9GSfMg0VOA2b4uFN",
+	2: "XdDp6CKh9qEvPTuS",
+	3: "hqVKZie7x9w3Kqds",
+	4: "DM7hzgL836ZyUFB1",
+	5: "wa1VF8TXHmkrrR35",
+	6: "tI3rWx4bxefNCexS",
+	7: "mtyw4NS1s7j2EJaD",
+	8: "aOrinPg7yuDZEuWr",
+	9: "O4YbkJkLlnsgUszZ",
+};
+
+// Jutsu Scroll Compendium UUIDs
+TRPG.jutsuScrollIds = {
 	0: "rQ6sO7HDWzqMhSI3",
 	1: "9GSfMg0VOA2b4uFN",
 	2: "XdDp6CKh9qEvPTuS",
@@ -845,6 +904,34 @@ TRPG.SPELL_SLOT_TABLE = [
 	[4, 3, 3, 3, 3, 2, 2, 1, 1],
 ];
 
+/**
+ * Define the standard slot progression by character level.
+ * The entries of this array represent the jutsu slot progression for a full jutsu-caster.
+ * @type {Array[]}
+ */
+TRPG.JUTSU_SLOT_TABLE = [
+	[2],
+	[3],
+	[4, 2],
+	[4, 3],
+	[4, 3, 2],
+	[4, 3, 3],
+	[4, 3, 3, 1],
+	[4, 3, 3, 2],
+	[4, 3, 3, 3, 1],
+	[4, 3, 3, 3, 2],
+	[4, 3, 3, 3, 2, 1],
+	[4, 3, 3, 3, 2, 1],
+	[4, 3, 3, 3, 2, 1, 1],
+	[4, 3, 3, 3, 2, 1, 1],
+	[4, 3, 3, 3, 2, 1, 1, 1],
+	[4, 3, 3, 3, 2, 1, 1, 1],
+	[4, 3, 3, 3, 2, 1, 1, 1, 1],
+	[4, 3, 3, 3, 3, 1, 1, 1, 1],
+	[4, 3, 3, 3, 3, 2, 1, 1, 1],
+	[4, 3, 3, 3, 3, 2, 2, 1, 1],
+];
+
 /* -------------------------------------------- */
 
 // Polymorph options.
@@ -858,6 +945,7 @@ TRPG.polymorphSettings = {
 	keepClass: "TRPG.PolymorphKeepClass",
 	keepFeats: "TRPG.PolymorphKeepFeats",
 	keepSpells: "TRPG.PolymorphKeepSpells",
+	keepJutsus: "TRPG.PolymorphKeepSpells",
 	keepItems: "TRPG.PolymorphKeepItems",
 	keepBio: "TRPG.PolymorphKeepBio",
 	keepVision: "TRPG.PolymorphKeepVision",
@@ -937,13 +1025,24 @@ TRPG.languages = {
 	goblin: "TRPG.LanguagesGoblin",
 	gnoll: "TRPG.LanguagesGnoll",
 	halfling: "TRPG.LanguagesHalfling",
+	higo: "TRPG.LanguagesHigo",
 	ignan: "TRPG.LanguagesIgnan",
 	infernal: "TRPG.LanguagesInfernal",
+	kigo: "TRPG.LanguagesKigo",
+	mizugo: "TRPG.LanguagesMizugo",
+	ningo: "TRPG.LanguagesNingo",
 	orc: "TRPG.LanguagesOrc",
 	primordial: "TRPG.LanguagesPrimordial",
+	rattiki: "TRPG.LanguagesRattiki",
+	ryuugo: "TRPG.LanguagesRyuugo",
+	sarugo: "TRPG.LanguagesSarugo",
 	sylvan: "TRPG.LanguagesSylvan",
 	taurico: "TRPG.LanguagesTaurico",
+	tengo: "TRPG.LanguagesTengo",
 	terran: "TRPG.LanguagesTerran",
+	varukaru: "TRPG.LanguagesVarukaru",
+	yamago: "TRPG.LanguagesYamago",
+	yaminogo: "TRPG.LanguagesYaminogo"
 };
 
 // Character Level XP Requirements
