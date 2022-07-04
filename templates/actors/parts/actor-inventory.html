@@ -8,15 +8,8 @@
             </a>
         </h3>
         {{#each data.currency as |v k|}}
-            {{#if (and (eq k "pp") (eq ../idj true))}}
-            {{else}}
-              {{#if (eq ../idj true)}}
-                 <label class="denomination {{k}}">{{ lookup ../config.currenciesIDJ k }}</label>
-              {{else}}
-                   <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
-              {{/if}}
-            <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
-            {{/if}}
+        <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
+        <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
         {{/each}}
     </ol>
     {{/unless}}

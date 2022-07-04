@@ -32,7 +32,7 @@ export default class ActorSheetFlags extends DocumentSheet {
 		data.bonuses = this._getBonuses();
 		return data;
 	}
-	 
+
 	/* -------------------------------------------- */
 
 	/**

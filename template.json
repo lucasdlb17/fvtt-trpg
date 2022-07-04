@@ -91,66 +91,7 @@
 					"ci": {
 						"value": [],
 						"custom": ""
-					},
-					"resistance":{
-						"bludgeoning":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"slashing":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"piercing":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"acid":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"lightning":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"fire":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"cold":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"radiant":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"dark":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"void":{
-							"value": 0,
-							"bonus": 0
-						 },
-						 "thunder":{
-							"value": 0,
-							"bonus": 0
-						 },
-						 "psychic":{
-							"value": 0,
-							"bonus": 0
-						 },
-						"wind":{
-							"value": 0,
-							"bonus": 0
-						 },
-						 "physical":{
-							"value": 0,
-							"bonus": 0
-						 }
-				  }
-				  
+					}
 				},
 				"currency": {
 					"pp": 0,
@@ -199,150 +140,124 @@
 					"acr": {
 						"value": 0,
 						"ability": "dex",
-						"proficient": 0,
 						"pda": true
 					},
 					"ani": {
 						"value": 0,
 						"ability": "wis",
-						"proficient": 0,
 						"st": true
 					},
 					"ath": {
 						"value": 0,
 						"ability": "str",
-						"proficient": 0,
 						"pda": true
 					},
 					"atu": {
 						"value": 0,
-						"ability": "cha",
-						"proficient": 0
+						"ability": "cha"
 					},
 					"conArc": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conEng": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conGeo": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conHis": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conNat": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conNob": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conRel": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"conTor": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"ide": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
 						"st": true
 					},
 					"obinf": {
 						"value": 0,
-						"ability": "int",
-						"proficient": 0
+						"ability": "int"
 					},
 					"ofi": {
 						"value": 0,
-						"ability": "int",
-						"proficient": 0
+						"ability": "int"
 					},
 					"cav": {
 						"value": 0,
-						"ability": "dex",
-						"proficient": 0
+						"ability": "dex"
 					},
 					"cur": {
 						"value": 0,
-						"ability": "wis",
-						"proficient": 0
+						"ability": "wis"
 					},
 					"dip": {
 						"value": 0,
-						"ability": "cha",
-						"proficient": 0
+						"ability": "cha"
 					},
 					"eng": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
 						"dishonor": true
 					},
 					"fur": {
 						"value": 0,
 						"ability": "dex",
-						"proficient": 0,
 						"pda": true,
 						"dishonor": true
 					},
 					"init": {
 						"value": 0,
-						"ability": "dex",
-						"proficient": 0
+						"ability": "dex"
 					},
 					"intu": {
 						"value": 0,
-						"ability": "wis",
-						"proficient": 0
+						"ability": "wis"
 					},
 					"inti": {
 						"value": 0,
-						"ability": "cha",
-						"proficient": 0
+						"ability": "cha"
 					},
 					"lad": {
 						"value": 0,
 						"ability": "dex",
-						"proficient": 0,
 						"st": true,
 						"pda": true,
 						"dishonor": true
 					},
 					"prc": {
 						"value": 0,
-						"ability": "wis",
-						"proficient": 0
+						"ability": "wis"
 					},
 					"sur": {
 						"value": 0,
-						"ability": "wis",
-						"proficient": 0
+						"ability": "wis"
 					}
 				},
 				"traits": {
@@ -432,10 +347,10 @@
 					"max": 300
 				},
 				"appearance": "",
-				"personality": "",
-				"backstory": "",
-				"ally": "",
-				"honor": "",
+				"trait": "",
+				"ideal": "",
+				"bond": "",
+				"flaw": "",
 				"showSpells": true
 			},
 			"resources": {
@@ -502,7 +417,7 @@
 		}
 	},
 	"Item": {
-		"types": ["weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack"],
+		"types": ["weapon", "equipment", "consumable", "loot", "class", "spell", "feat", "backpack"],
 		"templates": {
 			"itemDescription": {
 				"description": {
@@ -642,7 +557,6 @@
 		},
 		"feat": {
 			"templates": ["itemDescription", "activatedEffect", "action"],
-			"featList": "",
 			"requirements": "",
 			"recharge": {
 				"value": null,
@@ -672,14 +586,6 @@
 				"material": false,
 				"ritual": false,
 				"concentration": false
-			},
-			"jutsu": {
-				"templates": ["itemDescription", "activatedEffect", "action"],
-				"chacras": "",
-				"grau": 1,
-				"enhancement": "",
-				"descriptors": "",
-				"specialCosts": ""
 			},
 			"materials": {
 				"value": "",
