@@ -20,6 +20,21 @@
 	padding: 0;
 	text-align: center;
 }
+.dnd5e.sheet.actor .resistance-list > .resistance > .resistance-cust-bonus,
+.dnd5e.sheet.actor .attribute .resistance .resistance-cust-bonus,
+.dnd5e.sheet.actor .resistance-list > .resistance > .resistance-ability-select {
+	flex: 0 0 1px;
+	margin-right: 2px;
+	font-family: Signika;
+	height: 1rem;
+}
+
+.dnd5e.sheet.actor .resistance-list > .resistance > .resistance-cust-bonus,
+.dnd5e.sheet.actor .attribute .resistance .resistance-cust-bonus {
+	border: 1px gray solid;
+	padding: 0;
+	text-align: center;
+}
 
 .dnd5e.sheet.actor .skills-list > .skill > .skill-ability-select {
 	padding: 0 2px;
@@ -40,4 +55,11 @@
 }
 .dnd5e.sheet.actor .tab.attributes {
 	scrollbar-width: thin;
+}
+.dnd5e.sheet.actor ul.resistance-list li.resistance .resistance-mod {
+	text-align: center;
+}
+
+.dnd5e.sheet.actor ul.resistance-list {
+	flex: 0 0 230px;
 }

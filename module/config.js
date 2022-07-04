@@ -270,7 +270,6 @@ TRPG.equipmentTypes = {
 	clothing: "TRPG.EquipmentClothing",
 	trinket: "TRPG.EquipmentTrinket",
 	vehicle: "TRPG.EquipmentVehicle",
-	...TRPG.armorTypes,
 };
 
 /* -------------------------------------------- */
@@ -292,9 +291,9 @@ TRPG.vehicleTypes = {
  * @type {Object}
  */
 TRPG.armorProficiencies = {
-	lgt: TRPG.equipmentTypes.light,
-	med: TRPG.equipmentTypes.medium,
-	hvy: TRPG.equipmentTypes.heavy,
+	lgt: "TRPG.EquipmentLightProficiency",
+	med: "TRPG.EquipmentMediumProficiency",
+	hvy: "TRPG.EquipmentHeavyProficiency",
 	shl: "TRPG.EquipmentShieldProficiency",
 };
 
@@ -396,6 +395,16 @@ TRPG.currencies = {
 };
 
 /**
+ * The valid currency denominations supported by the 5e system
+ * @type {Object}
+ */
+TRPG.currenciesIDJ = {
+	gp: "TRPG.CurrencyYo",
+	sp: "TRPG.CurrencyYp",
+	cp: "TRPG.CurrencyY",
+};
+
+/**
  * Define the upwards-conversion rules for registered currency types
  * @type {{string, object}}
  */
@@ -410,17 +419,19 @@ TRPG.currencyConversion = {
 
 // Damage Types
 TRPG.damageTypes = {
-	acid: "TRPG.DamageAcid",
 	bludgeoning: "TRPG.DamageBludgeoning",
-	cold: "TRPG.DamageCold",
-	fire: "TRPG.DamageFire",
-	force: "TRPG.DamageForce",
-	lightning: "TRPG.DamageLightning",
-	necrotic: "TRPG.DamageNecrotic",
 	piercing: "TRPG.DamagePiercing",
-	radiant: "TRPG.DamageRadiant",
 	slashing: "TRPG.DamageSlashing",
+	acid: "TRPG.DamageAcid",
+	lightning: "TRPG.DamageLightning",
+	fire: "TRPG.DamageFire",
+	cold: "TRPG.DamageCold",
+	radiant: "TRPG.DamageRadiant",
+	dark: "TRPG.DamageDark",
+	void: "TRPG.DamageVoid",
 	thunder: "TRPG.DamageThunder",
+	psychic: "TRPG.DamagePsychic",
+	wind: "TRPG.DamageWind",
 };
 
 // Damage Resistance Types
@@ -694,15 +705,8 @@ TRPG.spellLists = {
 };
 // Spell Schools
 TRPG.spellSchools = {
-	abj: "TRPG.SchoolAbj",
-	con: "TRPG.SchoolCon",
-	div: "TRPG.SchoolDiv",
-	enc: "TRPG.SchoolEnc",
-	// "evo": "TRPG.SchoolEvo",
-	ill: "TRPG.SchoolIll",
-	nec: "TRPG.SchoolNec",
-	trs: "TRPG.SchoolTrs",
-	acid: "TRPG.SchoolAcid",
+	abj: "TRPG.SchoolAbjuracao",
+	acid: "TRPG.SchoolAcido",
 	agua: "TRPG.SchoolAgua",
 	ar: "TRPG.SchoolAr",
 	elet: "TRPG.SchoolEletricidade",
@@ -711,15 +715,39 @@ TRPG.spellSchools = {
 	frio: "TRPG.SchoolFrio",
 	sonic: "TRPG.SchoolSonico",
 	terra: "TRPG.SchoolTerra",
+	adv: "TRPG.SchoolAdvinhacao",
 	bem: "TRPG.SchoolBem",
 	mal: "TRPG.SchoolMal",
 	ordem: "TRPG.SchoolOrdem",
 	caos: "TRPG.SchoolCaos",
 	cura: "TRPG.SchoolCura",
+	enc: "TRPG.SchoolEncantamento",
 	escuro: "TRPG.SchoolEscuridao",
 	luz: "TRPG.SchoolLuz",
+	ilu: "TRPG.SchoolIllusao",
+	inv: "TRPG.SchoolInvocacao",
 	medo: "TRPG.SchoolMedo",
+	nec: "TRPG.SchoolNecromancia",
 	tempo: "TRPG.SchoolTempo",
+	trs: "TRPG.SchoolTransmutacao",
+};
+
+// Jutsu Schools
+TRPG.jutsuSchools = {
+	abj: "TRPG.SchoolAbjuracao",
+	adv: "TRPG.SchoolAdvinhacao",
+	acid: "TRPG.SchoolAcido",
+	elet: "TRPG.SchoolEletricidade",
+	fogo: "TRPG.SchoolFogo",
+	frio: "TRPG.SchoolFrio",
+	vento: "TRPG.SchoolVento",
+	enc: "TRPG.SchoolEncantamento",
+	ilu: "TRPG.SchoolIllusao",	
+	inv: "TRPG.SchoolInvocacao",
+	luz: "TRPG.SchoolLuz",
+	trs: "TRPG.SchoolTransmutacao",
+	trevas: "TRPG.SchoolTrevas",
+	vacuo: "TRPG.SchoolVacuo",
 };
 
 // Spell Levels
@@ -736,6 +764,16 @@ TRPG.spellLevels = {
 	9: "TRPG.SpellLevel9",
 };
 
+// Jutsu Levels
+TRPG.jutsuLevels = {
+	0: "TRPG.JutsuLevel0",
+	1: "TRPG.JutsuLevel1",
+	2: "TRPG.JutsuLevel2",
+	3: "TRPG.JutsuLevel3",
+	4: "TRPG.JutsuLevel4",
+	5: "TRPG.JutsuLevel5",
+};
+
 // Spell Scroll Compendium UUIDs
 TRPG.spellScrollIds = {
 	0: "rQ6sO7HDWzqMhSI3",
@@ -748,6 +786,17 @@ TRPG.spellScrollIds = {
 	7: "mtyw4NS1s7j2EJaD",
 	8: "aOrinPg7yuDZEuWr",
 	9: "O4YbkJkLlnsgUszZ",
+};
+
+// Feat Lists
+TRPG.featLists = {
+	combat: "Combate",
+	skill: "Perícia",
+	fate: "Destino",
+	spell: "Magia",
+	jutsu: "Jutsu",
+	gift: "Poder Concedido",
+	tormenta: "Tormenta"
 };
 
 /**

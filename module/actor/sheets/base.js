@@ -116,10 +116,10 @@ export default class ActorSheet5e extends ActorSheet {
 		if (actorData.data.skills) {
 			for (let [s, skl] of Object.entries(actorData.data.skills)) {
 				skl.ability = CONFIG.TRPG.abilityAbbreviations[skl.ability];
-				skl.icon = this._getProficiencyIcon(skl.value);
-				skl.hover = CONFIG.TRPG.proficiencyLevels[skl.value];
+				skl.icon = this._getProficiencyIcon(skl.proficient);
+				skl.hover = CONFIG.TRPG.proficiencyLevels[skl.proficient];
 				skl.label = CONFIG.TRPG.skills[s];
-				skl.baseValue = source.skills[s].value;
+				skl.baseProf = source.skills[s].proficient;
 			}
 		}
 
@@ -364,6 +364,19 @@ export default class ActorSheet5e extends ActorSheet {
 				trait.custom.split(";").forEach((c, i) => (trait.selected[`custom${i + 1}`] = c.trim()));
 			}
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+
+			if(t == "dr"){
+				for(var name in choices)
+				{
+					traits.resistance[`${name}`].bonus = 0;
+				}
+
+				
+				trait.value.forEach((resist) => {
+					traits.resistance[`${resist}`].bonus = 1;
+				});
+
+			}
 		}
 
 		// Populate and localize proficiencies
@@ -687,7 +700,7 @@ export default class ActorSheet5e extends ActorSheet {
 
 		// Cycle to the next or previous skill level
 		const levels = [0, 1];
-		let idx = levels.indexOf(source.value);
+		let idx = levels.indexOf(source.proficient);
 		const next = idx ? 0 : 1;
 		field.value = levels[next];
 
@@ -1106,6 +1119,10 @@ export function injectActorSheet(app, html, data) {
 	if (!game.settings.get("trpg", "customizeSkills")) return;
 	html.find(".skills-list").addClass("skill-customize");
 
+	html.find(".resistance-list").addClass("resistance-customize");
+
+	const resistanceRowSelector = ".resistance-list .resistance";
+
 	const skillRowSelector = ".skills-list .skill";
 
 	const actor = app.actor;
@@ -1171,13 +1188,50 @@ export function injectActorSheet(app, html, data) {
 		skillElem.find(".skill-ability").after(selectElement);
 		skillElem.find(".skill-ability").detach();
 		selectElement.after(textBoxElement);
+	});	
+
+	html.find(resistanceRowSelector).each(function () {
+		const resistanceElem = $(this);
+		const resistanceKey = $(this).attr("data-skill");
+		const bonusKey = `${resistanceKey}.resistance-bonus`;
+
+		let textBoxElement = $('<input type="text" size=2>');
+		textBoxElement.addClass("resistance-cust-bonus");
+		textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+
+		textBoxElement.click(function () {
+			$(this).select();
+		});
+
+		textBoxElement.change(async function (event) {
+			const bonusValue = event.target.value;
+			if (bonusValue === "-" || bonusValue === "0") {
+				await actor.unsetFlag("trpg", bonusKey);
+				textBoxElement.val("-");
+			} else {
+				try {
+					const rollResult = await new Roll(`1d20 + ${bonusValue}`).roll({ async: false });
+					const valid = !isNaN(rollResult._total);
+
+					if (valid) {
+						await actor.setFlag("trpg", bonusKey, bonusValue);
+					} else {
+						textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+					}
+				} catch (err) {
+					textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+				}
+			}
+		});
+
+		resistanceElem.find(".resistance-name").after(textBoxElement);
 	});
+
 
 	html.find(".attribute .skill").each(function () {
 		const skillElem = $(this);
 		const skillKey = $(this).attr("data-save");
 		const bonusKey = `${skillKey}.skill-bonus`;
-		const selectedAbility = actor.data.data.saves[skillKey].ability;
 
 		let textBoxElement = $('<input type="text" size=2>');
 		textBoxElement.addClass("skill-cust-bonus");
