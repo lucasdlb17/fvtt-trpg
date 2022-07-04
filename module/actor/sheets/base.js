@@ -365,13 +365,13 @@ export default class ActorSheet5e extends ActorSheet {
 			}
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
 
-			if(t == "dr"){
-				for(var name in choices)
+			if (t == "dr") {
+				for (var name in choices)
 				{
 					traits.resistance[`${name}`].bonus = 0;
 				}
 
-				
+
 				trait.value.forEach((resist) => {
 					traits.resistance[`${resist}`].bonus = 1;
 				});
@@ -1188,7 +1188,7 @@ export function injectActorSheet(app, html, data) {
 		skillElem.find(".skill-ability").after(selectElement);
 		skillElem.find(".skill-ability").detach();
 		selectElement.after(textBoxElement);
-	});	
+	});
 
 	html.find(resistanceRowSelector).each(function () {
 		const resistanceElem = $(this);
