@@ -73,7 +73,7 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
    */
   _prepareItems(data) {
 
-    // Categorize items as inventory, spellbook, features, and classes
+    // Categorize items as inventory, spellbook, jutsuslist, features, and classes
     const inventory = {
       weapon: { label: "TRPG.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
       equipment: { label: "TRPG.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
@@ -84,7 +84,7 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
     };
 
     // Partition items by category
-    let [items, spells, feats, classes] = data.items.reduce((arr, item) => {
+    let [items, spells, jutsus, feats, classes] = data.items.reduce((arr, item) => {
 
       // Item details
       item.img = item.img || CONST.DEFAULT_TOKEN;
@@ -116,15 +116,17 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
 
       // Classify items into types
       if ( item.type === "spell" ) arr[1].push(item);
-      else if ( item.type === "feat" ) arr[2].push(item);
-      else if ( item.type === "class" ) arr[3].push(item);
+      else if (item.type === "jutsu") arr[2].push(item);
+      else if ( item.type === "feat" ) arr[3].push(item);
+      else if ( item.type === "class" ) arr[4].push(item);
       else if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
       return arr;
-    }, [[], [], [], []]);
+    }, [[], [], [], [], []]);
 
     // Apply active item filters
     items = this._filterItems(items, this._filters.inventory);
     spells = this._filterItems(spells, this._filters.spellbook);
+    jutsus = this._filterItems(jutsus, this._filters.jutsuslist);
     feats = this._filterItems(feats, this._filters.features);
 
     // Organize items
@@ -137,8 +139,14 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
 
     // Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
     const spellbook = this._prepareSpellbook(data, spells);
-    const nPrepared = spells.filter(s => {
+    const nPreparedSpells = spells.filter(s => {
       return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
+    }).length;
+
+    // Organize Jutsuslist and count the number of prepared jutsus (excluding always, at will, etc...)
+    const jutsuslist = this._prepareJutsuslist(data, jutsus);
+    const nPreparedJutsus = jutsus.filter(s => {
+        return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
     }).length;
 
     // Organize Features
@@ -157,7 +165,9 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
     // Assign and return
     data.inventory = Object.values(inventory);
     data.spellbook = spellbook;
-    data.preparedSpells = nPrepared;
+    data.jutsuslist = jutsuslist;
+    data.preparedSpells = nPreparedSpells;
+    data.preparedJutsus = nPreparedJutsus;
     data.features = Object.values(features);
   }
 
@@ -177,6 +187,15 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
       if ( isAlways ) item.toggleTitle = CONFIG.TRPG.spellPreparationModes.always;
       else if ( isPrepared ) item.toggleTitle = CONFIG.TRPG.spellPreparationModes.prepared;
       else item.toggleTitle = game.i18n.localize("TRPG.SpellUnprepared");
+    }
+    else if (item.type === "jutsu") {
+        const isAlways = getProperty(item.data, "preparation.mode") === "always";
+        const isPrepared = getProperty(item.data, "preparation.prepared");
+        item.toggleClass = isPrepared ? "active" : "";
+        if (isAlways) item.toggleClass = "fixed";
+        if (isAlways) item.toggleTitle = CONFIG.TRPG.jutsuPreparationModes.always;
+        else if (isPrepared) item.toggleTitle = CONFIG.TRPG.jutsuPreparationModes.prepared;
+        else item.toggleTitle = game.i18n.localize("TRPG.JutsuUnprepared");
     }
     else {
       const isActive = getProperty(item.data, "equipped");
