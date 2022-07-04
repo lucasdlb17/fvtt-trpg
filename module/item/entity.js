@@ -27,6 +27,8 @@ export default class Item5e extends Item {
 
 			// Spells - Use Actor spellcasting modifier
 			if (this.data.type === "spell") return actorData.attributes.spellcasting || "int";
+			// Jutsus - Use Actor jutsucasting modifier
+			if (this.data.type === "jutsu") return actorData.attributes.jutsucasting || "wis";
 			// Tools - default to Intelligence
 			else if (this.data.type === "tool") return "int";
 			// Weapons
@@ -173,6 +175,20 @@ export default class Item5e extends Item {
 			labels.materials = data?.materials?.value ?? null;
 		}
 
+		// Jutsu Level,  School, and Components
+		if (itemData.type === "jutsu") {
+			data.preparation.mode = data.preparation.mode || "prepared";
+			labels.level = data.level;
+			labels.jutsuList = C.jutsuLists[data.jutsuList];
+			labels.school = C.jutsuSchools[data.school];
+			labels.components = Object.entries(data.components).reduce((arr, c) => {
+				if (c[1] !== true) return arr;
+				arr.push(c[0].titleCase().slice(0, 1));
+				return arr;
+			}, []);
+			labels.materials = data?.materials?.value ?? null;
+		}
+
 		// Feat Items
 		else if (itemData.type === "feat") {
 			const act = data.activation;
@@ -307,6 +323,30 @@ export default class Item5e extends Item {
 		return save.dc;
 	}
 
+	/**
+	 * Update the derived jutsu DC for an item that requires a saving throw
+	 * @returns {number|null}
+	 */
+	getSaveDC() {
+		if (!this.hasSave) return;
+		const save = this.data.data?.save;
+
+		// Actor jutsu-DC based scaling
+		if (save.scaling === "jutsu") {
+			save.dc = this.isOwned ? getProperty(this.actor.data, "data.attributes.jutsudc") + (this.data.data.level ?? 0) : null;
+		}
+
+		// Ability-score based scaling
+		else if (save.scaling !== "flat") {
+			save.dc = this.isOwned ? getProperty(this.actor.data, `data.abilities.${save.scaling}.dc`) + (this.data.data.level ?? 0) : null;
+		}
+
+		// Update labels
+		const abl = CONFIG.TRPG.saves[save.ability];
+		this.labels.save = game.i18n.format("TRPG.SaveDC", { dc: save.dc || "", ability: abl });
+		return save.dc;
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -425,20 +465,25 @@ export default class Item5e extends Item {
 		const recharge = id.recharge || {}; // Recharge mechanic
 		const uses = id?.uses ?? {}; // Limited uses
 		const isSpell = this.type === "spell"; // Does the item require a spell slot?
+		const isJutsu = this.type === "jutsu"; // Does the item require a jutsu slot?
 		const requireSpellSlot = false; //isSpell && (id.level > 0) && CONFIG.TRPG.spellUpcastModes.includes(id.preparation.mode);
+		const requireJutsuSlot = false; //isJutsu && (id.level > 0) && CONFIG.TRPG.jutsuUpcastModes.includes(id.preparation.mode);
 
 		// Define follow-up actions resulting from the item usage
 		let createMeasuredTemplate = hasArea; // Trigger a template creation
 		let consumeRecharge = !!recharge.value; // Consume recharge
 		let consumeResource = !!resource.target && resource.type !== "ammo"; // Consume a linked (non-ammo) resource
 		let consumeSpellSlot = requireSpellSlot; // Consume a spell slot
+		let consumeJutsuSlot = requireJutsuSlot; // Consume a jutsu slot
 		let consumeUsage = !!uses.per; // Consume limited uses
 		let consumeQuantity = uses.autoDestroy; // Consume quantity of the item in lieu of uses
 		let consumeSpellLevel = null; // Consume a specific category of spell slot
+		let consumeJutsuLevel = null; // Consume a specific category of jutsu slot
 		if (requireSpellSlot) consumeSpellLevel = `spell${id.level}`;
+		if (requireJutsuSlot) consumeJutsuLevel = `jutsu${id.level}`;
 
 		// Display a configuration dialog to customize the usage
-		const needsConfiguration = createMeasuredTemplate || consumeRecharge || consumeResource || consumeSpellSlot || consumeUsage;
+		const needsConfiguration = createMeasuredTemplate || consumeRecharge || consumeResource || consumeSpellSlot || consumeJutsuSlot || consumeUsage;
 		if (configureDialog && needsConfiguration) {
 			const configuration = await AbilityUseDialog.create(this);
 			if (!configuration) return;
@@ -449,6 +494,7 @@ export default class Item5e extends Item {
 			consumeRecharge = Boolean(configuration.consumeRecharge);
 			consumeResource = Boolean(configuration.consumeResource);
 			consumeSpellSlot = Boolean(configuration.consumeSlot);
+			consumeJutsuSlot = Boolean(configuration.consumeSlot);
 
 			// Handle spell upcasting
 			if (requireSpellSlot) {
@@ -461,10 +507,22 @@ export default class Item5e extends Item {
 					item.prepareFinalAttributes(); // Spell save DC, etc...
 				}
 			}
+
+			// Handle jutsu upcasting
+			if (requireJutsuSlot) {
+				consumeJutsuLevel = `jutsu${configuration.level}`;
+				if (consumeJutsuSlot === false) consumeJutsuLevel = null;
+				const upcastLevel = parseInt(configuration.level);
+				if (upcastLevel !== id.level) {
+					item = this.clone({ "data.level": upcastLevel }, { keepId: true });
+					item.data.update({ _id: this.id }); // Retain the original ID (needed until 0.8.2+)
+					item.prepareFinalAttributes(); // Jutsu save DC, etc...
+				}
+			}
 		}
 
 		// Determine whether the item can be used by testing for resource consumption
-		const usage = item._getUsageUpdates({ consumeRecharge, consumeResource, consumeSpellLevel, consumeUsage, consumeQuantity });
+		const usage = item._getUsageUpdates({ consumeRecharge, consumeResource, consumeSpellLevel, consumeJutsuLevel, consumeUsage, consumeQuantity });
 		if (!usage) return;
 		const { actorUpdates, itemUpdates, resourceUpdates } = usage;
 
@@ -496,11 +554,12 @@ export default class Item5e extends Item {
 	 * @param {boolean} consumeRecharge     Whether the item consumes the recharge mechanic
 	 * @param {boolean} consumeResource     Whether the item consumes a limited resource
 	 * @param {string|null} consumeSpellLevel The category of spell slot to consume, or null
+	 * @param {string|null} consumeJutsuLevel The category of jutsu slot to consume, or null
 	 * @param {boolean} consumeUsage        Whether the item consumes a limited usage
 	 * @returns {object|boolean}            A set of data changes to apply when the item is used, or false
 	 * @private
 	 */
-	_getUsageUpdates({ consumeQuantity, consumeRecharge, consumeResource, consumeSpellLevel, consumeUsage }) {
+	_getUsageUpdates({ consumeQuantity, consumeRecharge, consumeResource, consumeSpellLevel, consumeJutsuLevel, consumeUsage }) {
 		// Reference item data
 		const id = this.data.data;
 		const actorUpdates = {};
@@ -534,6 +593,19 @@ export default class Item5e extends Item {
 				return false;
 			}
 			actorUpdates[`data.spells.${consumeSpellLevel}.value`] = Math.max(spells - 1, 0);
+		}
+
+		// Consume Jutsu Slots
+		if (consumeJutsuLevel) {
+			if (Number.isNumeric(consumeJutsuLevel)) consumeJutsuLevel = `jutsu${consumeJutsuLevel}`;
+			const level = this.actor?.data.data.jutsus[consumeJutsuLevel];
+			const jutsus = Number(level?.value ?? 0);
+			if (jutsus === 0) {
+				const label = game.i18n.localize(`TRPG.JutsuLevel${id.level}`);
+				ui.notifications.warn(game.i18n.format("TRPG.JutsuCastNoSlots", { name: this.name, level: label }));
+				return false;
+			}
+			actorUpdates[`data.jutsus.${consumeJutsuLevel}.value`] = Math.max(jutsus - 1, 0);
 		}
 
 		// Consume Limited Usage
@@ -673,6 +745,7 @@ export default class Item5e extends Item {
 			hasDamage: this.hasDamage,
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
+			isJutsu: this.data.type === "jutsu",
 			hasSave: this.hasSave,
 			hasAreaTarget: this.hasAreaTarget,
 			isTool: this.data.type === "tool",
@@ -800,6 +873,15 @@ export default class Item5e extends Item {
 		props.push(labels.level, labels.components + (labels.materials ? ` (${labels.materials})` : ""));
 	}
 
+	/**
+	 * Render a chat card for Jutsu type data
+	 * @return {Object}
+	 * @private
+	 */
+	_jutsuChatData(data, labels, props) {
+		props.push(labels.level, labels.components + (labels.materials ? ` (${labels.materials})` : ""));
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -815,7 +897,7 @@ export default class Item5e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Place an attack roll using an item (weapon, feat, spell, or equipment)
+	 * Place an attack roll using an item (weapon, feat, spell, jutsu or equipment)
 	 * Rely upon the d20Roll logic for the core implementation
 	 *
 	 * @param {object} options        Roll options which are configured and provided to the d20Roll function
@@ -873,7 +955,7 @@ export default class Item5e extends Item {
 		};
 
 		// Expanded critical hit thresholds
-		if (this.data.type === "weapon" || this.data.type === "spell") {
+		if (this.data.type === "weapon" || this.data.type === "spell" || this.data.type === "jutsu") {
 			rollConfig.critical = itemData.critical.threshold;
 		}
 
@@ -900,16 +982,17 @@ export default class Item5e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Place a damage roll using an item (weapon, feat, spell, or equipment)
+	 * Place a damage roll using an item (weapon, feat, spell, jutsu or equipment)
 	 * Rely upon the damageRoll logic for the core implementation.
 	 * @param {MouseEvent} [event]    An event which triggered this roll, if any
 	 * @param {boolean} [critical]    Should damage be rolled as a critical hit?
 	 * @param {number} [spellLevel]   If the item is a spell, override the level for damage scaling
+	 * @param {number} [jutsuLevel]   If the item is a jutsu, override the level for damage scaling
 	 * @param {boolean} [versatile]   If the item is a weapon, roll damage using the versatile formula
 	 * @param {object} [options]      Additional options passed to the damageRoll function
 	 * @return {Promise<Roll>}        A Promise which resolves to the created Roll instance
 	 */
-	rollDamage({ critical = false, event = null, spellLevel = null, versatile = false, options = {} } = {}) {
+	rollDamage({ critical = false, event = null, spellLevel = null, jutsuLevel = null, versatile = false, options = {} } = {}) {
 		if (!this.hasDamage) throw new Error("You may not make a Damage Roll with this Item.");
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;
@@ -919,6 +1002,7 @@ export default class Item5e extends Item {
 		const parts = itemData.damage.parts.map((d) => d[0]);
 		const rollData = this.getRollData();
 		if (spellLevel) rollData.item.level = spellLevel;
+		if (jutsuLevel) rollData.item.level = jutsuLevel;
 
 		// Configure the damage roll
 		const actionFlavor = game.i18n.localize(itemData.actionType === "heal" ? "TRPG.Healing" : "TRPG.DamageRoll");
@@ -947,7 +1031,7 @@ export default class Item5e extends Item {
 			messageData["flags.trpg.roll"].versatile = true;
 		}
 
-		if (this.data.type === "weapon" || this.data.type === "spell") {
+		if (this.data.type === "weapon" || this.data.type === "spell" || this.data.type === "jutsu") {
 			rollConfig.criticalMultiplier = itemData.critical.multiplier;
 		}
 
@@ -962,6 +1046,20 @@ export default class Item5e extends Item {
 			} else if (spellLevel && itemData.scaling.mode === "level" && itemData.scaling.formula) {
 				const scaling = itemData.scaling.formula;
 				this._scaleSpellDamage(parts, itemData.level, spellLevel, scaling, rollData);
+			}
+		}
+
+		// Scale damage from up-casting jutsus
+		if (this.data.type === "jutsu") {
+			if (itemData.scaling.mode === "cantrip") {
+				let level;
+				if (this.actor.type === "character") level = actorData.details.level;
+				else if (itemData.preparation.mode === "innate") level = Math.ceil(actorData.details.cr);
+				else level = actorData.details.jutsuLevel;
+				this._scaleCantripDamage(parts, itemData.scaling.formula, level, rollData);
+			} else if (jutsuLevel && itemData.scaling.mode === "level" && itemData.scaling.formula) {
+				const scaling = itemData.scaling.formula;
+				this._scaleJutsuDamage(parts, itemData.level, jutsuLevel, scaling, rollData);
 			}
 		}
 
@@ -1001,10 +1099,11 @@ export default class Item5e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Adjust the spell damage formula to scale it for spell level up-casting
+	 * Adjust the spell/jutsu damage formula to scale it for spell/jutsu level up-casting
 	 * @param {Array} parts         The original damage parts
-	 * @param {number} baseLevel    The default spell level
+	 * @param {number} baseLevel    The default spell/jutsu level
 	 * @param {number} spellLevel   The casted spell level
+	 * @param {number} jutsuLevel   The casted jutsu level
 	 * @param {string} formula      The scaling formula
 	 * @param {object} rollData     A data object that should be applied to the scaled damage roll
 	 * @return {string[]}           The scaled roll parts
@@ -1012,6 +1111,12 @@ export default class Item5e extends Item {
 	 */
 	_scaleSpellDamage(parts, baseLevel, spellLevel, formula, rollData) {
 		const upcastLevels = Math.max(spellLevel - baseLevel, 0);
+		if (upcastLevels === 0) return parts;
+		this._scaleDamage(parts, formula, upcastLevels, rollData);
+	}
+
+	_scaleJutsuDamage(parts, baseLevel, jutsuLevel, formula, rollData) {
+		const upcastLevels = Math.max(jutsuLevel - baseLevel, 0);
 		if (upcastLevels === 0) return parts;
 		this._scaleDamage(parts, formula, upcastLevels, rollData);
 	}
@@ -1054,7 +1159,7 @@ export default class Item5e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Place an attack roll using an item (weapon, feat, spell, or equipment)
+	 * Place an attack roll using an item (weapon, feat, spell, jutsu or equipment)
 	 * Rely upon the d20Roll logic for the core implementation
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
@@ -1067,6 +1172,7 @@ export default class Item5e extends Item {
 		// Define Roll Data
 		const rollData = this.getRollData();
 		if (spellLevel) rollData.item.level = spellLevel;
+		if (jutsuLevel) rollData.item.level = jutsuLevel;
 		const title = `${this.name} - ${game.i18n.localize("TRPG.OtherFormula")}`;
 
 		// Invoke the roll and submit it to chat
@@ -1227,6 +1333,7 @@ export default class Item5e extends Item {
 			return ui.notifications.error(game.i18n.format("TRPG.ActionWarningNoItem", { item: card.dataset.itemId, name: actor.name }));
 		}
 		const spellLevel = parseInt(card.dataset.spellLevel) || null;
+		const jutsuLevel = parseInt(card.dataset.jutsuLevel) || null;
 
 		// Handle different actions
 		switch (action) {
@@ -1239,11 +1346,12 @@ export default class Item5e extends Item {
 					critical: event.altKey,
 					event: event,
 					spellLevel: spellLevel,
+					jutsuLevel: jutsuLevel,
 					versatile: action === "versatile",
 				});
 				break;
 			case "formula":
-				await item.rollFormula({ event, spellLevel });
+				await item.rollFormula({ event, spellLevel, jutsuLevel });
 				break;
 			case "save":
 				const targets = this._getChatCardTargets(card);
@@ -1336,6 +1444,9 @@ export default class Item5e extends Item {
 				break;
 			case "spell":
 				updates = this._onCreateOwnedSpell(data, actorData, isNPC);
+				break;
+			case "jutsu":
+				updates = this._onCreateOwnedJutsu(data, actorData, isNPC);
 				break;
 		}
 		if (updates) return this.data.update(updates);
@@ -1444,6 +1555,18 @@ export default class Item5e extends Item {
 		return updates;
 	}
 
+	/**
+	 * Pre-creation logic for the automatic configuration of owned jutsu type Items
+	 * @private
+	 */
+	_onCreateOwnedJutsu(data, actorData, isNPC) {
+		const updates = {};
+		if (foundry.utils.getProperty(data, "data.proficient") === undefined) {
+			updates["data.prepared"] = isNPC; // NPCs automatically prepare jutsus
+		}
+		return updates;
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1516,4 +1639,51 @@ export default class Item5e extends Item {
 		});
 		return new this(spellScrollData);
 	}
+
+	/**
+	 * Create a consumable jutsu scroll Item from a jutsu Item.
+	 * @param {Item5e} jutsu      The jutsu to be made into a scroll
+	 * @return {Item5e}           The created scroll consumable item
+	 */
+	static async createScrollFromJutsu(jutsu) {
+		// Get jutsu data
+		const itemData = jutsu instanceof Item5e ? jutsu.toObject() : jutsu;
+		const { actionType, description, source, activation, duration, target, range, damage, save, level } = itemData.data;
+
+		// Get scroll data
+		const scrollUuid = `Compendium.${CONFIG.TRPG.sourcePacks.ITEMS}.${CONFIG.TRPG.jutsuScrollIds[level]}`;
+		const scrollItem = await fromUuid(scrollUuid);
+		const scrollData = scrollItem.data;
+		delete scrollData._id;
+
+		// Split the scroll description into an intro paragraph and the remaining details
+		const scrollDescription = scrollData.data.description.value;
+		const pdel = "</p>";
+		const scrollIntroEnd = scrollDescription.indexOf(pdel);
+		const scrollIntro = scrollDescription.slice(0, scrollIntroEnd + pdel.length);
+		const scrollDetails = scrollDescription.slice(scrollIntroEnd + pdel.length);
+
+		// Create a composite description from the scroll description and the jutsu details
+		const desc = `${scrollIntro}<hr/><h3>${itemData.name} (Level ${level})</h3><hr/>${description.value}<hr/><h3>Scroll Details</h3><hr/>${scrollDetails}`;
+
+		// Create the jutsu scroll data
+		const jutsuScrollData = foundry.utils.mergeObject(scrollData, {
+			name: `${game.i18n.localize("TRPG.JutsuScroll")}: ${itemData.name}`,
+			img: itemData.img,
+			data: {
+				"description.value": desc.trim(),
+				source,
+				actionType,
+				activation,
+				duration,
+				target,
+				range,
+				damage,
+				save,
+				level,
+			},
+		});
+		return new this(jutsuScrollData);
+	}
+
 }
