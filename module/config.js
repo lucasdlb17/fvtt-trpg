@@ -100,7 +100,7 @@ TRPG.weaponProficienciesMap = {
  * @type {Object}
  */
 TRPG.timePeriods = {
-	inst: "TRPG.TimeInst",
+	inst: "TRPG.TimeInstantaneous",
 	turn: "TRPG.TimeTurn",
 	round: "TRPG.TimeRound",
 	minute: "TRPG.TimeMinute",
@@ -108,9 +108,10 @@ TRPG.timePeriods = {
 	day: "TRPG.TimeDay",
 	month: "TRPG.TimeMonth",
 	year: "TRPG.TimeYear",
-	perm: "TRPG.TimePerm",
-	spec: "TRPG.Special",
-	scene: "TRPG.Scene"
+	perm: "TRPG.TimePermanent",	
+	scene: "TRPG.TimeScene",
+	concen: "TRPG.TimeConcentration",
+	spec: "TRPG.Special"
 };
 
 /* -------------------------------------------- */
