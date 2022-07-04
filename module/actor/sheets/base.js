@@ -28,6 +28,7 @@ export default class ActorSheet5e extends ActorSheet {
 		this._filters = {
 			inventory: new Set(),
 			spellbook: new Set(),
+			jutsuslist: new Set(),
 			features: new Set(),
 			effects: new Set(),
 		};
@@ -38,7 +39,7 @@ export default class ActorSheet5e extends ActorSheet {
 	/** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			scrollY: [".inventory .inventory-list", ".features .inventory-list", ".spellbook .inventory-list", ".effects .inventory-list"],
+			scrollY: [".inventory .inventory-list", ".features .inventory-list", ".spellbook .inventory-list", ".jutsuslist .inventory-list", ".effects .inventory-list"],
 			tabs: [{ navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description" }],
 		});
 	}
@@ -484,6 +485,100 @@ export default class ActorSheet5e extends ActorSheet {
 		return sorted;
 	}
 
+	/**
+	 * Insert a jutsu into the spellbook object when rendering the character sheet
+	 * @param {Object} data     The Actor data being prepared
+	 * @param {Array} jutsus    The jutsu data being prepared
+	 * @private
+	 */
+	_prepareJutsuslist(data, jutsus) {
+		const owner = this.actor.isOwner;
+		const levels = data.data.jutsus;
+		const jutsuslist = {};
+
+		// Define some mappings
+		const sections = {
+			atwill: -20,
+			innate: -10,
+		};
+
+		// Label jutsu slot uses headers
+		const useLabels = {
+			"-20": "-",
+			"-10": "-",
+			0: "&infin;",
+		};
+
+		// Format a jutsuslist entry for a certain indexed level
+		const registerSection = (sl, i, label, { prepMode = "prepared", value, max, override } = {}) => {
+			jutsuslist[i] = {
+				order: i,
+				label: label,
+				usesSlots: i > 0,
+				canCreate: owner,
+				canPrepare: data.actor.type === "character" && i >= 1,
+				jutsus: [],
+				uses: useLabels[i] || value || 0,
+				slots: useLabels[i] || max || 0,
+				override: override || 0,
+				dataset: { type: "jutsu", level: prepMode in sections ? 1 : i, "preparation.mode": prepMode },
+				prop: sl,
+			};
+		};
+
+		// Determine the maximum jutsu level which has a slot
+		const maxLevel = Array.fromRange(5).reduce((max, i) => {
+			if (i === 0) return max;
+			const level = levels[`jutsu${i}`];
+			if ((level.max || level.override) && i > max) max = i;
+			return max;
+		}, 0);
+
+		// Level-based jutsucasters have cantrips and leveled slots
+		if (maxLevel > 0) {
+			registerSection("jutsu0", 0, CONFIG.TRPG.jutsuLevels[0]);
+			for (let lvl = 1; lvl <= maxLevel; lvl++) {
+				const sl = `jutsu${lvl}`;
+				registerSection(sl, lvl, CONFIG.TRPG.jutsuLevels[lvl], levels[sl]);
+			}
+		}
+
+		// Iterate over every jutsu item, adding jutsus to the jutsuslist by section
+		jutsus.forEach((jutsu) => {
+			const mode = jutsu.data.preparation.mode || "prepared";
+			let s = jutsu.data.level || 0;
+			const sl = `jutsu${s}`;
+
+			// Specialized jutsucasting modes (if they exist)
+			if (mode in sections) {
+				s = sections[mode];
+				if (!jutsuslist[s]) {
+					const l = levels[mode] || {};
+					const config = CONFIG.TRPG.jutsuPreparationModes[mode];
+					registerSection(mode, s, config, {
+						prepMode: mode,
+						value: l.value,
+						max: l.max,
+						override: l.override,
+					});
+				}
+			}
+
+			// Sections for higher-level jutsus which the caster "should not" have, but jutsu items exist for
+			else if (!jutsuslist[s]) {
+				registerSection(sl, s, CONFIG.TRPG.jutsuLevels[s], { levels: levels[sl] });
+			}
+
+			// Add the jutsu to the relevant heading
+			jutsuslist[s].jutsus.push(jutsu);
+		});
+
+		// Sort the jutsuslist by section level
+		const sorted = Object.values(jutsuslist);
+		sorted.sort((a, b) => a.order - b.order);
+		return sorted;
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -502,7 +597,7 @@ export default class ActorSheet5e extends ActorSheet {
 				}
 			}
 
-			// Spell-specific filters
+			// Spell/Jutsu-specific filters
 			if (filters.has("ritual")) {
 				if (data.components.ritual !== true) return false;
 			}
@@ -586,6 +681,7 @@ export default class ActorSheet5e extends ActorSheet {
 				.click((ev) => ev.target.select())
 				.change(this._onUsesChange.bind(this));
 			html.find(".slot-max-override").click(this._onSpellSlotOverride.bind(this));
+			html.find(".slot-max-override").click(this._onJutsuSlotOverride.bind(this));
 
 			// Active Effect management
 			html.find(".effect-control").click((ev) => ActiveEffect5e.onManageActiveEffect(ev, this.actor));
@@ -807,6 +903,12 @@ export default class ActorSheet5e extends ActorSheet {
 			itemData = scroll.data;
 		}
 
+		// Create a Consumable jutsu scroll on the Inventory tab
+		if (itemData.type === "jutsu" && this._tabs[0].active === "inventory") {
+			const scroll = await Item5e.createScrollFromJutsu(itemData);
+			itemData = scroll.data;
+		}
+
 		if (itemData.data) {
 			// Ignore certain statuses
 			["equipped", "proficient", "prepared"].forEach((k) => delete itemData.data[k]);
@@ -846,6 +948,28 @@ export default class ActorSheet5e extends ActorSheet {
 		const input = document.createElement("INPUT");
 		input.type = "text";
 		input.name = `data.spells.${level}.override`;
+		input.value = override;
+		input.placeholder = span.dataset.slots;
+		input.dataset.dtype = "Number";
+
+		// Replace the HTML
+		const parent = span.parentElement;
+		parent.removeChild(span);
+		parent.appendChild(input);
+	}
+
+	/**
+	 * Handle enabling editing for a jutsu slot override value
+	 * @param {MouseEvent} event    The originating click event
+	 * @private
+	 */
+	async _onJutsuSlotOverride(event) {
+		const span = event.currentTarget.parentElement;
+		const level = span.dataset.level;
+		const override = this.actor.data.data.jutsus[level].override || span.dataset.slots;
+		const input = document.createElement("INPUT");
+		input.type = "text";
+		input.name = `data.jutsus.${level}.override`;
 		input.value = override;
 		input.placeholder = span.dataset.slots;
 		input.dataset.dtype = "Number";
