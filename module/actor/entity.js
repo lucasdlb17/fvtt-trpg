@@ -78,6 +78,17 @@ export default class Actor5e extends Actor {
 			}
 		}
 
+		const resistances = this.data.data.traits.resistance;
+		for (let key in resistances) {
+			let resistance = resistances[key];
+			let bonus = this.getFlag("trpg", `${key}.resistance-bonus`) || 0;
+			let bonusAsInt = parseInt(Number(bonus));
+			if (!isNaN(bonusAsInt)) {
+				resistance.value += bonusAsInt;
+			}
+		}
+
+
 		// iterate over owned items and recompute attributes that depend on prepared actor data
 		this.items.forEach((item) => item.prepareFinalAttributes());
 	}
