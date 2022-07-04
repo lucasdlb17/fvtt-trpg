@@ -144,7 +144,11 @@
         <a class="item active" data-tab="attributes">{{ localize "TRPG.Attributes" }}</a>
         <a class="item" data-tab="inventory">{{ localize "TRPG.Inventory" }}</a>
         <a class="item" data-tab="features">{{ localize "TRPG.Features" }}</a>
-        {{#if (or hasSpells data.details.showSpells (eq idj true))}}<a class="item" data-tab="spellbook">{{ localize "TRPG.Spellbook" }}</a>{{/if}}
+        {{#if (eq ./idj true)}}
+            <a class="item" data-tab="jutsuslist">{{ localize "TRPG.Jutsuslist" }}</a>
+        {{else}}
+            <a class="item" data-tab="spellbook">{{ localize "TRPG.Spellbook" }}</a>
+        {{/if}}
         <a class="item" data-tab="effects">{{ localize "TRPG.Effects" }}</a>
         <a class="item" data-tab="biography">{{ localize "TRPG.Biography" }}</a>
     </nav>
@@ -242,6 +246,11 @@
         {{!-- Spellbook Tab --}}
         <div class="tab spellbook flexcol" data-group="primary" data-tab="spellbook">
             {{> "systems/trpg/templates/actors/parts/actor-spellbook.html"}}
+        </div>
+
+        {{!-- Jutsuslist Tab --}}
+        <div class="tab jutsuslist flexcol" data-group="primary" data-tab="jutsuslist">
+            {{> "systems/trpg/templates/actors/parts/actor-jutsuslist.html"}}
         </div>
 
         {{!-- Effects Tab --}}
