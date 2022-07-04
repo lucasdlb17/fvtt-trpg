@@ -419,17 +419,19 @@ TRPG.currencyConversion = {
 
 // Damage Types
 TRPG.damageTypes = {
-	acid: "TRPG.DamageAcid",
 	bludgeoning: "TRPG.DamageBludgeoning",
-	cold: "TRPG.DamageCold",
-	fire: "TRPG.DamageFire",
-	force: "TRPG.DamageForce",
-	lightning: "TRPG.DamageLightning",
-	necrotic: "TRPG.DamageNecrotic",
 	piercing: "TRPG.DamagePiercing",
-	radiant: "TRPG.DamageRadiant",
 	slashing: "TRPG.DamageSlashing",
+	acid: "TRPG.DamageAcid",
+	lightning: "TRPG.DamageLightning",
+	fire: "TRPG.DamageFire",
+	cold: "TRPG.DamageCold",
+	radiant: "TRPG.DamageRadiant",
+	dark: "TRPG.DamageDark",
+	void: "TRPG.DamageVoid",
 	thunder: "TRPG.DamageThunder",
+	psychic: "TRPG.DamagePsychic",
+	wind: "TRPG.DamageWind",
 };
 
 // Damage Resistance Types
