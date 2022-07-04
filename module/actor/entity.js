@@ -856,7 +856,8 @@ export default class Actor5e extends Actor {
 
 		// Remaining goes to health
 		const tmpMax = parseInt(hp.tempmax) || 0;
-		const dh = Math.clamped(hp.value - (amount - dt), 0, hp.max + tmpMax);
+		const hpMin = Math.floor(0 - (hp.max / 2));
+		const dh = Math.clamped(hp.value - (amount - dt), hpMin, hp.max + tmpMax);
 
 		// Update the Actor
 		const updates = {
