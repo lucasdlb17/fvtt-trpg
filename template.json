@@ -168,7 +168,8 @@
 						"units": "m",
 						"special": ""
 					},
-					"spellcasting": "int"
+					"spellcasting": "int",
+					"jutsucasting": "wis"
 				},
 				"details": {
 					"alignment": "",
@@ -438,6 +439,44 @@
 						"override": null
 					}
 				},
+				"jutsus": {
+					"jutsu1": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu2": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu3": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu4": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu5": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu6": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu7": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu8": {
+						"value": 0,
+						"override": null
+					},
+					"jutsu9": {
+						"value": 0,
+						"override": null
+					}
+				},
 				"bonuses": {
 					"mwak": {
 						"attack": "",
@@ -462,6 +501,9 @@
 					},
 					"spell": {
 						"dc": ""
+					},
+					"jutsu": {
+						"dc": ""
 					}
 				}
 			}
@@ -485,7 +527,8 @@
 				"backstory": "",
 				"ally": "",
 				"honor": "",
-				"showSpells": true
+				"showSpells": true,
+				"showJutsus": true
 			},
 			"resources": {
 				"primary": {
@@ -529,6 +572,7 @@
 				"level": 1,
 				"cr": 1,
 				"spellLevel": 0,
+				"jutsuLevel": 0,
 				"xp": {
 					"value": 10
 				},
@@ -551,7 +595,7 @@
 		}
 	},
 	"Item": {
-		"types": ["weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack"],
+		"types": [ "weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack" ],
 		"templates": {
 			"itemDescription": {
 				"description": {
@@ -634,9 +678,9 @@
 				}
 			}
 		},
-		"htmlFields": ["description.value", "description.chat", "description.unidentified"],
+		"htmlFields": [ "description.value", "description.chat", "description.unidentified" ],
 		"backpack": {
-			"templates": ["itemDescription", "physicalItem"],
+			"templates": [ "itemDescription", "physicalItem" ],
 			"capacity": {
 				"type": "weight",
 				"value": 0,
@@ -650,7 +694,7 @@
 			}
 		},
 		"class": {
-			"templates": ["itemDescription"],
+			"templates": [ "itemDescription" ],
 			"levels": 1,
 			"subclass": "",
 			"hitDice": "d6",
@@ -665,17 +709,21 @@
 			"spellcasting": {
 				"progression": "none",
 				"ability": ""
+			},
+			"jutsucasting": {
+				"progression": "none",
+				"ability": ""
 			}
 		},
 		"consumable": {
-			"templates": ["itemDescription", "physicalItem", "activatedEffect", "action"],
+			"templates": [ "itemDescription", "physicalItem", "activatedEffect", "action" ],
 			"consumableType": "potion",
 			"uses": {
 				"autoDestroy": false
 			}
 		},
 		"equipment": {
-			"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
+			"templates": [ "itemDescription", "physicalItem", "activatedEffect", "action", "mountable" ],
 			"armor": {
 				"type": "light",
 				"value": null,
@@ -690,7 +738,7 @@
 			"proficient": true
 		},
 		"feat": {
-			"templates": ["itemDescription", "activatedEffect", "action"],
+			"templates": [ "itemDescription", "activatedEffect", "action" ],
 			"featList": "",
 			"requirements": "",
 			"recharge": {
@@ -700,17 +748,17 @@
 			"type": ""
 		},
 		"loot": {
-			"templates": ["itemDescription", "physicalItem"]
+			"templates": [ "itemDescription", "physicalItem" ]
 		},
 		"tool": {
-			"templates": ["itemDescription", "physicalItem"],
+			"templates": [ "itemDescription", "physicalItem" ],
 			"toolType": "",
 			"ability": "int",
 			"chatFlavor": "",
 			"proficient": 0
 		},
 		"spell": {
-			"templates": ["itemDescription", "activatedEffect", "action"],
+			"templates": [ "itemDescription", "activatedEffect", "action" ],
 			"level": 1,
 			"spellList": "univ",
 			"school": "",
@@ -721,14 +769,6 @@
 				"material": false,
 				"ritual": false,
 				"concentration": false
-			},
-			"jutsu": {
-				"templates": ["itemDescription", "activatedEffect", "action"],
-				"chacras": "",
-				"grau": 1,
-				"enhancement": "",
-				"descriptors": "",
-				"specialCosts": ""
 			},
 			"materials": {
 				"value": "",
@@ -745,8 +785,40 @@
 				"formula": null
 			}
 		},
+
+		"jutsu": {
+			"templates": [ "itemDescription", "activatedEffect", "action" ],
+			"jutsuList": "",
+			"level": 1,
+			"enhancement": "",
+			"school": "",
+			"specialCosts": "",
+			"components": {
+				"value": "",
+				"vocal": false,
+				"somatic": false,
+				"material": false,
+				"ritual": false,
+				"concentration": false
+			},
+			"materials": {
+				"value": "",
+				"consumed": false,
+				"cost": 0,
+				"supply": 0
+			},
+			"preparation": {
+				"mode": "prepared",
+				"prepared": false
+			},
+			"scaling": {
+				"mode": "none",
+				"formula": null
+			}
+		},
+
 		"weapon": {
-			"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
+			"templates": [ "itemDescription", "physicalItem", "activatedEffect", "action", "mountable" ],
 			"weaponType": "simpleM",
 			"properties": {},
 			"proficient": true
