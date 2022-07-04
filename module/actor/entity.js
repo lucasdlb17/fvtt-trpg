@@ -195,6 +195,9 @@ export default class Actor5e extends Actor {
 		// Prepare spell-casting data
 		this._computeSpellcastingProgression(this.data);
 
+		// Prepare jutsu-casting data
+		this._computeJutsucastingProgression(this.data);
+
 		// Prepare armor class data
 		const ac = this._computeArmorClass(data);
 		this.armor = ac.equippedArmor || null;
@@ -328,6 +331,16 @@ export default class Actor5e extends Actor {
 				preparation.prepared = true;
 			}
 		}
+
+		// Class jutsus should always be prepared
+		for (const feature of features) {
+			if (feature.type === "jutsu") {
+				const preparation = feature.data.data.preparation;
+				preparation.mode = "always";
+				preparation.prepared = true;
+			}
+		}
+
 		return features;
 	}
 
@@ -396,6 +409,11 @@ export default class Actor5e extends Actor {
 		// Spellcaster Level
 		if (data.attributes.spellcasting && !Number.isNumeric(data.details.spellLevel)) {
 			data.details.spellLevel = Math.max(data.details.cr, 1);
+		}
+
+		// Jutsucaster Level
+		if (data.attributes.jutsucasting && !Number.isNumeric(data.details.jutsuLevel)) {
+			data.details.jutsuLevel = Math.max(data.details.cr, 1);
 		}
 	}
 
@@ -531,6 +549,68 @@ export default class Actor5e extends Actor {
 		// const levels = Math.clamped(progression.slot, 0, 20);
 		// const slots = TRPG.SPELL_SLOT_TABLE[levels - 1] || [];
 		// for ( let [n, lvl] of Object.entries(spells) ) {
+		//   let i = parseInt(n.slice(-1));
+		//   if ( Number.isNaN(i) ) continue;
+		//   if ( Number.isNumeric(lvl.override) ) lvl.max = Math.max(parseInt(lvl.override), 0);
+		//   else lvl.max = slots[i-1] || 0;
+		//   lvl.value = parseInt(lvl.value);
+		// }
+	}
+
+	/**
+	 * Prepare data related to the spell-casting capabilities of the Actor
+	 * @private
+	 */
+	_computeJutsucastingProgression(actorData) {
+		if (actorData.type === "vehicle") return;
+		const ad = actorData.data;
+		const jutsus = ad.jutsus;
+		const isNPC = actorData.type === "npc";
+
+		// Jutsucasting DC
+		const jutsucastingAbility = ad.abilities[ad.attributes.jutsucasting];
+		ad.attributes.jutsudc = jutsucastingAbility ? jutsucastingAbility.dc : 10;
+
+		// Translate the list of classes into jutsu-casting progression
+		// const progression = {
+		//   total: 0,
+		//   slot: 0
+		// };
+
+		// Keep track of the last seen caster in case we're in a single-caster situation.
+		// let caster = null;
+
+		// Tabulate the total jutsu-casting progression
+		// const classes = this.data.items.filter(i => i.type === "class");
+		// for ( let cls of classes ) {
+		//   const d = cls.data.data;
+		//   if ( d.jutsucasting.progression === "none" ) continue;
+		//   const levels = d.levels;
+		//   const prog = d.jutsucasting.progression;
+
+		//   // Accumulate levels
+		//   switch (prog) {
+		//     case 'half': progression.slot += Math.floor((levels-1) / 4); break;
+		//     case 'twoThirds': break;
+		//     case 'full': progression.slot += levels; break;
+		//   }
+		// }
+
+		// EXCEPTION: single-classed non-full progression rounds up, rather than down
+		// const isSingleClass = (progression.total === 1) && (progression.slot > 0);
+		// if (!isNPC && isSingleClass && ['half'].includes(caster.jutsucasting.progression) ) {
+		//   progression.slot = Math.ceil(caster.levels / 4);
+		// }
+
+		// EXCEPTION: NPC with an explicit jutsu-caster level
+		// if (isNPC && actorData.data.details.jutsuLevel) {
+		//   progression.slot = actorData.data.details.jutsuLevel;
+		// }
+
+		// Look up the number of slots per level from the progression table
+		// const levels = Math.clamped(progression.slot, 0, 20);
+		// const slots = TRPG.JUTSU_SLOT_TABLE[levels - 1] || [];
+		// for ( let [n, lvl] of Object.entries(jutsus) ) {
 		//   let i = parseInt(n.slice(-1));
 		//   if ( Number.isNaN(i) ) continue;
 		//   if ( Number.isNumeric(lvl.override) ) lvl.max = Math.max(parseInt(lvl.override), 0);
@@ -1243,7 +1323,7 @@ export default class Actor5e extends Actor {
 	/* -------------------------------------------- */
 
 	/**
-	 * Take a long rest, recovering hit points, hit dice, resources, item uses, and spell slots.
+	 * Take a long rest, recovering hit points, hit dice, resources, item uses, jutsu and spell slots.
 	 *
 	 * @param {object} [options]
 	 * @param {boolean} [options.dialog=true]  Present a confirmation dialog window whether or not to take a long rest.
@@ -1302,6 +1382,7 @@ export default class Actor5e extends Actor {
 				...magicPointUpdates,
 				...this._getRestResourceRecovery({ recoverShortRestResources: !longRest, recoverLongRestResources: longRest }),
 				...this._getRestSpellRecovery({ recoverSpells: longRest }),
+				...this._getRestJutsuRecovery({ recoverJutsus: longRest }),
 			},
 			updateItems: [...hitDiceUpdates, ...this._getRestItemUsesRecovery({ recoverLongRestUses: longRest, recoverDailyUses: newDay })],
 			longRest,
@@ -1490,6 +1571,27 @@ export default class Actor5e extends Actor {
 		return updates;
 	}
 
+	/**
+	 * Recovers jutsu slots and pact slots.
+	 *
+	 * @param {object} [options]
+	 * @param {boolean} [options.recoverPact=true]     Recover all expended pact slots.
+	 * @param {boolean} [options.recoverJutsus=true]   Recover all expended jutsu slots.
+	 * @return {object}                                Updates to the actor.
+	 * @protected
+	 */
+	_getRestJutsuRecovery({ recoverJutsus = true } = {}) {
+		let updates = {};
+
+		if (recoverJutsus) {
+			for (let [k, v] of Object.entries(this.data.data.jutsus)) {
+				updates[`data.jutsus.${k}.value`] = Number.isNumeric(v.override) ? v.override : v.max ?? 0;
+			}
+		}
+
+		return updates;
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1593,6 +1695,7 @@ export default class Actor5e extends Actor {
 	 * @param {boolean} [keepClass]       Keep proficiency bonus
 	 * @param {boolean} [keepFeats]       Keep features
 	 * @param {boolean} [keepSpells]      Keep spells
+	 * @param {boolean} [keepJutsus]      Keep jutsus
 	 * @param {boolean} [keepItems]       Keep items
 	 * @param {boolean} [keepBio]         Keep biography
 	 * @param {boolean} [keepVision]      Keep vision
@@ -1610,6 +1713,7 @@ export default class Actor5e extends Actor {
 			keepClass = false,
 			keepFeats = false,
 			keepSpells = false,
+			keepJutsus = false,
 			keepItems = false,
 			keepBio = false,
 			keepVision = false,
@@ -1651,6 +1755,7 @@ export default class Actor5e extends Actor {
 		d.data.attributes.exhaustion = o.data.attributes.exhaustion; // Keep your prior exhaustion level
 		d.data.attributes.inspiration = o.data.attributes.inspiration; // Keep inspiration
 		d.data.spells = o.data.spells; // Keep spell slots
+		d.data.jutsus = o.data.jutsus; // Keep jutsu slots
 		d.data.attributes.ac.flat = target.data.data.attributes.ac.value; // Override AC
 
 		// Token appearance updates
@@ -1698,6 +1803,7 @@ export default class Actor5e extends Actor {
 				if (i.type === "class") return keepClass;
 				else if (i.type === "feat") return keepFeats;
 				else if (i.type === "spell") return keepSpells;
+				else if (i.type === "jutsu") return keepJutsus;
 				else return keepItems;
 			})
 		);
@@ -1741,6 +1847,7 @@ export default class Actor5e extends Actor {
 			keepClass,
 			keepFeats,
 			keepSpells,
+			keepJutsus,
 			keepItems,
 			keepBio,
 			keepVision,
@@ -1917,17 +2024,25 @@ export default class Actor5e extends Actor {
 		return this.data.data.abilities[ability]?.dc;
 	}
 
+	/**
+	 * @deprecated since dnd5e 0.97
+	 */
+	getJutsuDC(ability) {
+		console.warn(`The Actor5e#getJutsuDC(ability) method has been deprecated in favor of Actor5e#data.data.abilities[ability].dc`);
+		return this.data.data.abilities[ability]?.dc;
+	}
+
 	/* -------------------------------------------- */
 
 	/**
-	 * Cast a Spell, consuming a spell slot of a certain level
-	 * @param {Item5e} item   The spell being cast by the actor
+	 * Cast a Jutsu, consuming a jutsu slot of a certain level
+	 * @param {Item5e} item   The jutsu being cast by the actor
 	 * @param {Event} event   The originating user interaction which triggered the cast
 	 * @deprecated since dnd5e 1.2.0
 	 */
-	async useSpell(item, { configureDialog = true } = {}) {
-		console.warn(`The Actor5e#useSpell method has been deprecated in favor of Item5e#roll`);
-		if (item.data.type !== "spell") throw new Error("Wrong Item type");
+	async useJutsu(item, { configureDialog = true } = {}) {
+		console.warn(`The Actor5e#useJutsu method has been deprecated in favor of Item5e#roll`);
+		if (item.data.type !== "jutsu") throw new Error("Wrong Item type");
 		return item.roll();
 	}
 }
