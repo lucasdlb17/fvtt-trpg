@@ -4,7 +4,7 @@
         <select class="actor-size" name="data.traits.size">
             {{#select data.traits.size}}
             {{#each config.actorSizes as |label size|}}
-                <option value="{{size}}">{{label}}</option>
+            <option value="{{size}}">{{label}}</option>
             {{/each}}
             {{/select}}
         </select>
@@ -15,9 +15,9 @@
         <label>{{localize "TRPG.Senses"}}</label>
         <a class="config-button" data-action="senses" title="{{localize 'TRPG.SensesConfig'}}"><i class="fas fa-cog"></i></a>
         <ul class="traits-list">
-        {{#each senses as |v k|}}
+            {{#each senses as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 
@@ -27,9 +27,9 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.languages.selected as |v k|}}
+            {{#each data.traits.languages.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
     {{/unless}}
@@ -40,28 +40,18 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.di.selected as |v k|}}
+            {{#each data.traits.di.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 
-    <div>
-        <label style="color: #565651;">{{localize "TRPG.DamRes"}}:</label>
-        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.dr">
-            <i class="fas fa-edit"></i>
-        </a>
-        <ul class="resistance-list">
-            {{#each config.damageResistanceTypes as |label r|}}
-                {{#with (lookup ../data.traits.resistance r) as |resistance|}}
-                    {{#if (eq resistance.bonus 0)}}
-                    {{else}}
-                    <li class="resistance flexrow" data-skill="{{r}}">
-                        <h4 class="resistance-name">•  {{label}}</h4>
-                        <span class="resistance-mod">{{resistance.value}}</span>
-                    </li>
-                    {{/if}}
-                {{/with}}
+    <div class="form-group">
+        <label>{{localize "TRPG.DamRes"}}</label>
+        <a class="config-button" data-action="resistances" title="{{localize 'TRPG.ResistancesConfig'}}"><i class="fas fa-cog"></i></a>
+        <ul class="traits-list">
+            {{#each resistances as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
     </div>
@@ -72,9 +62,9 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.dv.selected as |v k|}}
+            {{#each data.traits.dv.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 
@@ -84,9 +74,9 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.ci.selected as |v k|}}
+            {{#each data.traits.ci.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 
@@ -97,9 +87,9 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.weaponProf.selected as |v k|}}
+            {{#each data.traits.weaponProf.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 
@@ -109,9 +99,9 @@
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-        {{#each data.traits.armorProf.selected as |v k|}}
+            {{#each data.traits.armorProf.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
-        {{/each}}
+            {{/each}}
         </ul>
     </div>
 

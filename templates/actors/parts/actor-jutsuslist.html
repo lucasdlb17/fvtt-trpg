@@ -4,9 +4,9 @@
         <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
         <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
         <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
+        <li class="filter-item" data-filter="bonus">{{localize "TRPG.FreeAction"}}</li>
         <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
-        <li class="filter-item" data-filter="concentration">{{localize "TRPG.AbbreviationConc"}}</li>
-        <li class="filter-item" data-filter="prepared">{{localize "TRPG.Prepared"}}{{#if preparedSpells}} ({{preparedSpells}}){{/if}}</li>
+        <li class="filter-item" data-filter="concentration">{{localize "TRPG.Concentration"}}</li>
     </ul>
 </div>
 
@@ -38,11 +38,6 @@
                 {{#if item.data.uses.per }}
                 <div class="item-detail jutsu-uses">Uses {{item.data.uses.value}} / {{item.data.uses.max}}</div>
                 {{/if}}
-                <div class="jutsu-comps">
-                    {{#each labels.components}}
-                    <span class="jutsu-component {{this}}">{{this}}</span>
-                    {{/each}}
-                </div>
             </div>
             <div class="jutsu-school">{{labels.school}}</div>
             <div class="jutsu-action">{{labels.activation}}</div>
@@ -55,9 +50,6 @@
 
             {{#if ../../owner}}
             <div class="item-controls flexrow">
-                {{#if section.canPrepare}}
-                <a class="item-control item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
-                {{/if}}
                 <a class="item-control item-edit" title="Editar Item"><i class="fas fa-edit"></i></a>
                 <a class="item-control item-delete" title="Deletar Item"><i class="fas fa-trash"></i></a>
             </div>
@@ -68,7 +60,7 @@
 {{else}}
     {{#if owner}}
     {{#if filters.jutsuslist.size}}
-    <li class="item flexrow"><p class="notes">{{localize "TRPG.FilterNoJutsu"}}</p></li>
+    <li class="item flexrow"><p class="notes">{{localize "TRPG.FilterNoJutsus"}}</p></li>
     {{else}}
     <li class="item flexrow inventory-header spellbook-header spellbook-empty">
         <div class="item-controls flexrow">
