@@ -175,18 +175,11 @@ export default class Item5e extends Item {
 			labels.materials = data?.materials?.value ?? null;
 		}
 
-		// Jutsu Level,  School, and Components
+		// Jutsu Level and School
 		if (itemData.type === "jutsu") {
-			data.preparation.mode = data.preparation.mode || "prepared";
 			labels.level = data.level;
 			labels.jutsuList = C.jutsuLists[data.jutsuList];
 			labels.school = C.jutsuSchools[data.school];
-			labels.components = Object.entries(data.components).reduce((arr, c) => {
-				if (c[1] !== true) return arr;
-				arr.push(c[0].titleCase().slice(0, 1));
-				return arr;
-			}, []);
-			labels.materials = data?.materials?.value ?? null;
 		}
 
 		// Feat Items
@@ -310,30 +303,6 @@ export default class Item5e extends Item {
 		// Actor spell-DC based scaling
 		if (save.scaling === "spell") {
 			save.dc = this.isOwned ? getProperty(this.actor.data, "data.attributes.spelldc") + (this.data.data.level ?? 0) : null;
-		}
-
-		// Ability-score based scaling
-		else if (save.scaling !== "flat") {
-			save.dc = this.isOwned ? getProperty(this.actor.data, `data.abilities.${save.scaling}.dc`) + (this.data.data.level ?? 0) : null;
-		}
-
-		// Update labels
-		const abl = CONFIG.TRPG.saves[save.ability];
-		this.labels.save = game.i18n.format("TRPG.SaveDC", { dc: save.dc || "", ability: abl });
-		return save.dc;
-	}
-
-	/**
-	 * Update the derived jutsu DC for an item that requires a saving throw
-	 * @returns {number|null}
-	 */
-	getSaveDC() {
-		if (!this.hasSave) return;
-		const save = this.data.data?.save;
-
-		// Actor jutsu-DC based scaling
-		if (save.scaling === "jutsu") {
-			save.dc = this.isOwned ? getProperty(this.actor.data, "data.attributes.jutsudc") + (this.data.data.level ?? 0) : null;
 		}
 
 		// Ability-score based scaling
@@ -879,7 +848,7 @@ export default class Item5e extends Item {
 	 * @private
 	 */
 	_jutsuChatData(data, labels, props) {
-		props.push(labels.level, labels.components + (labels.materials ? ` (${labels.materials})` : ""));
+		props.push(labels.level, "");
 	}
 
 	/* -------------------------------------------- */
@@ -1046,20 +1015,6 @@ export default class Item5e extends Item {
 			} else if (spellLevel && itemData.scaling.mode === "level" && itemData.scaling.formula) {
 				const scaling = itemData.scaling.formula;
 				this._scaleSpellDamage(parts, itemData.level, spellLevel, scaling, rollData);
-			}
-		}
-
-		// Scale damage from up-casting jutsus
-		if (this.data.type === "jutsu") {
-			if (itemData.scaling.mode === "cantrip") {
-				let level;
-				if (this.actor.type === "character") level = actorData.details.level;
-				else if (itemData.preparation.mode === "innate") level = Math.ceil(actorData.details.cr);
-				else level = actorData.details.jutsuLevel;
-				this._scaleCantripDamage(parts, itemData.scaling.formula, level, rollData);
-			} else if (jutsuLevel && itemData.scaling.mode === "level" && itemData.scaling.formula) {
-				const scaling = itemData.scaling.formula;
-				this._scaleJutsuDamage(parts, itemData.level, jutsuLevel, scaling, rollData);
 			}
 		}
 
