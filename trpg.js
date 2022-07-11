@@ -33,6 +33,7 @@ import ShortRestDialog from "./module/apps/short-rest.js";
 import TraitSelector from "./module/apps/trait-selector.js";
 import ActorMovementConfig from "./module/apps/movement-config.js";
 import ActorSensesConfig from "./module/apps/senses-config.js";
+import ActorResistancesConfig from "./module/apps/resistances-config.js";
 
 // Import Helpers
 import * as chat from "./module/chat.js";
@@ -61,6 +62,7 @@ Hooks.once("init", function () {
 			TraitSelector,
 			ActorMovementConfig,
 			ActorSensesConfig,
+			ActorResistancesConfig,
 		},
 		canvas: {
 			AbilityTemplate,
@@ -162,6 +164,10 @@ Hooks.once("setup", function () {
 		"healingTypes",
 		"itemActionTypes",
 		"itemRarity",
+		"jutsuLevels",
+		"jutsuLists",
+		"jutsuScalingModes",
+		"jutsuSchools",
 		"languages",
 		"limitedUsePeriods",
 		"movementTypes",
@@ -173,6 +179,7 @@ Hooks.once("setup", function () {
 		"skills",
 		"spellComponents",
 		"spellLevels",
+		"spellLists",
 		"spellPreparationModes",
 		"spellScalingModes",
 		"spellSchools",
@@ -197,10 +204,13 @@ Hooks.once("setup", function () {
 		"movementUnits",
 		"itemActionTypes",
 		"itemRarity",
+		"jutsuLevels",
+		"jutsuLists",
 		"proficiencyLevels",
 		"limitedUsePeriods",
 		"spellComponents",
 		"spellLevels",
+		"spellLists",
 		"spellPreparationModes",
 		"weaponProficiencies",
 		"weaponTypes",

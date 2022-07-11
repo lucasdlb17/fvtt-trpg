@@ -92,63 +92,21 @@
 						"value": [],
 						"custom": ""
 					},
-					"resistance": {
-						"bludgeoning": {
-							"value": 0,
-							"bonus": 0
-						},
-						"slashing": {
-							"value": 0,
-							"bonus": 0
-						},
-						"piercing": {
-							"value": 0,
-							"bonus": 0
-						},
-						"acid": {
-							"value": 0,
-							"bonus": 0
-						},
-						"lightning": {
-							"value": 0,
-							"bonus": 0
-						},
-						"fire": {
-							"value": 0,
-							"bonus": 0
-						},
-						"cold": {
-							"value": 0,
-							"bonus": 0
-						},
-						"radiant": {
-							"value": 0,
-							"bonus": 0
-						},
-						"dark": {
-							"value": 0,
-							"bonus": 0
-						},
-						"void": {
-							"value": 0,
-							"bonus": 0
-						},
-						"thunder": {
-							"value": 0,
-							"bonus": 0
-						},
-						"psychic": {
-							"value": 0,
-							"bonus": 0
-						},
-						"wind": {
-							"value": 0,
-							"bonus": 0
-						},
-						"physical": {
-							"value": 0,
-							"bonus": 0
-						}
+					"resistances": {
+						"bludgeoning": 0,
+						"slashing": 0,
+						"piercing": 0,
+						"acid": 0,
+						"lightning": 0,
+						"fire": 0,
+						"cold": 0,
+						"radiant": 0,
+						"dark": 0,
+						"void": 0,
+						"thunder": 0,
+						"psychic": 0,
+						"wind": 0,
+						"physical": 0
 					}
 				},
 				"currency": {
@@ -792,29 +750,7 @@
 			"level": 1,
 			"enhancement": "",
 			"school": "",
-			"specialCosts": "",
-			"components": {
-				"value": "",
-				"vocal": false,
-				"somatic": false,
-				"material": false,
-				"ritual": false,
-				"concentration": false
-			},
-			"materials": {
-				"value": "",
-				"consumed": false,
-				"cost": 0,
-				"supply": 0
-			},
-			"preparation": {
-				"mode": "prepared",
-				"prepared": false
-			},
-			"scaling": {
-				"mode": "none",
-				"formula": null
-			}
+			"specialCosts": ""
 		},
 
 		"weapon": {
