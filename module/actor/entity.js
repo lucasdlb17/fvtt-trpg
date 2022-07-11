@@ -78,16 +78,6 @@ export default class Actor5e extends Actor {
 			}
 		}
 
-		const resistances = this.data.data.traits.resistance;
-		for (let key in resistances) {
-			let resistance = resistances[key];
-			let bonus = this.getFlag("trpg", `${key}.resistance-bonus`) || 0;
-			let bonusAsInt = parseInt(Number(bonus));
-			if (!isNaN(bonusAsInt)) {
-				resistance.value += bonusAsInt;
-			}
-		}
-
 
 		// iterate over owned items and recompute attributes that depend on prepared actor data
 		this.items.forEach((item) => item.prepareFinalAttributes());
@@ -196,7 +186,7 @@ export default class Actor5e extends Actor {
 		this._computeSpellcastingProgression(this.data);
 
 		// Prepare jutsu-casting data
-		this._computeJutsucastingProgression(this.data);
+		//this._computeJutsucastingProgression(this.data);
 
 		// Prepare armor class data
 		const ac = this._computeArmorClass(data);
@@ -1822,7 +1812,10 @@ export default class Actor5e extends Actor {
 		if (keepBio) d.data.details.biography = o.data.details.biography;
 
 		// Keep senses
-		if (keepVision) d.data.traits.senses = o.data.traits.senses;
+		//if (keepVision) d.data.traits.senses = o.data.traits.senses;
+
+		// Keep resistances
+		//if (keepVision) d.data.traits.damageResistanceTypes = o.data.traits.damageResistanceTypes;
 
 		// Set new data flags
 		if (!this.isPolymorphed || !d.flags.trpg.originalActor) d.flags.trpg.originalActor = this.id;
