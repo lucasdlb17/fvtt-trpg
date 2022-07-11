@@ -65,56 +65,6 @@
 				</select>
 			</div>
 
-			{{!-- Jutsu Components --}}
-			<!--<div class="jutsu-components form-group stacked">
-
-				<label>{{ localize "TRPG.JutsuComponents" }}</label>
-				<label class="checkbox">
-					<input type="checkbox" name="data.components.vocal" {{checked data.components.vocal}}/> {{ localize "TRPG.ComponentVerbal" }}
-				</label>
-				<label class="checkbox">
-					<input type="checkbox" name="data.components.somatic" {{checked data.components.somatic}}/> {{ localize "TRPG.ComponentSomatic" }}
-				</label>
-				<label class="checkbox">
-					<input type="checkbox" name="data.components.material" {{checked data.components.material}}/> {{ localize "TRPG.ComponentMaterial" }}
-				</label> 
-						<label class="checkbox">
-							<input type="checkbox" name="data.components.concentration" {{checked data.components.concentration}} /> {{ localize "TRPG.Concentration" }}
-						</label>
-						 <label class="checkbox">
-					<input type="checkbox" name="data.components.ritual" {{checked data.components.ritual}}/> {{ localize "TRPG.Ritual" }}
-				</label> 
-			</div>-->
-
-			<!-- {{!-- Material Components --}}
-			<div class="form-group stacked">
-				<label>{{ localize "TRPG.JutsuMaterials" }}</label>
-				<input class="materials" type="text" name="data.materials.value" value="{{data.materials.value}}"/>
-				{{#if data.materials.value}}
-				<div class="jutsu-materials flexrow">
-					<label>{{ localize "TRPG.Supply" }}</label>
-					<input type="text" name="data.materials.supply" value="{{data.materials.supply}}" data-dtype="Number" Placeholder="0"/>
-					<label>{{ localize "TRPG.CostGP" }}</label>
-					<input type="text" name="data.materials.cost" value="{{data.materials.cost}}" data-dtype="Number" Placeholder="-"/>
-					<label>{{ localize "TRPG.Consumed" }}</label>
-					<input type="checkbox" name="data.materials.consumed" {{checked data.materials.consumed}}/>
-				</div>
-				{{/if}}
-			</div> -->
-
-			<!--{{!-- Preparation Mode --}}
-			<div class="form-group input-select">
-				<label>{{ localize "TRPG.JutsuPreparationMode" }}</label>
-				<div class="form-fields">
-					<label class="checkbox prepared">
-						{{ localize "TRPG.JutsuPrepared" }} <input type="checkbox" name="data.preparation.prepared" {{checked data.preparation.prepared}} />
-					</label>
-					<select name="data.preparation.mode">
-						{{ selectOptions config.jutsuPreparationModes selected=data.preparation.mode }}
-					</select>
-				</div>
-			</div>-->
-
 			<h3 class="form-header">{{ localize "TRPG.JutsuCastingHeader" }}</h3>
 
 			{{!-- Item Activation Template --}} {{> "systems/trpg/templates/items/parts/item-activation.html"}}
@@ -123,19 +73,6 @@
 
 			{{!-- Item Action Template --}} {{> "systems/trpg/templates/items/parts/item-action.html"}} {{!-- Jutsu Level Scaling --}}
 
-			<!-- <div class="form-group">
-				<label>{{ localize "TRPG.LevelScaling" }}</label>
-				<div class="form-fields">
-					<select name="data.scaling.mode">
-						{{#select data.scaling.mode}}
-						{{#each config.jutsuScalingModes as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<input type="text" name="data.scaling.formula" value="{{data.scaling.formula}}" placeholder="{{ localize 'TRPG.ScalingFormula' }}"/>
-				</div>
-			</div> -->
 
 		</div>
 
