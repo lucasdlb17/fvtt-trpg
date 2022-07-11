@@ -189,13 +189,7 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
       else item.toggleTitle = game.i18n.localize("TRPG.SpellUnprepared");
     }
     else if (item.type === "jutsu") {
-        const isAlways = getProperty(item.data, "preparation.mode") === "always";
-        const isPrepared = getProperty(item.data, "preparation.prepared");
-        item.toggleClass = isPrepared ? "active" : "";
-        if (isAlways) item.toggleClass = "fixed";
-        if (isAlways) item.toggleTitle = CONFIG.TRPG.jutsuPreparationModes.always;
-        else if (isPrepared) item.toggleTitle = CONFIG.TRPG.jutsuPreparationModes.prepared;
-        else item.toggleTitle = game.i18n.localize("TRPG.JutsuUnprepared");
+        
     }
     else {
       const isActive = getProperty(item.data, "equipped");

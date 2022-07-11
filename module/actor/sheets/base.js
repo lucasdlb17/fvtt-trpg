@@ -8,6 +8,7 @@ import ActorSheetFlags from "../../apps/actor-flags.js";
 import ActorHitDiceConfig from "../../apps/hit-dice-config.js";
 import ActorMovementConfig from "../../apps/movement-config.js";
 import ActorSensesConfig from "../../apps/senses-config.js";
+import ActorResistancesConfig from "../../apps/resistances-config.js";
 import ActorTypeConfig from "../../apps/actor-type.js";
 import { TRPG } from "../../config.js";
 import ActiveEffect5e from "../../active-effect.js";
@@ -130,6 +131,9 @@ export default class ActorSheet5e extends ActorSheet {
 		// Senses
 		data.senses = this._getSenses(actorData);
 
+		// Resistances
+		data.resistances = this._getResistances(actorData);
+
 		// Update traits
 		this._prepareTraits(actorData.data.traits);
 
@@ -201,6 +205,17 @@ export default class ActorSheet5e extends ActorSheet {
 			tags[k] = `${game.i18n.localize(label)} ${v} ${senses.units}`;
 		}
 		if (!!senses.special) tags["special"] = senses.special;
+		return tags;
+	}
+
+	_getResistances(actorData) {
+		const resistances = actorData.data.traits.resistances || {};
+		const tags = {};
+		for (let [k, label] of Object.entries(CONFIG.TRPG.damageResistanceTypes)) {
+			const v = resistances[k] ?? 0;
+			if (v === 0) continue;
+			tags[k] = `${game.i18n.localize(label)} ${v}`;
+		}
 		return tags;
 	}
 
@@ -333,7 +348,7 @@ export default class ActorSheet5e extends ActorSheet {
 	/* -------------------------------------------- */
 
 	/**
-	 * Prepare the data structure for traits data like languages, resistances & vulnerabilities, and proficiencies
+	 * Prepare the data structure for traits data like languages, damageResistanceTypes & vulnerabilities, and proficiencies
 	 * @param {object} traits   The raw traits data object from the actor data
 	 * @private
 	 */
@@ -365,19 +380,6 @@ export default class ActorSheet5e extends ActorSheet {
 				trait.custom.split(";").forEach((c, i) => (trait.selected[`custom${i + 1}`] = c.trim()));
 			}
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
-
-			if (t == "dr") {
-				for (var name in choices)
-				{
-					traits.resistance[`${name}`].bonus = 0;
-				}
-
-
-				trait.value.forEach((resist) => {
-					traits.resistance[`${resist}`].bonus = 1;
-				});
-
-			}
 		}
 
 		// Populate and localize proficiencies
@@ -597,13 +599,14 @@ export default class ActorSheet5e extends ActorSheet {
 				}
 			}
 
-			// Spell/Jutsu-specific filters
+			// Spell-specific filters
 			if (filters.has("ritual")) {
 				if (data.components.ritual !== true) return false;
 			}
 			if (filters.has("concentration")) {
 				if (data.components.concentration !== true) return false;
 			}
+			// Spell-specific filters
 			if (filters.has("prepared")) {
 				if (data.level === 0 || ["innate", "always"].includes(data.preparation.mode)) return true;
 				if (this.actor.data.type === "npc") return true;
@@ -772,6 +775,9 @@ export default class ActorSheet5e extends ActorSheet {
 				break;
 			case "senses":
 				app = new ActorSensesConfig(this.object);
+				break;
+			case "resistances":
+				app = new ActorResistancesConfig(this.object);
 				break;
 			case "type":
 				app = new ActorTypeConfig(this.object);
