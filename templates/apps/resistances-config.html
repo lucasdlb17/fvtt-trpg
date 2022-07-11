@@ -1,0 +1,10 @@
+<form autocomplete="off">
+    <p class="notes">{{localize "TRPG.ResistancesConfigHint"}}</p>
+    {{#each resistances as |resistance name|}}
+    <div class="form-group">
+        <label>{{resistance.label}}</label>
+        <input name="data.traits.resistances.{{name}}" type="number" step="0.1" value="{{resistance.value}}" />
+    </div>
+    {{/each}}
+    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "Submit"}}</button>
+</form>
