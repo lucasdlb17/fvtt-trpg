@@ -104,7 +104,7 @@
                     <div class="attribute-value attributable" data-property="attributes.ac">
                         <span>{{data.attributes.ac.value}}</span>
                     </div>
-                    {{#if (or hasSpells data.details.showSpells (eq idj true))}}
+                    {{#if (and (or hasSpells data.details.showSpells) (eq idj false))}}
                     <footer class="attribute-footer">
                         <span class="spell-dc">{{localize "TRPG.SpellDC"}} {{data.attributes.spelldc}}</span>
                     </footer>
