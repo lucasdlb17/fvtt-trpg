@@ -547,27 +547,11 @@ export default class ActorSheet5e extends ActorSheet {
 
 		// Iterate over every jutsu item, adding jutsus to the jutsuslist by section
 		jutsus.forEach((jutsu) => {
-			const mode = jutsu.data.preparation.mode || "prepared";
 			let s = jutsu.data.level || 0;
 			const sl = `jutsu${s}`;
 
-			// Specialized jutsucasting modes (if they exist)
-			if (mode in sections) {
-				s = sections[mode];
-				if (!jutsuslist[s]) {
-					const l = levels[mode] || {};
-					const config = CONFIG.TRPG.jutsuPreparationModes[mode];
-					registerSection(mode, s, config, {
-						prepMode: mode,
-						value: l.value,
-						max: l.max,
-						override: l.override,
-					});
-				}
-			}
-
 			// Sections for higher-level jutsus which the caster "should not" have, but jutsu items exist for
-			else if (!jutsuslist[s]) {
+			if (!jutsuslist[s]) {
 				registerSection(sl, s, CONFIG.TRPG.jutsuLevels[s], { levels: levels[sl] });
 			}
 

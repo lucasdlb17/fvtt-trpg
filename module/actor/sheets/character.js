@@ -146,7 +146,7 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
     // Organize Jutsuslist and count the number of prepared jutsus (excluding always, at will, etc...)
     const jutsuslist = this._prepareJutsuslist(data, jutsus);
     const nPreparedJutsus = jutsus.filter(s => {
-        return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
+        return (s.data.level > 0);
     }).length;
 
     // Organize Features
