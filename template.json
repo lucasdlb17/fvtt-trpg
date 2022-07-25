@@ -691,7 +691,7 @@
 		}
 	},
 	"Item": {
-		"types": [ "weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack" ],
+		"types": [ "weapon", "equipment", "consumable", "tool", "loot", "class", "spell", "jutsu", "feat", "backpack" ],
 		"templates": {
 			"itemDescription": {
 				"description": {

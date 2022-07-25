@@ -811,27 +811,27 @@ export default class Item5e extends Item {
 		data.hasCharges = data.uses.value >= 0;
 	}
 
-	/* -------------------------------------------- */
+	/* --------------------------------------------
 
-	/**
+	**
 	 * Prepare chat card data for tool type items
 	 * @private
-	 */
+	 *
 	_toolChatData(data, labels, props) {
 		props.push(CONFIG.TRPG.abilities[data.ability] || null, CONFIG.TRPG.proficiencyLevels[data.proficient || 0]);
 	}
 
-	/* -------------------------------------------- */
+	 -------------------------------------------- *
 
-	/**
-	 * Prepare chat card data for tool type items
+	**
+	 * Prepare chat card data for loot type items
 	 * @private
-	 */
+	 *
 	_lootChatData(data, labels, props) {
 		props.push(game.i18n.localize("TRPG.ItemTypeLoot"), data.weight ? data.weight + " " + game.i18n.localize("TRPG.AbbreviationLbs") : null);
 	}
 
-	/* -------------------------------------------- */
+	* -------------------------------------------- */
 
 	/**
 	 * Render a chat card for Spell type data
