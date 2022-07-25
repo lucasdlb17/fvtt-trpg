@@ -1012,8 +1012,8 @@ TRPG.conditionTypes = {
 	surpreendido: "TRPG.ConSurpreendido",
 };
 
-// Languages
-TRPG.languages = {
+// Languages RPG
+TRPG.languagesRPG = {
 	common: "TRPG.LanguagesCommon",
 	abyssal: "TRPG.LanguagesAbyssal",
 	dwarvish: "TRPG.LanguagesDwarvish",
@@ -1026,25 +1026,32 @@ TRPG.languages = {
 	goblin: "TRPG.LanguagesGoblin",
 	gnoll: "TRPG.LanguagesGnoll",
 	halfling: "TRPG.LanguagesHalfling",
-	higo: "TRPG.LanguagesHigo",
 	ignan: "TRPG.LanguagesIgnan",
 	infernal: "TRPG.LanguagesInfernal",
+	orc: "TRPG.LanguagesOrc",
+	primordial: "TRPG.LanguagesPrimordial",
+	sylvan: "TRPG.LanguagesSylvan",
+	taurico: "TRPG.LanguagesTaurico",
+	terran: "TRPG.LanguagesTerran",
+};
+
+// Languages IDJ
+TRPG.languagesIDJ = {
+	higo: "TRPG.LanguagesHigo",
 	kigo: "TRPG.LanguagesKigo",
 	mizugo: "TRPG.LanguagesMizugo",
 	ningo: "TRPG.LanguagesNingo",
-	orc: "TRPG.LanguagesOrc",
-	primordial: "TRPG.LanguagesPrimordial",
 	rattiki: "TRPG.LanguagesRattiki",
 	ryuugo: "TRPG.LanguagesRyuugo",
 	sarugo: "TRPG.LanguagesSarugo",
-	sylvan: "TRPG.LanguagesSylvan",
-	taurico: "TRPG.LanguagesTaurico",
 	tengo: "TRPG.LanguagesTengo",
-	terran: "TRPG.LanguagesTerran",
 	varukaru: "TRPG.LanguagesVarukaru",
 	yamago: "TRPG.LanguagesYamago",
 	yaminogo: "TRPG.LanguagesYaminogo"
 };
+
+// Languages
+TRPG.languages = mergeObject(foundry.utils.deepClone(TRPG.languagesIDJ), foundry.utils.deepClone(TRPG.languagesRPG));
 
 // Character Level XP Requirements
 TRPG.CHARACTER_EXP_LEVELS = [0, 1000, 3000, 6000, 10000, 15000, 21000, 28000, 36000, 45000, 55000, 66000, 78000, 91000, 105000, 120000, 136000, 153000, 171000, 190000];
