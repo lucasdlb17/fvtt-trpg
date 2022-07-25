@@ -23,9 +23,15 @@
 
     <div class="form-group {{data.traits.languages.cssClass}}">
         <label>{{localize "TRPG.Languages"}}</label>
-        <a class="trait-selector" data-options="languages" data-target="data.traits.languages">
+        {{#if (eq ./idj true)}}
+        <a class="trait-selector" data-options="languagesIDJ" data-target="data.traits.languages">
             <i class="fas fa-edit"></i>
         </a>
+        {{else}}
+        <a class="trait-selector" data-options="languagesRPG" data-target="data.traits.languages">
+            <i class="fas fa-edit"></i>
+        </a>
+        {{/if}}
         <ul class="traits-list">
             {{#each data.traits.languages.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
