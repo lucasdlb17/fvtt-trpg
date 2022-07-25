@@ -169,6 +169,8 @@ Hooks.once("setup", function () {
 		"jutsuScalingModes",
 		"jutsuSchools",
 		"languages",
+		"languagesRPG",
+		"languagesIDJ",
 		"limitedUsePeriods",
 		"movementTypes",
 		"movementUnits",
