@@ -358,7 +358,7 @@ export default class ActorSheet5e extends ActorSheet {
 			di: CONFIG.TRPG.damageResistanceTypes,
 			dv: CONFIG.TRPG.damageResistanceTypes,
 			ci: CONFIG.TRPG.conditionTypes,
-			languages: CONFIG.TRPG.languages, //,
+			languages: CONFIG.TRPG.languages
 			// "armorProf": CONFIG.TRPG.armorProficiencies,
 			// "weaponProf": CONFIG.TRPG.weaponProficiencies,
 			// "toolProf": CONFIG.TRPG.toolProficiencies
