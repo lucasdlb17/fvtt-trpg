@@ -457,10 +457,10 @@ export default class Actor5e extends Actor {
 			}
 
 			// Compute modifier
-			skl.bonus = checkBonus + skillBonus;
+			skl.bonus = checkBonus + skillBonus + skl.value;
 			skl.mod = data.abilities[skl.ability].mod;
 			skl.prof = skl.proficient ? 3 + data.details.level : Math.floor(data.details.level / 2);
-			skl.total = skl.mod + skl.prof + skl.bonus + skl.value;
+			skl.total = skl.mod + skl.prof + skl.bonus;
 
 			// Compute passive bonus
 			// const passive = observant && (feats.observantFeat.skills.includes(id)) ? 5 : 0;
@@ -918,7 +918,7 @@ export default class Actor5e extends Actor {
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
-		const data = { mod: skl.mod + skl.prof };
+		const data = { mod: skl.mod + skl.prof + skl.bonus };
 
 		// Ability test bonus
 		if (bonuses.check) {
