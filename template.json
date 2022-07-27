@@ -6,52 +6,31 @@
 				"abilities": {
 					"str": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"dex": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"con": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"int": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"wis": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"cha": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"hon": {
 						"value": 10,
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					}
 				},
 				"attributes": {
@@ -159,28 +138,19 @@
 						"ability": "con",
 						"value": 0,
 						"proficient": 0,
-						"saveDetail": "",
-						"bonuses": {
-							"save": ""
-						}
+						"saveDetail": ""
 					},
 					"reflex": {
 						"ability": "dex",
 						"value": 0,
 						"proficient": 0,
-						"saveDetail": "",
-						"bonuses": {
-							"save": ""
-						}
+						"saveDetail": ""
 					},
 					"will": {
 						"ability": "wis",
 						"value": 0,
 						"proficient": 0,
-						"saveDetail": "",
-						"bonuses": {
-							"save": ""
-						}
+						"saveDetail": ""
 					}
 				},
 				"skills": {
@@ -188,280 +158,181 @@
 						"value": 0,
 						"ability": "dex",
 						"proficient": 0,
-						"pda": true,
-						"bonuses": {
-							"check": ""
-						}
+						"pda": true
 					},
 					"ani": {
 						"value": 0,
 						"ability": "wis",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"ath": {
 						"value": 0,
 						"ability": "str",
 						"proficient": 0,
-						"pda": true,
-						"bonuses": {
-							"check": ""
-						}
+						"pda": true
 					},
 					"atuArt": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"atuDra": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"atuDan": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"atuMus": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"atuOra": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"conArc": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conEng": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conGeo": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conHis": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conNat": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conNob": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conRel": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"conTor": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"ide": {
 						"value": 0,
 						"ability": "int",
 						"proficient": 0,
-						"st": true,
-						"bonuses": {
-							"check": ""
-						}
+						"st": true
 					},
 					"obinf": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiAlq": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiAlv": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiCar": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiJoa": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiMet": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiArt": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"ofiPro": {
 						"value": 0,
 						"ability": "int",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"cav": {
 						"value": 0,
 						"ability": "dex",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"cur": {
 						"value": 0,
 						"ability": "wis",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"dip": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"eng": {
 						"value": 0,
 						"ability": "cha",
 						"proficient": 0,
-						"dishonor": true,
-						"bonuses": {
-							"check": ""
-						}
+						"dishonor": true
 					},
 					"fur": {
 						"value": 0,
 						"ability": "dex",
 						"proficient": 0,
 						"pda": true,
-						"dishonor": true,
-						"bonuses": {
-							"check": ""
-						}
+						"dishonor": true
 					},
 					"init": {
 						"value": 0,
 						"ability": "dex",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"intu": {
 						"value": 0,
 						"ability": "wis",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"inti": {
 						"value": 0,
 						"ability": "cha",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"lad": {
 						"value": 0,
@@ -469,26 +340,17 @@
 						"proficient": 0,
 						"st": true,
 						"pda": true,
-						"dishonor": true,
-						"bonuses": {
-							"check": ""
-						}
+						"dishonor": true
 					},
 					"prc": {
 						"value": 0,
 						"ability": "wis",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					},
 					"sur": {
 						"value": 0,
 						"ability": "wis",
-						"proficient": 0,
-						"bonuses": {
-							"check": ""
-						}
+						"proficient": 0
 					}
 				},
 				"traits": {
