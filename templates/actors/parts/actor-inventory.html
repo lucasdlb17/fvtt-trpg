@@ -61,9 +61,9 @@
     </li>
 
     <ol class="item-list">
-    {{#each section.items as |item iid|}}
+    {{#each section.items as |item id|}}
         <li class="item flexrow {{section.css}}"
-            data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+            data-item-id="{{#if section.editableName}}{{id}}{{else}}{{item._id}}{{/if}}">
             <div class="item-name flexrow rollable">
                 {{#if section.editableName}}
                 <input type="text" value="{{item.name}}">
