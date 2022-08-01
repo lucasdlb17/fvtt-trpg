@@ -21,11 +21,9 @@
     <ul class="filter-list flexrow" data-filter="spellbook">
         <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
         <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
-        <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
+        <li class="filter-item" data-filter="bonus">{{localize "TRPG.FreeAction"}}</li>
         <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
-        <li class="filter-item" data-filter="concentration">{{localize "TRPG.AbbreviationConc"}}</li>
-        <!-- <li class="filter-item" data-filter="ritual">{{localize "TRPG.Ritual"}}</li> -->
-        <li class="filter-item" data-filter="prepared">{{localize "TRPG.Prepared"}}{{#if preparedSpells}} ({{preparedSpells}}){{/if}}</li>
+        <li class="filter-item" data-filter="concentration">{{localize "TRPG.Concentration"}}</li>
     </ul>
 </div>
 
@@ -34,25 +32,6 @@
     <li class="items-header spellbook-header flexrow">
         <div class="item-name flexrow">
             <h3>{{section.label}}</h3>
-            <!-- <div class="spell-slots">
-                {{#if section.usesSlots}}
-                <input type="text" name="data.spells.{{section.prop}}.value" value="{{section.uses}}" placeholder="0"
-                       data-dtype="Number"/>
-                <span class="sep"> / </span>
-                <span class="spell-max" data-level="{{section.prop}}" data-slots="{{section.slots}}">
-                    {{{section.slots}}}
-                    {{#if ../editable}}
-                    <a class="slot-max-override" title="{{localize 'TRPG.SpellProgOverride'}}">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    {{/if}}
-                </span>
-                {{ else }}
-                <span>{{{section.uses}}}</span>
-                <span class="sep"> / </span>
-                <span class="spell-max">{{{section.slots}}}</span>
-                {{/if}}
-            </div> -->
         </div>
         <div class="spell-school">{{localize "TRPG.SpellSchool"}}</div>
         <div class="spell-action">{{localize "TRPG.SpellUsage"}}</div>
@@ -93,9 +72,6 @@
 
             {{#if ../../owner}}
             <div class="item-controls flexrow">
-                {{#if section.canPrepare}}
-                <a class="item-control item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
-                {{/if}}
                 <a class="item-control item-edit" title="Editar Item"><i class="fas fa-edit"></i></a>
                 <a class="item-control item-delete" title="Deletar Item"><i class="fas fa-trash"></i></a>
             </div>

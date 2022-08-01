@@ -51,17 +51,13 @@
             <div class="form-group">
                 <label>{{ localize "TRPG.ItemEquipmentType" }}</label>
                 <select name="data.armor.type">
-                    {{selectOptions config.equipmentTypes selected=data.armor.type blank=""}}
+                    <option value=""></option>
+                    <optgroup label="{{ localize "TRPG.Armor" }}">
+                        {{selectOptions config.armorTypes selected=data.armor.type}}
+                    </optgroup>
+                    {{selectOptions config.miscEquipmentTypes selected=data.armor.type}}
                 </select>
             </div>
-
-            {{#unless isMountable}}
-            <!-- <div class="form-group">
-                <label>{{localize "TRPG.Attunement"}}</label>
-                <select name="data.attunement" data-dtype="Number">
-                    {{selectOptions config.attunements selected=data.attunement localize=true}}
-                </select>
-            </div> -->
 
             {{!-- Equipment Status --}}
             <div class="form-group stacked">
@@ -76,7 +72,6 @@
                     <input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "TRPG.Identified" }}
                 </label>
             </div>
-            {{/unless}}
 
             {{!-- Armor Class --}}
             {{#if hasAC}}

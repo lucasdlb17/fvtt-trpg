@@ -1,9 +1,26 @@
-<div class="inventory-filters spellbook-filters flexrow">
+<div class="inventory-filters jutsuslist-filters flexrow">
+    <div class="form-group jutsuslist-ability">
+        {{#unless isNPC}}
+        <label>{{localize "TRPG.Jutsucasting"}}</label>
+        {{else}}
+        <label>{{localize "TRPG.Level"}}</label>
+        <input class="jutsucasting-level" type="text" name="data.details.jutsuLevel"
+               value="{{data.details.jutsuLevel}}" data-dtype="Number" placeholder="0" />
+        {{/unless}}
+        <select name="data.attributes.jutsucasting" data-type="String">
+            {{#select data.attributes.jutsucasting}}
+            <option value="">{{localize "TRPG.None"}}</option>
+            {{#each data.abilities as |abl a|}}
+            <option value="{{a}}">{{abl.label}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        <span>{{localize "TRPG.AbbreviationDC"}} {{data.attributes.jutsudc}}</span>
+    </div>
 
     <ul class="filter-list flexrow" data-filter="jutsuslist">
         <li class="filter-item" data-filter="full">{{localize "TRPG.FullAction"}}</li>
         <li class="filter-item" data-filter="action">{{localize "TRPG.Action"}}</li>
-        <li class="filter-item" data-filter="bonus">{{localize "TRPG.BonusAction"}}</li>
         <li class="filter-item" data-filter="bonus">{{localize "TRPG.FreeAction"}}</li>
         <li class="filter-item" data-filter="reaction">{{localize "TRPG.Reaction"}}</li>
         <li class="filter-item" data-filter="concentration">{{localize "TRPG.Concentration"}}</li>
@@ -12,7 +29,7 @@
 
 <ol class="items-list inventory-list">
 {{#each jutsuslist as |section|}}
-    <li class="items-header spellbook-header flexrow">
+    <li class="items-header jutsuslist-header flexrow">
         <div class="item-name flexrow">
             <h3>{{section.label}}</h3>
         </div>
@@ -62,7 +79,7 @@
     {{#if filters.jutsuslist.size}}
     <li class="item flexrow"><p class="notes">{{localize "TRPG.FilterNoJutsus"}}</p></li>
     {{else}}
-    <li class="item flexrow inventory-header spellbook-header spellbook-empty">
+    <li class="item flexrow inventory-header jutsuslist-header jutsuslist-empty">
         <div class="item-controls flexrow">
             <a class="item-control item-create" title="{{localize 'TRPG.JutsuCreate'}}" data-type="jutsu"
                data-level="{{lvl}}"><i class="fas fa-plus"></i> {{localize "TRPG.JutsuAdd"}}</a>

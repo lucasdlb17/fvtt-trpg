@@ -34,7 +34,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	 * @private
 	 */
 	_prepareItems(data) {
-		// Categorize Items as Features and Spells
+		// Categorize Items as Features, Jutsus and Spells
 		const features = {
 			weapons: { label: game.i18n.localize("TRPG.AttackPl"), items: [], hasActions: true, dataset: { type: "weapon", "weapon-type": "natural" } },
 			actions: { label: game.i18n.localize("TRPG.ActionPl"), items: [], hasActions: true, dataset: { type: "feat", "activation.type": "action" } },
@@ -43,7 +43,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 		};
 
 		// Start by classifying items into groups for rendering
-		let [spells, other] = data.items.reduce(
+		let [spells, jutsus, other] = data.items.reduce(
 			(arr, item) => {
 				item.img = item.img || CONST.DEFAULT_TOKEN;
 				item.isStack = Number.isNumeric(item.data.quantity) && item.data.quantity !== 1;
@@ -52,18 +52,23 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 				item.isDepleted = item.isOnCooldown && item.data.uses.per && item.data.uses.value > 0;
 				item.hasTarget = !!item.data.target && !["none", ""].includes(item.data.target.type);
 				if (item.type === "spell") arr[0].push(item);
-				else arr[1].push(item);
+				else if (item.type === "jutsu") arr[1].push(item);
+				else arr[2].push(item);
 				return arr;
 			},
-			[[], []]
+			[[], [], []]
 		);
 
 		// Apply item filters
 		spells = this._filterItems(spells, this._filters.spellbook);
+		jutsus = this._filterItems(jutsus, this._filters.jutsuslist);
 		other = this._filterItems(other, this._filters.features);
 
 		// Organize Spellbook
 		const spellbook = this._prepareSpellbook(data, spells);
+
+		// Organize Jutsuslist
+		const jutsuslist = this._prepareJutsuslist(data, jutsus);
 
 		// Organize Features
 		for (let item of other) {
@@ -77,6 +82,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 		// Assign and return
 		data.features = Object.values(features);
 		data.spellbook = spellbook;
+		data.jutsuslist = jutsuslist;
 	}
 
 	/* -------------------------------------------- */

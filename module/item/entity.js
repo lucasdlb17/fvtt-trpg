@@ -305,6 +305,11 @@ export default class Item5e extends Item {
 			save.dc = this.isOwned ? getProperty(this.actor.data, "data.attributes.spelldc") + (this.data.data.level ?? 0) : null;
 		}
 
+		// Actor jutsu-DC based scaling
+		if (save.scaling === "jutsu") {
+			save.dc = this.isOwned ? getProperty(this.actor.data, "data.attributes.jutsudc") + (this.data.data.level ?? 0) : null;
+		}
+
 		// Ability-score based scaling
 		else if (save.scaling !== "flat") {
 			save.dc = this.isOwned ? getProperty(this.actor.data, `data.abilities.${save.scaling}.dc`) + (this.data.data.level ?? 0) : null;
@@ -767,7 +772,8 @@ export default class Item5e extends Item {
 		// Equipment properties
 		if (data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.data.type)) {
 			if (data.attunement === CONFIG.TRPG.attunementTypes.REQUIRED) props.push(game.i18n.localize(CONFIG.TRPG.attunements[CONFIG.TRPG.attunementTypes.REQUIRED]));
-			props.push(game.i18n.localize(data.equipped ? "TRPG.Equipped" : "TRPG.Unequipped"), game.i18n.localize(data.proficient ? "TRPG.Proficient" : "TRPG.NotProficient"));
+			props.push(game.i18n.localize(data.equipped ? "TRPG.Equipped" : "TRPG.Unequipped"),
+			game.i18n.localize(data.proficient ? "TRPG.Proficient" : "TRPG.NotProficient"));
 		}
 
 		// Ability activation properties
@@ -824,7 +830,7 @@ export default class Item5e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Prepare chat card data for tool type items
+	 * Prepare chat card data for lool type items
 	 * @private
 	 */
 	_lootChatData(data, labels, props) {
@@ -932,9 +938,6 @@ export default class Item5e extends Item {
 		if (flags.elvenAccuracy && ["dex", "int", "wis", "cha"].includes(this.abilityMod)) {
 			rollConfig.elvenAccuracy = true;
 		}
-
-		// Apply Halfling Lucky
-		if (flags.halflingLucky) rollConfig.halflingLucky = true;
 
 		// Compose calculated roll options with passed-in roll options
 		rollConfig = mergeObject(rollConfig, options);
@@ -1206,8 +1209,6 @@ export default class Item5e extends Item {
 					left: window.innerWidth - 710,
 				},
 				chooseModifier: true,
-				halflingLucky: this.actor.getFlag("trpg", "halflingLucky") || false,
-				reliableTalent: this.data.data.proficient >= 1 && this.actor.getFlag("trpg", "reliableTalent"),
 				messageData: { "flags.trpg.roll": { type: "tool", itemId: this.id } },
 			},
 			options
@@ -1491,6 +1492,27 @@ export default class Item5e extends Item {
 				const armorProf = CONFIG.TRPG.armorProficienciesMap[data.data?.armor?.type]; // Player characters check proficiency
 				const actorArmorProfs = actorData.data.traits?.armorProf?.value || [];
 				updates["data.proficient"] = armorProf === true || actorArmorProfs.includes(armorProf);
+			}
+		}
+		return updates;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for the automatic configuration of owned tool type Items.
+	 * @private
+	 */
+	_onCreateOwnedTool(data, actorData, isNPC) {
+		const updates = {};
+		if (data.data?.proficient === undefined) {
+			if (isNPC) {
+				updates["data.proficient"] = 1;
+			} else {
+				const actorToolProfs = actorData.data.traits?.toolProf?.value;
+				const proficient =
+					actorToolProfs.includes(this.data.data.toolType) || actorToolProfs.includes(this.data.data.baseItem);
+				updates["data.proficient"] = Number(proficient);
 			}
 		}
 		return updates;

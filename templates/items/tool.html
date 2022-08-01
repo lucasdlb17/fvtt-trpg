@@ -31,6 +31,7 @@
     <nav class="sheet-navigation tabs" data-group="primary">
         <a class="item active" data-tab="description">{{ localize "TRPG.Description" }}</a>
         <a class="item" data-tab="details">{{ localize "TRPG.Details" }}</a>
+        <a class="item" data-tab="effects">{{ localize "TRPG.Effects" }}</a>
     </nav>
 
     {{!-- Item Sheet Body --}}
@@ -60,7 +61,7 @@
 
             {{!-- Ability Check --}}
             <div class="form-group">
-                <label>{{ localize "TRPG.DefaultAbilityCheck" }}</label>
+                <label>{{ localize "TRPG.DefaultSkillCheck" }}</label>
                 <select name="data.ability">
                     {{selectOptions config.abilities selected=data.ability}}
                 </select>
@@ -71,6 +72,11 @@
                 <label>{{ localize "TRPG.ChatFlavor" }}</label>
                 <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
             </div>
+        </div>
+
+        {{!-- Effects Tab --}}
+        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+            {{> "systems/trpg/templates/actors/parts/active-effects.html"}}
         </div>
     </section>
 </form>

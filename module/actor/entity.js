@@ -186,7 +186,7 @@ export default class Actor5e extends Actor {
 		this._computeSpellcastingProgression(this.data);
 
 		// Prepare jutsu-casting data
-		//this._computeJutsucastingProgression(this.data);
+		this._computeJutsucastingProgression(this.data);
 
 		// Prepare armor class data
 		const ac = this._computeArmorClass(data);
@@ -368,7 +368,7 @@ export default class Actor5e extends Actor {
 		data.attributes.penalidadeArmadura = pda;
 
 		// Character proficiency bonus
-		data.attributes.prof = Math.floor((level + 7) / 4);
+		data.attributes.prof = 3 + data.details.level;
 
 		// Experience required for next level
 		const xp = data.details.xp;
@@ -441,26 +441,11 @@ export default class Actor5e extends Actor {
 		for (let [id, skl] of Object.entries(data.skills)) {
 			skl.proficient = Math.clamped(Number(skl.proficient).toNearest(0.5), 0, 2) ?? 0;
 
-			// Remarkable
-			if (athlete && skl.proficient < 0.5 && feats.remarkableAthlete.abilities.includes(skl.ability)) {
-				skl.proficient = 0.5;
-			}
-
-			// Jack of All Trades
-			if (joat && skl.proficient < 0.5) {
-				skl.proficient = 0.5;
-			}
-
-			// Polymorph Skill Proficiencies
-			if (originalSkills) {
-				skl.proficient = Math.max(skl.proficient, originalSkills[id].proficient);
-			}
-
 			// Compute modifier
-			skl.bonus = checkBonus + skillBonus;
+			skl.bonus = checkBonus + skillBonus + skl.value;
 			skl.mod = data.abilities[skl.ability].mod;
 			skl.prof = skl.proficient ? 3 + data.details.level : Math.floor(data.details.level / 2);
-			skl.total = skl.mod + skl.prof + skl.bonus + skl.value;
+			skl.total = skl.mod + skl.prof + skl.bonus;
 
 			// Compute passive bonus
 			// const passive = observant && (feats.observantFeat.skills.includes(id)) ? 5 : 0;
@@ -497,58 +482,11 @@ export default class Actor5e extends Actor {
 
 		// Spellcasting DC
 		const spellcastingAbility = ad.abilities[ad.attributes.spellcasting];
-		ad.attributes.spelldc = spellcastingAbility ? spellcastingAbility.dc : 10;
-
-		// Translate the list of classes into spell-casting progression
-		// const progression = {
-		//   total: 0,
-		//   slot: 0
-		// };
-
-		// Keep track of the last seen caster in case we're in a single-caster situation.
-		// let caster = null;
-
-		// Tabulate the total spell-casting progression
-		// const classes = this.data.items.filter(i => i.type === "class");
-		// for ( let cls of classes ) {
-		//   const d = cls.data.data;
-		//   if ( d.spellcasting.progression === "none" ) continue;
-		//   const levels = d.levels;
-		//   const prog = d.spellcasting.progression;
-
-		//   // Accumulate levels
-		//   switch (prog) {
-		//     case 'half': progression.slot += Math.floor((levels-1) / 4); break;
-		//     case 'twoThirds': break;
-		//     case 'full': progression.slot += levels; break;
-		//   }
-		// }
-
-		// EXCEPTION: single-classed non-full progression rounds up, rather than down
-		// const isSingleClass = (progression.total === 1) && (progression.slot > 0);
-		// if (!isNPC && isSingleClass && ['half'].includes(caster.spellcasting.progression) ) {
-		//   progression.slot = Math.ceil(caster.levels / 4);
-		// }
-
-		// EXCEPTION: NPC with an explicit spell-caster level
-		// if (isNPC && actorData.data.details.spellLevel) {
-		//   progression.slot = actorData.data.details.spellLevel;
-		// }
-
-		// Look up the number of slots per level from the progression table
-		// const levels = Math.clamped(progression.slot, 0, 20);
-		// const slots = TRPG.SPELL_SLOT_TABLE[levels - 1] || [];
-		// for ( let [n, lvl] of Object.entries(spells) ) {
-		//   let i = parseInt(n.slice(-1));
-		//   if ( Number.isNaN(i) ) continue;
-		//   if ( Number.isNumeric(lvl.override) ) lvl.max = Math.max(parseInt(lvl.override), 0);
-		//   else lvl.max = slots[i-1] || 0;
-		//   lvl.value = parseInt(lvl.value);
-		// }
+		ad.attributes.spelldc = spellcastingAbility ? spellcastingAbility.dc : 10;	
 	}
 
 	/**
-	 * Prepare data related to the spell-casting capabilities of the Actor
+	 * Prepare data related to the jutsu-casting capabilities of the Actor
 	 * @private
 	 */
 	_computeJutsucastingProgression(actorData) {
@@ -560,53 +498,6 @@ export default class Actor5e extends Actor {
 		// Jutsucasting DC
 		const jutsucastingAbility = ad.abilities[ad.attributes.jutsucasting];
 		ad.attributes.jutsudc = jutsucastingAbility ? jutsucastingAbility.dc : 10;
-
-		// Translate the list of classes into jutsu-casting progression
-		// const progression = {
-		//   total: 0,
-		//   slot: 0
-		// };
-
-		// Keep track of the last seen caster in case we're in a single-caster situation.
-		// let caster = null;
-
-		// Tabulate the total jutsu-casting progression
-		// const classes = this.data.items.filter(i => i.type === "class");
-		// for ( let cls of classes ) {
-		//   const d = cls.data.data;
-		//   if ( d.jutsucasting.progression === "none" ) continue;
-		//   const levels = d.levels;
-		//   const prog = d.jutsucasting.progression;
-
-		//   // Accumulate levels
-		//   switch (prog) {
-		//     case 'half': progression.slot += Math.floor((levels-1) / 4); break;
-		//     case 'twoThirds': break;
-		//     case 'full': progression.slot += levels; break;
-		//   }
-		// }
-
-		// EXCEPTION: single-classed non-full progression rounds up, rather than down
-		// const isSingleClass = (progression.total === 1) && (progression.slot > 0);
-		// if (!isNPC && isSingleClass && ['half'].includes(caster.jutsucasting.progression) ) {
-		//   progression.slot = Math.ceil(caster.levels / 4);
-		// }
-
-		// EXCEPTION: NPC with an explicit jutsu-caster level
-		// if (isNPC && actorData.data.details.jutsuLevel) {
-		//   progression.slot = actorData.data.details.jutsuLevel;
-		// }
-
-		// Look up the number of slots per level from the progression table
-		// const levels = Math.clamped(progression.slot, 0, 20);
-		// const slots = TRPG.JUTSU_SLOT_TABLE[levels - 1] || [];
-		// for ( let [n, lvl] of Object.entries(jutsus) ) {
-		//   let i = parseInt(n.slice(-1));
-		//   if ( Number.isNaN(i) ) continue;
-		//   if ( Number.isNumeric(lvl.override) ) lvl.max = Math.max(parseInt(lvl.override), 0);
-		//   else lvl.max = slots[i-1] || 0;
-		//   lvl.value = parseInt(lvl.value);
-		// }
 	}
 
 	/* -------------------------------------------- */
@@ -918,7 +809,7 @@ export default class Actor5e extends Actor {
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
-		const data = { mod: skl.mod + skl.prof };
+		const data = { mod: skl.mod + skl.prof + skl.bonus };
 
 		// Ability test bonus
 		if (bonuses.check) {
@@ -944,16 +835,11 @@ export default class Actor5e extends Actor {
 			data.extra = skillBonus;
 		}
 
-		// Reliable Talent applies to any skill check we have full or better proficiency in
-		const reliableTalent = skl.proficient >= 1 && this.getFlag("trpg", "reliableTalent");
-
 		// Roll and return
 		const rollData = foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("TRPG.SkillPromptTitle", { skill: CONFIG.TRPG.skills[skillId] }),
-			halflingLucky: this.getFlag("trpg", "halflingLucky"),
-			reliableTalent: reliableTalent,
 			messageData: {
 				speaker: options.speaker || ChatMessage.getSpeaker({ actor: this }),
 				"flags.trpg.roll": { type: "skill", skillId },
@@ -1006,16 +892,6 @@ export default class Actor5e extends Actor {
 		const parts = ["@mod"];
 		const data = { mod: abl.mod };
 
-		// Add feat-related proficiency bonuses
-		const feats = this.data.flags.trpg || {};
-		if (feats.remarkableAthlete && TRPG.characterFlags.remarkableAthlete.abilities.includes(abilityId)) {
-			parts.push("@proficiency");
-			data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
-		} else if (feats.jackOfAllTrades) {
-			parts.push("@proficiency");
-			data.proficiency = Math.floor(0.5 * this.data.data.attributes.prof);
-		}
-
 		// Add global actor bonus
 		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
 		if (bonuses.check) {
@@ -1033,7 +909,6 @@ export default class Actor5e extends Actor {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("TRPG.AbilityPromptTitle", { ability: label }),
-			halflingLucky: feats.halflingLucky,
 			messageData: {
 				speaker: options.speaker || ChatMessage.getSpeaker({ actor: this }),
 				"flags.trpg.roll": { type: "ability", abilityId },
@@ -1089,7 +964,6 @@ export default class Actor5e extends Actor {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("TRPG.SavePromptTitle", { ability: label }),
-			halflingLucky: this.getFlag("trpg", "halflingLucky"),
 			messageData: {
 				speaker: options.speaker || ChatMessage.getSpeaker({ actor: this }),
 				"flags.trpg.roll": { type: "save", abilityId },
@@ -1136,7 +1010,6 @@ export default class Actor5e extends Actor {
 			parts: parts,
 			data: data,
 			title: game.i18n.localize("TRPG.DeathSavingThrow"),
-			halflingLucky: this.getFlag("trpg", "halflingLucky"),
 			targetValue: 10,
 			messageData: {
 				speaker: speaker,
@@ -1767,11 +1640,11 @@ export default class Actor5e extends Actor {
 		const abilities = d.data.abilities;
 		for (let k of Object.keys(abilities)) {
 			const oa = o.data.abilities[k];
-			const prof = abilities[k].proficient;
 			if (keepPhysical && ["str", "dex", "con"].includes(k)) abilities[k] = oa;
 			else if (keepMental && ["int", "wis", "cha"].includes(k)) abilities[k] = oa;
 		}
 
+		// Transfer saves
 		const saves = d.data.saves;
 		for (let k of Object.keys(saves)) {
 			const oa = o.data.saves[k];

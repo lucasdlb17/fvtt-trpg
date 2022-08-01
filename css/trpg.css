@@ -1074,7 +1074,7 @@
 	white-space: nowrap;
 }
 .dnd5e.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
-	flex: 0 0 200%;
+	flex: 0 0 110px;
 }
 .dnd5e.sheet.actor .inventory-list .item-detail {
 	flex: 0 0 70px;
@@ -1779,6 +1779,17 @@
 .dnd5e.sheet.actor.npc .header-exp {
 	flex: 0 0 80px;
 	justify-content: center;
+}
+.dnd5e.sheet.actor.npc .header-exp .charlevel {
+	flex: 0 0 32px;
+	line-height: 28px;
+	margin-bottom: -5px;
+	font-size: 24px;
+}
+.dnd5e.sheet.actor.npc .header-exp .charlevel input {
+	width: 32px;
+	padding: 0;
+	text-align: center;
 }
 .dnd5e.sheet.actor.npc .header-exp .cr {
 	flex: 0 0 32px;

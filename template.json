@@ -5,32 +5,25 @@
 			"common": {
 				"abilities": {
 					"str": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"dex": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"con": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"int": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"wis": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"cha": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					},
 					"hon": {
-						"value": 10,
-						"proficient": 0
+						"value": 10
 					}
 				},
 				"attributes": {
@@ -553,7 +546,7 @@
 		}
 	},
 	"Item": {
-		"types": [ "weapon", "equipment", "consumable", "loot", "class", "spell", "jutsu", "feat", "backpack" ],
+		"types": [ "weapon", "equipment", "consumable", "tool", "loot", "class", "spell", "jutsu", "feat", "backpack" ],
 		"templates": {
 			"itemDescription": {
 				"description": {

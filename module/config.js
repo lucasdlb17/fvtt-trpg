@@ -96,6 +96,30 @@ TRPG.weaponProficienciesMap = {
 /* -------------------------------------------- */
 
 /**
+ * The categories into which Tool items can be grouped.
+ *
+ * @enum {string}
+ */
+TRPG.toolTypes = {
+	artisan: "TRPG.ToolArtisans",
+	disguise: "TRPG.ToolDisguise",
+	medic: "TRPG.ToolMedic",
+	thieves: "TRPG.ToolThieves",
+	other: "TRPG.ToolOther"
+};
+
+/**
+ * The categories of tool proficiencies that a character can gain.
+ *
+ * @enum {string}
+ */
+TRPG.toolProficiencies = {
+	...TRPG.toolTypes
+};
+
+/* -------------------------------------------- */
+
+/**
  * This Object defines the various lengths of time which can occur
  * @type {Object}
  */
@@ -192,6 +216,7 @@ TRPG.creatureTypes = {
 	animal: "TRPG.CreatureAnimal",
 	construto: "TRPG.CreatureConstruto",
 	espirito: "TRPG.CreatureEspirito",
+	youkai: "TRPG.CreatureYoukai",
 	humanoid: "TRPG.CreatureHumanoide",
 	monstro: "TRPG.CreatureMonstro",
 	mortoVivo: "TRPG.CreatureMortoVivo",
@@ -241,7 +266,6 @@ TRPG.itemRarity = {
  * @type {Object}
  */
 TRPG.limitedUsePeriods = {
-	// "sr": "TRPG.ShortRest",
 	lr: "TRPG.LongRest",
 	day: "TRPG.Day",
 	charges: "TRPG.Charges",
@@ -267,11 +291,21 @@ TRPG.armorTypes = {
  * The set of equipment types for armor, clothing, and other objects which can be worn by the character
  * @type {Object}
  */
-TRPG.equipmentTypes = {
-	bonus: "TRPG.EquipmentBonus",
+TRPG.miscEquipmentTypes = {
 	clothing: "TRPG.EquipmentClothing",
-	trinket: "TRPG.EquipmentTrinket",
+	other: "TRPG.EquipmentOther",
 	vehicle: "TRPG.EquipmentVehicle",
+};
+
+/* -------------------------------------------- */
+
+/**
+ * The set of equipment types for armor, clothing, and other objects which can be worn by the character.
+ * @enum {string}
+ */
+TRPG.equipmentTypes = {
+	...TRPG.miscEquipmentTypes,
+	...TRPG.armorTypes,
 };
 
 /* -------------------------------------------- */
@@ -378,8 +412,9 @@ TRPG.consumableTypes = {
 	food: "TRPG.ConsumableFood",
 	scroll: "TRPG.ConsumableScroll",
 	wand: "TRPG.ConsumableWand",
-	rod: "TRPG.ConsumableRod",
-	trinket: "TRPG.ConsumableTrinket",
+	ofuda: "TRPG.ConsumableOfuda",
+	staff: "TRPG.ConsumableStaff",
+	other: "TRPG.ConsumableOther",
 };
 
 /* -------------------------------------------- */
@@ -391,7 +426,6 @@ TRPG.consumableTypes = {
 TRPG.currencies = {
 	pp: "TRPG.CurrencyPP",
 	gp: "TRPG.CurrencyGP",
-	// "ep": "TRPG.CurrencyEP",
 	sp: "TRPG.CurrencySP",
 	cp: "TRPG.CurrencyCP",
 };
@@ -413,7 +447,6 @@ TRPG.currenciesIDJ = {
 TRPG.currencyConversion = {
 	cp: { into: "sp", each: 10 },
 	sp: { into: "gp", each: 10 },
-	// ep: {into: "gp", each: 2 },
 	gp: { into: "pp", each: 10 },
 };
 
@@ -437,9 +470,10 @@ TRPG.damageTypes = {
 };
 
 // Damage Resistance Types
-TRPG.damageResistanceTypes = mergeObject(foundry.utils.deepClone(TRPG.damageTypes), {
+TRPG.damageResistanceTypes = {
+	...TRPG.damageTypes,
 	physical: "TRPG.DamagePhysical",
-});
+};
 
 /* -------------------------------------------- */
 
@@ -464,8 +498,6 @@ TRPG.movementTypes = {
 TRPG.movementUnits = {
 	m: "TRPG.DistM",
 	km: "TRPG.DistKm",
-	// "ft": "TRPG.DistFt",
-	// "mi": "TRPG.DistMi"
 };
 
 /**
@@ -587,20 +619,15 @@ TRPG.classBABFormulas = {
 	high: 1,
 };
 
-/**
- * The set of skill which can be trained
- * @type {Object}
- */
-TRPG.skills = {
-	acr: "TRPG.SkillAcr", //Acrobacia
-	ani: "TRPG.SkillAni", //Adestrar Animais
-	ath: "TRPG.SkillAth", //Atletismo
+TRPG.skillsAtu = {
 	atuArt: "TRPG.SkillAtuArt", //Arte Tradicional
 	atuDra: "TRPG.SkillAtuDra", //Dramaturgia
 	atuDan: "TRPG.SkillAtuDan", //Dança
 	atuMus: "TRPG.SkillAtuMus", //Música
 	atuOra: "TRPG.SkillAtuOra", //Oratória
-	cav: "TRPG.SkilLCav", //Cavalgar
+};
+
+TRPG.skillsCon = {
 	conArc: "TRPG.SkillConArc", //Arcanismo
 	conEng: "TRPG.SkillConEng", //Engenharia
 	conGeo: "TRPG.SkillConGeo", //Geografia
@@ -609,6 +636,27 @@ TRPG.skills = {
 	conNob: "TRPG.SkillConNob", //Nobreza
 	conRel: "TRPG.SkillConRel", //Religião
 	conTor: "TRPG.SkillConTor", //Tormenta
+};
+
+TRPG.skillsOfi = {
+	ofiAlq: "TRPG.SkillOfiAlq", //Alquimia
+	ofiAlv: "TRPG.SkillOfiAlv", //Alvenaria
+	ofiCar: "TRPG.SkillOfiCar", //Carpintaria
+	ofiJoa: "TRPG.SkillOfiJoa", //Joalheria
+	ofiMet: "TRPG.SkillOfiMet", //Metalurgia
+	ofiArt: "TRPG.SkillOfiArt", //Uma arte
+	ofiPro: "TRPG.SkillOfiPro", //Uma profissão
+};
+
+/**
+ * The set of skill which can be trained
+ * @type {Object}
+ */
+TRPG.skillsMisc = {
+	acr: "TRPG.SkillAcr", //Acrobacia
+	ani: "TRPG.SkillAni", //Adestrar Animais
+	ath: "TRPG.SkillAth", //Atletismo
+	cav: "TRPG.SkilLCav", //Cavalgar
 	cur: "TRPG.SkillCur", //Cura
 	dip: "TRPG.SkillDip", //Diplomacia
 	eng: "TRPG.SkillEng", //Enganação
@@ -619,15 +667,19 @@ TRPG.skills = {
 	intu: "TRPG.SkillIntu", //Intuição
 	lad: "TRPG.SkillLad", //Ladinagem
 	obinf: "TRPG.SkillObinf", //Obter Informação
-	ofiAlq: "TRPG.SkillOfiAlq", //Alquimia
-	ofiAlv: "TRPG.SkillOfiAlv", //Alvenaria
-	ofiCar: "TRPG.SkillOfiCar", //Carpintaria
-	ofiJoa: "TRPG.SkillOfiJoa", //Joalheria
-	ofiMet: "TRPG.SkillOfiMet", //Metalurgia
-	ofiArt: "TRPG.SkillOfiArt", //Uma arte
-	ofiPro: "TRPG.SkillOfiPro", //Uma profissão
 	prc: "TRPG.SkillPrc", //Percepção
 	sur: "TRPG.SkillSur", //Sobrevivência
+};
+
+/**
+ * The set of skill which can be trained
+ * @type {Object}
+ */
+TRPG.skills = {
+	...TRPG.skillsAtu,
+	...TRPG.skillsCon,
+	...TRPG.skillsMisc,
+	...TRPG.skillsOfi,
 };
 
 /* -------------------------------------------- */
@@ -701,7 +753,6 @@ TRPG.weaponTypes = {
 	exoR: "TRPG.WeaponExoR",
 	natural: "TRPG.WeaponNatural",
 	improv: "TRPG.WeaponImprov",
-	// "siege": "TRPG.WeaponSiege"
 };
 
 /* -------------------------------------------- */
@@ -711,21 +762,16 @@ TRPG.weaponTypes = {
  * @type {Object}
  */
 TRPG.weaponProperties = {
-	// "ada": "TRPG.WeaponPropertiesAda",
 	amm: "TRPG.WeaponPropertiesAmm",
 	dou: "TRPG.WeaponPropertiesDou",
 	fin: "TRPG.WeaponPropertiesFin",
 	fir: "TRPG.WeaponPropertiesFir",
-	// "hvy": "TRPG.WeaponPropertiesHvy",
 	lgt: "TRPG.WeaponPropertiesLgt",
 	lod: "TRPG.WeaponPropertiesLod",
 	mgc: "TRPG.WeaponPropertiesMgc",
 	rch: "TRPG.WeaponPropertiesRch",
-	// "sil": "TRPG.WeaponPropertiesSil",
-	// "spc": "TRPG.WeaponPropertiesSpc",
 	thr: "TRPG.WeaponPropertiesThr",
 	two: "TRPG.WeaponPropertiesTwo",
-	// "ver": "TRPG.WeaponPropertiesVer"
 };
 
 // Spell Components
@@ -845,17 +891,13 @@ TRPG.spellScrollIds = {
 };
 
 // Jutsu Scroll Compendium UUIDs
-TRPG.jutsuScrollIds = {
+TRPG.jutsuOfudaIds = {
 	0: "rQ6sO7HDWzqMhSI3",
 	1: "9GSfMg0VOA2b4uFN",
 	2: "XdDp6CKh9qEvPTuS",
 	3: "hqVKZie7x9w3Kqds",
 	4: "DM7hzgL836ZyUFB1",
 	5: "wa1VF8TXHmkrrR35",
-	6: "tI3rWx4bxefNCexS",
-	7: "mtyw4NS1s7j2EJaD",
-	8: "aOrinPg7yuDZEuWr",
-	9: "O4YbkJkLlnsgUszZ",
 };
 
 // Feat Lists
@@ -962,8 +1004,6 @@ TRPG.polymorphSettings = {
 TRPG.proficiencyLevels = {
 	0: "TRPG.NotProficient",
 	1: "TRPG.Proficient",
-	0.5: "TRPG.HalfProficient",
-	2: "TRPG.Expertise",
 };
 
 /* -------------------------------------------- */
@@ -1051,7 +1091,10 @@ TRPG.languagesIDJ = {
 };
 
 // Languages
-TRPG.languages = mergeObject(foundry.utils.deepClone(TRPG.languagesIDJ), foundry.utils.deepClone(TRPG.languagesRPG));
+TRPG.languages = {
+	...TRPG.languagesRPG,
+	...TRPG.languagesIDJ,
+};
 
 // Character Level XP Requirements
 TRPG.CHARACTER_EXP_LEVELS = [0, 1000, 3000, 6000, 10000, 15000, 21000, 28000, 36000, 45000, 55000, 66000, 78000, 91000, 105000, 120000, 136000, 153000, 171000, 190000];
