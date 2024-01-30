@@ -7,16 +7,16 @@
                 <i class="fas fa-coins"></i>
             </a>
         </h3>
-        {{#each data.currency as |v k|}}
-            {{#if (and (eq k "pp") (eq ../idj true))}}
-            {{else}}
-              {{#if (eq ../idj true)}}
-                 <label class="denomination {{k}}">{{ lookup ../config.currenciesIDJ k }}</label>
-              {{else}}
-                   <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
-              {{/if}}
-            <input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
-            {{/if}}
+        {{#each system.currency as |v k|}}
+        {{#if (and (eq k "pp") (eq ../idj true))}}
+        {{else}}
+        {{#if (eq ../idj true)}}
+        <label class="denomination {{k}}">{{ lookup ../config.currenciesIDJ k }}</label>
+        {{else}}
+        <label class="denomination {{k}}">{{ lookup ../config.currencies k }}</label>
+        {{/if}}
+        <input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" />
+        {{/if}}
         {{/each}}
     </ol>
     {{/unless}}
@@ -33,27 +33,27 @@
 </div>
 
 <ol class="items-list inventory-list">
-{{#each sections as |section sid|}}
+    {{#each sections as |section sid|}}
     <li class="items-header flexrow">
         <h3 class="item-name flexrow">{{localize section.label}}</h3>
 
         {{#if section.columns}}
-            {{#each section.columns}}
-                <div class="item-detail {{css}}">{{label}}</div>
-            {{/each}}
+        {{#each section.columns}}
+        <div class="item-detail {{css}}">{{label}}</div>
+        {{/each}}
         {{else}}
-            {{#if ../isCharacter}}
-                <div class="item-detail item-weight">{{localize "TRPG.Weight"}}</div>
-            {{/if}}
+        {{#if ../isCharacter}}
+        <div class="item-detail item-weight">{{localize "TRPG.Weight"}}</div>
+        {{/if}}
 
-            <div class="item-detail item-uses">{{localize "TRPG.Charges"}}</div>
-            <div class="item-detail item-action">{{localize "TRPG.Usage"}}</div>
+        <div class="item-detail item-uses">{{localize "TRPG.Charges"}}</div>
+        <div class="item-detail item-action">{{localize "TRPG.Usage"}}</div>
         {{/if}}
 
         {{#if ../owner}}
         <div class="item-controls flexrow">
             <a class="item-control item-create" title='{{localize "TRPG.ItemCreate"}}'
-                {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+               {{#each section.dataset as |v k|}} data-{{k}}="{{v}}" {{/each}}>
                 <i class="fas fa-plus"></i> {{localize "TRPG.Add"}}
             </a>
         </div>
@@ -61,7 +61,7 @@
     </li>
 
     <ol class="item-list">
-    {{#each section.items as |item iid|}}
+        {{#each section.items as |item iid|}}
         <li class="item flexrow {{section.css}}"
             data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
             <div class="item-name flexrow rollable">
@@ -71,7 +71,7 @@
                 <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                 <h4>
                     {{item.name~}}
-                    {{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
+                    {{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
                 </h4>
                 {{#if item.attunement}}
                 <div class="item-detail attunement">
@@ -82,41 +82,41 @@
             </div>
 
             {{#if section.columns}}
-                {{#each section.columns}}
-                    <div class="item-detail {{css}}">
-                        {{#with (getProperty item property)}}
-                            {{#if ../editable}}
-                                <input type="text" value="{{this}}" placeholder="&mdash;"
-                                       data-dtype="{{../editable}}" data-property="{{../property}}">
-                            {{else}}
-                                {{this}}
-                            {{/if}}
-                        {{/with}}
-                    </div>
-                {{/each}}
+            {{#each section.columns}}
+            <div class="item-detail {{css}}">
+                {{#with (getProperty item property)}}
+                {{#if ../editable}}
+                <input type="text" value="{{this}}" placeholder="&mdash;"
+                       data-dtype="{{../editable}}" data-property="{{../property}}">
+                {{else}}
+                {{this}}
+                {{/if}}
+                {{/with}}
+            </div>
+            {{/each}}
             {{else}}
-                {{#if ../../isCharacter}}
-                <div class="item-detail item-weight">
-                    {{#if item.totalWeight}}
-                        <div class="item-detail">
-                            {{ item.totalWeight }} {{localize "TRPG.AbbreviationLbs"}}
-                        </div>
-                    {{/if}}
+            {{#if ../../isCharacter}}
+            <div class="item-detail item-weight">
+                {{#if item.totalWeight}}
+                <div class="item-detail">
+                    {{ item.totalWeight }} {{localize "TRPG.AbbreviationLbs"}}
                 </div>
                 {{/if}}
+            </div>
+            {{/if}}
 
-                <div class="item-detail item-uses">
-                    {{#if item.hasUses }}
-                        <input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-                        / {{item.data.uses.max}}
-                    {{/if}}
-                </div>
+            <div class="item-detail item-uses">
+                {{#if item.hasUses }}
+                <input type="text" value="{{item.system.uses.value}}" placeholder="0" />
+                / {{item.system.uses.max}}
+                {{/if}}
+            </div>
 
-                <div class="item-detail item-action">
-                    {{#if item.data.activation.type }}
-                        {{item.labels.activation}}
-                    {{/if}}
-                </div>
+            <div class="item-detail item-action">
+                {{#if item.system.activation.type }}
+                {{item.labels.activation}}
+                {{/if}}
+            </div>
             {{/if}}
 
             {{#if ../../owner}}
@@ -131,14 +131,14 @@
             </div>
             {{/if}}
         </li>
-    {{/each}}
+        {{/each}}
     </ol>
-{{/each}}
+    {{/each}}
 </ol>
 
 
 {{#unless isNPC}}
-{{#with data.attributes.encumbrance}}
+{{#with system.attributes.encumbrance}}
 <div class="encumbrance {{#if encumbered}}encumbered{{/if}}">
     <span class="encumbrance-bar" style="width:{{pct}}%"></span>
     <span class="encumbrance-label">{{value}} / {{max}}</span>

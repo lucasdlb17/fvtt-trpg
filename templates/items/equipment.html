@@ -16,15 +16,15 @@
 
             <ul class="summary flexrow">
                 <li>
-                    {{lookup config.equipmentTypes data.armor.type }}
+                    {{lookup config.equipmentTypes system.armor.type }}
                 </li>
                 <li>
-                    <select name="data.rarity">
-                        {{selectOptions config.itemRarity selected=data.rarity blank="&nbsp;"}}
+                    <select name="system.rarity">
+                        {{selectOptions config.itemRarity selected=system.rarity blank=""}}
                     </select>
                 </li>
                 <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'TRPG.Source' }}"/>
+                    <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'TRPG.Source' }}"/>
                 </li>
             </ul>
         </div>
@@ -50,26 +50,34 @@
             {{!-- Equipment Type --}}
             <div class="form-group">
                 <label>{{ localize "TRPG.ItemEquipmentType" }}</label>
-                <select name="data.armor.type">
+                <select name="system.armor.type">
                     <option value=""></option>
                     <optgroup label="{{ localize "TRPG.Armor" }}">
-                        {{selectOptions config.armorTypes selected=data.armor.type}}
+                        {{selectOptions config.armorTypes selected=system.armor.type}}
                     </optgroup>
-                    {{selectOptions config.miscEquipmentTypes selected=data.armor.type}}
+                    {{selectOptions config.miscEquipmentTypes selected=system.armor.type}}
                 </select>
             </div>
+
+            {{#unless isMountable}}
+			<!-- <div class="form-group">
+                <label>{{localize "TRPG.Attunement"}}</label>
+                <select name="system.attunement" data-dtype="Number">
+                    {{selectOptions config.attunements selected=system.attunement localize=true}}
+                </select>
+            </div> -->
 
             {{!-- Equipment Status --}}
             <div class="form-group stacked">
                 <label>{{ localize "TRPG.ItemEquipmentStatus" }}</label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "TRPG.Proficient" }}
+                    <input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "TRPG.Proficient" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "TRPG.Equipped" }}
+                    <input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "TRPG.Equipped" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "TRPG.Identified" }}
+                    <input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "TRPG.Identified" }}
                 </label>
             </div>
 
@@ -78,7 +86,7 @@
             <div class="form-group">
                 <label>{{ localize "TRPG.ArmorClass" }}</label>
                 <div class="form-fields">
-                   <input type="text" name="data.armor.value" value="{{data.armor.value}}" data-dtype="Number"/>
+                   <input type="text" name="system.armor.value" value="{{system.armor.value}}" data-dtype="Number"/>
                 </div>
             </div>
             {{/if}}
@@ -88,14 +96,14 @@
             <div class="form-group">
                 <label>{{ localize "TRPG.ItemEquipmentDexMod" }}</label>
                 <div class="form-fields">
-                   <input type="number" name="data.armor.dex" value="{{data.armor.dex}}" data-dtype="Number" placeholder="{{ localize 'TRPG.Unlimited' }}"/>
+                   <input type="number" name="system.armor.dex" value="{{system.armor.dex}}" data-dtype="Number" placeholder="{{ localize 'TRPG.Unlimited' }}"/>
                 </div>
             </div>
 
             {{!-- Stealth Disadvantage --}}
             <div class="form-group">
                 <label>Penalidade de Armadura</label>
-                <input type="number" name="data.stealth" value="{{data.stealth}}" max="0" />
+                <input type="number" name="system.stealth" value="{{system.stealth}}" max="0" />
             </div>
             {{/if}}
 
@@ -104,11 +112,11 @@
             <div class="form-group">
                 <label>{{localize 'TRPG.Speed'}}</label>
                 <div class="form-fields">
-                    <input type="text" name="data.speed.value" value="{{data.speed.value}}"
+                    <input type="text" name="system.speed.value" value="{{system.speed.value}}"
                            placeholder="0" data-dtype="Number">
                     <span class="sep">{{localize 'TRPG.FeetAbbr'}}</span>
-                    <input type="text" name="data.speed.conditions"
-                           value="{{data.speed.conditions}}">
+                    <input type="text" name="system.speed.conditions"
+                           value="{{system.speed.conditions}}">
                 </div>
             </div>
             {{/if}}

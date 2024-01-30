@@ -4,18 +4,18 @@
         <label>{{localize "TRPG.Jutsucasting"}}</label>
         {{else}}
         <label>{{localize "TRPG.Level"}}</label>
-        <input class="jutsucasting-level" type="text" name="data.details.jutsuLevel"
-               value="{{data.details.jutsuLevel}}" data-dtype="Number" placeholder="0" />
+        <input class="jutsucasting-level" type="text" name="system.details.jutsuLevel"
+               value="{{system.details.jutsuLevel}}" data-dtype="Number" placeholder="0" />
         {{/unless}}
-        <select name="data.attributes.jutsucasting" data-type="String">
-            {{#select data.attributes.jutsucasting}}
+        <select name="system.attributes.jutsucasting" data-type="String">
+            {{#select system.attributes.jutsucasting}}
             <option value="">{{localize "TRPG.None"}}</option>
-            {{#each data.abilities as |abl a|}}
+            {{#each system.abilities as |abl a|}}
             <option value="{{a}}">{{abl.label}}</option>
             {{/each}}
             {{/select}}
         </select>
-        <span>{{localize "TRPG.AbbreviationDC"}} {{data.attributes.jutsudc}}</span>
+        <span>{{localize "TRPG.AbbreviationDC"}} {{system.attributes.jutsudc}}</span>
     </div>
 
     <ul class="filter-list flexrow" data-filter="jutsuslist">
@@ -28,7 +28,7 @@
 </div>
 
 <ol class="items-list inventory-list">
-{{#each jutsuslist as |section|}}
+    {{#each jutsuslist as |section|}}
     <li class="items-header jutsuslist-header flexrow">
         <div class="item-name flexrow">
             <h3>{{section.label}}</h3>
@@ -39,7 +39,7 @@
 
         <div class="item-controls flexrow">
             {{#if section.canCreate}}
-            <a class="item-control item-create" title="{{localize 'TRPG.JutsuCreate'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+            <a class="item-control item-create" title="{{localize 'TRPG.JutsuCreate'}}" {{#each section.dataset as |v k|}} data-{{k}}="{{v}}" {{/each}}>
                 <i class="fas fa-plus"></i> {{localize "TRPG.Add"}}
             </a>
             {{/if}}
@@ -47,13 +47,13 @@
     </li>
 
     <ol class="item-list">
-    {{#each section.jutsus as |item i|}}
+        {{#each section.jutsus as |item i|}}
         <li class="item flexrow" data-item-id="{{item._id}}">
             <div class="item-name flexrow rollable">
                 <div class="item-image" style="background-image: url('{{item.img}}')"></div>
                 <h4>{{item.name}}</h4>
-                {{#if item.data.uses.per }}
-                <div class="item-detail jutsu-uses">Uses {{item.data.uses.value}} / {{item.data.uses.max}}</div>
+                {{#if item.system.uses.per }}
+                <div class="item-detail jutsu-uses">Uses {{item.system.uses.value}} / {{item.system.uses.max}}</div>
                 {{/if}}
             </div>
             <div class="jutsu-school">{{labels.school}}</div>
@@ -72,9 +72,9 @@
             </div>
             {{/if}}
         </li>
-    {{/each}}
+        {{/each}}
     </ol>
-{{else}}
+    {{else}}
     {{#if owner}}
     {{#if filters.jutsuslist.size}}
     <li class="item flexrow"><p class="notes">{{localize "TRPG.FilterNoJutsus"}}</p></li>
@@ -88,5 +88,6 @@
     <li class="item flexrow"><p class="notes">{{localize "TRPG.NoJutsuLevels"}}</p></li>
     {{/if}}
     {{/if}}
-{{/each}}
+    {{/each}}
 </ol>
+

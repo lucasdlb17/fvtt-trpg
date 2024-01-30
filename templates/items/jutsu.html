@@ -14,9 +14,9 @@
 			</div>
 
 			<ul class="summary flexrow">
-				<li>{{labels.jutsuList}} ({{labels.school}})</li>
+				<li>{{labels.jutsuList}} {{labels.level}} ({{labels.school}})</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'TRPG.Source' }}" />
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'TRPG.Source' }}" />
 				</li>
 			</ul>
 		</div>
@@ -38,8 +38,8 @@
 			{{!-- Jutsu Level --}}
 			<div class="form-group">
 				<label>{{ localize "TRPG.JutsuLevel" }}</label>
-				<select name="data.level" data-dtype="Number">
-					{{#select data.level}} {{#each config.jutsuLevels as |name lvl|}}
+				<select name="system.level" data-dtype="Number">
+					{{#select system.level}} {{#each config.jutsuLevels as |name lvl|}}
 					<option value="{{lvl}}">{{name}}</option>
 					{{/each}} {{/select}}
 				</select>
@@ -48,8 +48,8 @@
 			{{!-- Jutsu List --}}
 			<div class="form-group">
 				<label>Lista</label>
-				<select name="data.jutsuList">
-					{{#select data.jutsuList}} {{#each config.jutsuLists as |name list|}}
+				<select name="system.jutsuList">
+					{{#select system.jutsuList}} {{#each config.jutsuLists as |name list|}}
 					<option value="{{list}}">{{name}}</option>
 					{{/each}} {{/select}}
 				</select>
@@ -58,8 +58,8 @@
 			{{!-- Jutsu School --}}
 			<div class="form-group">
 				<label>{{ localize "TRPG.JutsuSchool" }}</label>
-				<select name="data.school">
-					{{#select data.school}} {{#each config.jutsuSchools as |name sch|}}
+				<select name="system.school">
+					{{#select system.school}} {{#each config.jutsuSchools as |name sch|}}
 					<option value="{{sch}}">{{name}}</option>
 					{{/each}} {{/select}}
 				</select>

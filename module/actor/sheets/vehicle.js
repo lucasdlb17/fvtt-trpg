@@ -47,14 +47,14 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
   _computeEncumbrance(totalWeight, actorData) {
 
     // Compute currency weight
-    const totalCoins = Object.values(actorData.data.currency).reduce((acc, denom) => acc + denom, 0);
+    const totalCoins = Object.values(actorData.system.currency).reduce((acc, denom) => acc + denom, 0);
     totalWeight += totalCoins / CONFIG.TRPG.encumbrance.currencyPerWeight;
 
     // Vehicle weights are an order of magnitude greater.
     totalWeight /= CONFIG.TRPG.encumbrance.vehicleWeightMultiplier;
 
     // Compute overall encumbrance
-    const max = actorData.data.attributes.capacity.cargo;
+    const max = actorData.system.attributes.capacity.cargo;
     const pct = Math.clamped((totalWeight * 100) / max, 0, 100);
     return {value: totalWeight.toNearest(0.1), max, pct};
   }
@@ -277,7 +277,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
       .click(evt => evt.target.select())
       .change(this._onQtyChange.bind(this));
 
-    if (this.actor.data.data.attributes.actions.stations) {
+    if (this.actor.system.attributes.actions.stations) {
       html.find('.counter.actions, .counter.action-thresholds').hide();
     }
   }
@@ -298,7 +298,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
     const property = row.classList.contains('crew') ? 'crew' : 'passengers';
 
     // Get the cargo entry
-    const cargo = foundry.utils.deepClone(this.actor.data.data.cargo[property]);
+    const cargo = foundry.utils.deepClone(this.actor.system.cargo[property]);
     const entry = cargo[idx];
     if (!entry) return null;
 
@@ -348,7 +348,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
     const target = event.currentTarget;
     const type = target.dataset.type;
     if (type === 'crew' || type === 'passengers') {
-      const cargo = foundry.utils.deepClone(this.actor.data.data.cargo[type]);
+      const cargo = foundry.utils.deepClone(this.actor.system.cargo[type]);
       cargo.push(this.constructor.newCargo);
       return this.actor.update({[`data.cargo.${type}`]: cargo});
     }
@@ -369,7 +369,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
     if (row.classList.contains('cargo-row')) {
       const idx = Number(row.dataset.itemId);
       const type = row.classList.contains('crew') ? 'crew' : 'passengers';
-      const cargo = foundry.utils.deepClone(this.actor.data.data.cargo[type]).filter((_, i) => i !== idx);
+      const cargo = foundry.utils.deepClone(this.actor.system.cargo[type]).filter((_, i) => i !== idx);
       return this.actor.update({[`data.cargo.${type}`]: cargo});
     }
     return super._onItemDelete(event);
@@ -397,7 +397,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
     event.preventDefault();
     const itemID = event.currentTarget.closest('.item').dataset.itemId;
     const item = this.actor.items.get(itemID);
-    const hp = Math.clamped(0, parseInt(event.currentTarget.value), item.data.data.hp.max);
+    const hp = Math.clamped(0, parseInt(event.currentTarget.value), item.system.hp.max);
     event.currentTarget.value = hp;
     return item.update({'data.hp.value': hp});
   }
@@ -432,7 +432,7 @@ export default class ActorSheet5eVehicle extends ActorSheet5e {
     event.preventDefault();
     const itemID = event.currentTarget.closest('.item').dataset.itemId;
     const item = this.actor.items.get(itemID);
-    const crewed = !!item.data.data.crewed;
+    const crewed = !!item.system.crewed;
     return item.update({'data.crewed': !crewed});
   }
 };

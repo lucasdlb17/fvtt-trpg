@@ -1,8 +1,8 @@
 <div class="traits">
     <div class="form-group">
         <label>{{localize "TRPG.Size"}}</label>
-        <select class="actor-size" name="data.traits.size">
-            {{#select data.traits.size}}
+        <select class="actor-size" name="system.traits.size">
+            {{#select system.traits.size}}
             {{#each config.actorSizes as |label size|}}
             <option value="{{size}}">{{label}}</option>
             {{/each}}
@@ -21,32 +21,32 @@
         </ul>
     </div>
 
-    <div class="form-group {{data.traits.languages.cssClass}}">
+    <div class="form-group {{system.traits.languages.cssClass}}">
         <label>{{localize "TRPG.Languages"}}</label>
         {{#if (eq ./idj true)}}
-        <a class="trait-selector" data-options="languagesIDJ" data-target="data.traits.languages">
+        <a class="trait-selector" data-options="languagesIDJ" data-target="system.traits.languages">
             <i class="fas fa-edit"></i>
         </a>
         {{else}}
-        <a class="trait-selector" data-options="languagesRPG" data-target="data.traits.languages">
+        <a class="trait-selector" data-options="languagesRPG" data-target="system.traits.languages">
             <i class="fas fa-edit"></i>
         </a>
         {{/if}}
         <ul class="traits-list">
-            {{#each data.traits.languages.selected as |v k|}}
+            {{#each system.traits.languages.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
     </div>
     {{/unless}}
 
-    <div class="form-group {{data.traits.di.cssClass}}">
+    <div class="form-group {{system.traits.di.cssClass}}">
         <label>{{localize "TRPG.DamImm"}}</label>
-        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.di">
+        <a class="trait-selector" data-options="damageResistanceTypes" data-target="system.traits.di">
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-            {{#each data.traits.di.selected as |v k|}}
+            {{#each system.traits.di.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
@@ -62,50 +62,50 @@
         </ul>
     </div>
 
-    <div class="form-group {{data.traits.dv.cssClass}}">
+    <div class="form-group {{system.traits.dv.cssClass}}">
         <label>{{localize "TRPG.DamVuln"}}</label>
-        <a class="trait-selector" data-options="damageResistanceTypes" data-target="data.traits.dv">
+        <a class="trait-selector" data-options="damageResistanceTypes" data-target="system.traits.dv">
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-            {{#each data.traits.dv.selected as |v k|}}
+            {{#each system.traits.dv.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
     </div>
 
-    <div class="form-group {{data.traits.ci.cssClass}}">
+    <div class="form-group {{system.traits.ci.cssClass}}">
         <label>{{localize "TRPG.ConImm"}}</label>
-        <a class="trait-selector" data-options="conditionTypes" data-target="data.traits.ci">
+        <a class="trait-selector" data-options="conditionTypes" data-target="system.traits.ci">
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-            {{#each data.traits.ci.selected as |v k|}}
+            {{#each system.traits.ci.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
     </div>
 
     {{#if isCharacter}}
-    <div class="form-group {{data.traits.weaponProf.cssClass}}">
+    <div class="form-group {{system.traits.weaponProf.cssClass}}">
         <label>{{localize "TRPG.TraitWeaponProf"}}</label>
-        <a class="proficiency-selector" data-type="weapon" data-target="data.traits.weaponProf">
+        <a class="proficiency-selector" data-type="weapon" data-target="system.traits.weaponProf">
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-            {{#each data.traits.weaponProf.selected as |v k|}}
+            {{#each system.traits.weaponProf.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>
     </div>
 
-    <div class="form-group {{data.traits.armorProf.cssClass}}">
+    <div class="form-group {{system.traits.armorProf.cssClass}}">
         <label>{{localize "TRPG.TraitArmorProf"}}</label>
-        <a class="proficiency-selector" data-type="armor" data-target="data.traits.armorProf">
+        <a class="proficiency-selector" data-type="armor" data-target="system.traits.armorProf">
             <i class="fas fa-edit"></i>
         </a>
         <ul class="traits-list">
-            {{#each data.traits.armorProf.selected as |v k|}}
+            {{#each system.traits.armorProf.selected as |v k|}}
             <li class="tag {{k}}">{{v}}</li>
             {{/each}}
         </ul>

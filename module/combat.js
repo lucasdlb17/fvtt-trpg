@@ -8,7 +8,7 @@
 export const _getInitiativeFormula = function() {
   const actor = this.actor;
   if ( !actor ) return "1d20";
-  const init = actor.data.data.skills.init;
+  const init = actor.system.skills.init;
 
   // Construct initiative formula parts
   let nd = 1;
@@ -22,6 +22,6 @@ export const _getInitiativeFormula = function() {
 
   // Optionally apply Dexterity tiebreaker
   const tiebreaker = game.settings.get("trpg", "initiativeDexTiebreaker");
-  if ( tiebreaker ) parts.push(actor.data.data.abilities.dex.value / 100);
-  return parts.filter(p => p !== null).join(" + ");
+  if ( tiebreaker ) parts.push(actor.system.abilities.dex.value / 100);
+  return parts.filter((p) => p !== null).join(" + ");
 };

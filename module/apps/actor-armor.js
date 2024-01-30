@@ -28,7 +28,7 @@ export default class ActorArmorConfig extends DocumentSheet {
   async getData() {
 
     // Get actor AC data
-    const actorData = foundry.utils.deepClone(this.object.data.data);
+    const actorData = foundry.utils.deepClone(this.object.system);
     const ac = foundry.utils.getProperty(actorData, "attributes.ac");
 
     // Get configuration data for the calculation mode
@@ -67,7 +67,7 @@ export default class ActorArmorConfig extends DocumentSheet {
 
     // Reference actor data
     let actorData = this.object.toObject(false);
-    let ac = actorData.data.attributes.ac;
+    let ac = actorData.system.attributes.ac;
 
     // Reference form data
     const calc = this.form["ac.calc"].value;
@@ -84,8 +84,8 @@ export default class ActorArmorConfig extends DocumentSheet {
 
     // Recompute effective AC
     actorData = foundry.utils.mergeObject(actorData, {"data.attributes.ac": {calc, formula}});
-    if ( enableFlat ) actorData.data.attributes.ac.flat = flat;
-    ac = this.object._computeArmorClass(actorData.data);
+    if ( enableFlat ) actorData.system.attributes.ac.flat = flat;
+    ac = this.object._computeArmorClass(actorData.system);
 
     // Update fields
     this.form["ac.formula"].value = ac.formula;

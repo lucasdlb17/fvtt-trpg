@@ -59,7 +59,7 @@ export default class PropertyAttribution extends Application {
   /* -------------------------------------------- */
 
   getData() {
-    const property = foundry.utils.getProperty(this.object.data.data, this.property);
+      const property = foundry.utils.getProperty(this.object.system, this.property);
     let total;
     if ( Number.isNumeric(property)) {
       total = property;

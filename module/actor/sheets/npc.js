@@ -13,12 +13,12 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 		let height = 680;
 		if (game.settings.get("trpg", "idjMode")) {
 			classes.push("idj");
-			height = 730;
+			height = 752;
 		}
 		return mergeObject(super.defaultOptions, {
-			classes: classes,
+			classes,
 			width: 605,
-			height: height,
+			height,
 		});
 	}
 
@@ -36,21 +36,39 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	_prepareItems(data) {
 		// Categorize Items as Features, Jutsus and Spells
 		const features = {
-			weapons: { label: game.i18n.localize("TRPG.AttackPl"), items: [], hasActions: true, dataset: { type: "weapon", "weapon-type": "natural" } },
-			actions: { label: game.i18n.localize("TRPG.ActionPl"), items: [], hasActions: true, dataset: { type: "feat", "activation.type": "action" } },
-			passive: { label: game.i18n.localize("TRPG.Features"), items: [], dataset: { type: "feat" } },
-			equipment: { label: game.i18n.localize("TRPG.Inventory"), items: [], dataset: { type: "loot" } },
+			weapons: {
+				label: game.i18n.localize("TRPG.AttackPl"),
+				items: [],
+				hasActions: true,
+				dataset: { type: "weapon", "weapon-type": "natural" },
+			},
+			actions: {
+				label: game.i18n.localize("TRPG.ActionPl"),
+				items: [],
+				hasActions: true,
+				dataset: { type: "feat", "activation.type": "action" },
+			},
+			passive: {
+				label: game.i18n.localize("TRPG.Features"),
+				items: [],
+				dataset: { type: "feat" }
+			},
+			equipment: {
+				label: game.i18n.localize("TRPG.Inventory"),
+				items: [],
+				dataset: { type: "loot" }
+			},
 		};
 
 		// Start by classifying items into groups for rendering
 		let [spells, jutsus, other] = data.items.reduce(
 			(arr, item) => {
 				item.img = item.img || CONST.DEFAULT_TOKEN;
-				item.isStack = Number.isNumeric(item.data.quantity) && item.data.quantity !== 1;
-				item.hasUses = item.data.uses && item.data.uses.max > 0;
-				item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && item.data.recharge.charged === false;
-				item.isDepleted = item.isOnCooldown && item.data.uses.per && item.data.uses.value > 0;
-				item.hasTarget = !!item.data.target && !["none", ""].includes(item.data.target.type);
+				item.isStack = Number.isNumeric(item.system.quantity) && item.system.quantity !== 1;
+				item.hasUses = item.system.uses && item.system.uses.max > 0;
+				item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && item.system.recharge.charged === false;
+				item.isDepleted = item.isOnCooldown && item.system.uses.per && item.system.uses.value > 0;
+				item.hasTarget = !!item.system.target && !["none", ""].includes(item.system.target.type);
 				if (item.type === "spell") arr[0].push(item);
 				else if (item.type === "jutsu") arr[1].push(item);
 				else arr[2].push(item);
@@ -88,11 +106,11 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	/* -------------------------------------------- */
 
 	/** @inheritdoc */
-	getData(options) {
-		const data = super.getData(options);
+	async getData(options) {
+		const data = await super.getData(options);
 
 		// Challenge Rating
-		const cr = parseFloat(data.data.details.cr || 0);
+		const cr = parseFloat(data.system.details.cr || 0);
 		const crLabels = { 0: "0", 0.125: "1/8", 0.25: "1/4", 0.5: "1/2" };
 		data.labels["cr"] = cr >= 1 ? String(cr) : crLabels[cr] || 1;
 
@@ -113,7 +131,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	 * @return {string}  Formatted armor label.
 	 */
 	getArmorLabel() {
-		const ac = this.actor.data.data.attributes.ac;
+		const ac = this.actor.system.attributes.ac;
 		const label = [];
 		if (ac.calc === "default") label.push(this.actor.armor?.name || game.i18n.localize("TRPG.ArmorClassUnarmored"));
 		else label.push(game.i18n.localize(CONFIG.TRPG.armorClasses[ac.calc].label));
@@ -129,7 +147,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	async _updateObject(event, formData) {
 		// Format NPC Challenge Rating
 		const crs = { "1/8": 0.125, "1/4": 0.25, "1/2": 0.5 };
-		let crv = "data.details.cr";
+		let crv = "system.details.cr";
 		let cr = formData[crv];
 		cr = crs[cr] || parseFloat(cr);
 		if (cr) formData[crv] = cr < 1 ? cr : parseInt(cr);
@@ -157,7 +175,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 	 */
 	_onRollHPFormula(event) {
 		event.preventDefault();
-		const formula = this.actor.data.data.attributes.hp.formula;
+		const formula = this.actor.system.attributes.hp.formula;
 		if (!formula) return;
 		const hp = new Roll(formula).roll({ async: false }).total;
 		AudioHelper.play({ src: CONFIG.sounds.dice });

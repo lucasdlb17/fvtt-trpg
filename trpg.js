@@ -9,38 +9,38 @@
  */
 
 // Import Modules
+import { measureDistances } from "./module/canvas.js";
+import { _getInitiativeFormula } from "./module/combat.js";
 import { TRPG } from "./module/config.js";
 import { registerSystemSettings } from "./module/settings.js";
 import { preloadHandlebarsTemplates } from "./module/templates.js";
-import { _getInitiativeFormula } from "./module/combat.js";
-import { measureDistances } from "./module/canvas.js";
 
 // Import Documents
 import Actor5e from "./module/actor/entity.js";
 import Item5e from "./module/item/entity.js";
-import { TokenDocument5e, Token5e } from "./module/token.js";
+import { Token5e, TokenDocument5e } from "./module/token.js";
 
 // Import Applications
-import AbilityTemplate from "./module/pixi/ability-template.js";
-import AbilityUseDialog from "./module/apps/ability-use-dialog.js";
-import ActorSheetFlags from "./module/apps/actor-flags.js";
+import { injectActorSheet } from "./module/actor/sheets/base.js";
 import ActorSheet5eCharacter from "./module/actor/sheets/character.js";
 import ActorSheet5eNPC from "./module/actor/sheets/npc.js";
-import { injectActorSheet } from "./module/actor/sheets/base.js";
+import AbilityUseDialog from "./module/apps/ability-use-dialog.js";
+import ActorSheetFlags from "./module/apps/actor-flags.js";
+import AbilityTemplate from "./module/pixi/ability-template.js";
 // import ActorSheet5eVehicle from "./module/actor/sheets/vehicle.js";
-import ItemSheet5e from "./module/item/sheet.js";
+import ActorMovementConfig from "./module/apps/movement-config.js";
+import ActorResistancesConfig from "./module/apps/resistances-config.js";
+import ActorSensesConfig from "./module/apps/senses-config.js";
 import ShortRestDialog from "./module/apps/short-rest.js";
 import TraitSelector from "./module/apps/trait-selector.js";
-import ActorMovementConfig from "./module/apps/movement-config.js";
-import ActorSensesConfig from "./module/apps/senses-config.js";
-import ActorResistancesConfig from "./module/apps/resistances-config.js";
+import ItemSheet5e from "./module/item/sheet.js";
 
 // Import Helpers
+import ActiveEffect5e from "./module/active-effect.js";
 import * as chat from "./module/chat.js";
 import * as dice from "./module/dice.js";
 import * as macros from "./module/macros.js";
 import * as migrations from "./module/migration.js";
-import ActiveEffect5e from "./module/active-effect.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -251,7 +251,7 @@ Hooks.once("ready", function () {
 	const NEEDS_MIGRATION_VERSION = "1.0.11";
 	const COMPATIBLE_MIGRATION_VERSION = 1;
 	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
-	if (!currentVersion && totalDocuments === 0) return game.settings.set("trpg", "systemMigrationVersion", game.system.data.version);
+	if (!currentVersion && totalDocuments === 0) return game.settings.set("trpg", "systemMigrationVersion", game.system.version);
 	const needsMigration = currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
 	if (!needsMigration) return;
 
@@ -290,6 +290,18 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => Item5e.chatListeners(html));
 Hooks.on("renderChatPopout", (app, html, data) => Item5e.chatListeners(html));
+// Render Sidebar
+Hooks.on("renderSidebarTab", (app, html) => {
+	if (app instanceof Settings) {
+		// Add Butons
+		// JamboEditora
+		let jambo = $(`<button>Jambô Editora</button>`);
+		html.find("#game-details").append(jambo);
+		jambo.click(() => {
+			window.open("https://jamboeditora.com.br/");
+		});
+	}
+});
 //Skill Bonus
 Hooks.on("renderActorSheet", (app, html, data) => injectActorSheet(app, html, data));
 Hooks.on("getActorDirectoryEntryContext", Actor5e.addDirectoryContextOptions);

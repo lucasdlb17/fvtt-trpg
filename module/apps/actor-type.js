@@ -34,7 +34,7 @@ export default class ActorTypeConfig extends FormApplication {
   getData(options) {
 
     // Get current value or new default
-    let attr = foundry.utils.getProperty(this.object.data.data, 'details.type');
+    let attr = foundry.utils.getProperty(this.object.system, 'details.type');
     if ( foundry.utils.getType(attr) !== "Object" ) attr = {
       value: (attr in CONFIG.TRPG.creatureTypes) ? attr : "humanoid",
       subtype: "",

@@ -1,20 +1,22 @@
 {
-	"ACTOR": {
-		"TypeCharacter": "Personagem do Jogador",
-		"TypeNpc": "Personagem do Mestre",
-		"TypeVehicle": "Veículo"
-	},
-	"ITEM": {
-		"TypeBackpack": "Mochila",
-		"TypeClass": "Classe",
-		"TypeConsumable": "Consumível",
-		"TypeEquipment": "Equipamento",
-		"TypeFeat": "Talento",
-		"TypeJutsu": "Jutsu",
-		"TypeLoot": "Loot",
-		"TypeSpell": "Magia",
-		"TypeTool": "Ferramenta",
-		"TypeWeapon": "Arma"
+	"TYPES": {
+		"Actor": {
+			"character": "Personagem do Jogador",
+			"npc": "Personagem do Mestre",
+			"vehicle": "Veículo"
+		},
+		"Item": {
+			"backpack": "Mochila",
+			"class": "Classe",
+			"consumable": "Consumível",
+			"equipment": "Equipamento",
+			"feat": "Talento",
+			"jutsu": "Jutsu",
+			"loot": "Item",
+			"spell": "Magia",
+			"tool": "Ferramenta",
+			"weapon": "Arma"
+		}
 	},
 	"SETTINGS": {
 		"5eAllowPolymorphingL": "Permitir a jogadores metamorfosearem seus próprios atores.",
@@ -594,7 +596,7 @@
 		"per": "por",
 		"Personality": "Personalidade",
 		"PersonalityTraits": "Traços de Personalidade",
-		"PlaceTemplate": "Place Measured Template",
+		"PlaceTemplate": "Posicionar Modelo de Medição",
 		"Polymorph": "Metamorfose",
 		"PolymorphAcceptSettings": "Configurações Personalizadas",
 		"PolymorphKeepBio": "Manter a biografia",

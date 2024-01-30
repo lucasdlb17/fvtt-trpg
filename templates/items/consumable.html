@@ -1,5 +1,4 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
-
     {{!-- Item Sheet Header --}}
     <header class="sheet-header flexrow">
         <img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
@@ -15,16 +14,14 @@
             </div>
 
             <ul class="summary flexrow">
+                <li>{{lookup config.consumableTypes system.consumableType }}</li>
                 <li>
-                    {{lookup config.consumableTypes data.consumableType }}
-                </li>
-                <li>
-                    <select name="data.rarity">
-                        {{selectOptions config.itemRarity selected=data.rarity blank="&nbsp;"}}
+                    <select name="system.rarity">
+                        {{selectOptions config.itemRarity selected=system.rarity blank=""}}
                     </select>
                 </li>
                 <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'TRPG.Source' }}"/>
+                    <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'TRPG.Source' }}"/>
                 </li>
             </ul>
         </div>
@@ -50,18 +47,25 @@
             {{!-- Consumable Type --}}
             <div class="form-group">
                 <label>{{ localize "TRPG.ItemConsumableType" }}</label>
-                <select name="data.consumableType">
-                    {{selectOptions config.consumableTypes selected=data.consumableType}}
+                <select name="system.consumableType">
+                    {{selectOptions config.consumableTypes selected=system.consumableType}}
                 </select>
             </div>
+
+            <!-- <div class="form-group">
+                <label>{{localize "TRPG.Attunement"}}</label>
+                <select name="system.attunement" data-dtype="Number">
+                    {{selectOptions config.attunements selected=system.attunement localize=true}}
+                </select>
+            </div> -->
 
             <div class="form-group stacked">
                 <label>{{ localize "TRPG.ItemConsumableStatus" }}</label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "TRPG.Equipped" }}
+                    <input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "TRPG.Equipped" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "TRPG.Identified" }}
+                    <input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "TRPG.Identified" }}
                 </label>
             </div>
 
@@ -69,10 +73,10 @@
 
             {{!-- Item Activation Template --}}
             {{> "systems/trpg/templates/items/parts/item-activation.html"}}
-            {{#if data.activation.type}}
+            {{#if system.activation.type}}
             <div class="form-group">
                 <label class="checkbox">
-                    <input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "TRPG.ItemDestroyEmpty" }}
+                    <input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}/> {{ localize "TRPG.ItemDestroyEmpty" }}
                 </label>
             </div>
             {{/if}}
