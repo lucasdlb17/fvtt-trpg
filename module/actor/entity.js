@@ -413,7 +413,10 @@ export default class Actor5e extends Actor {
 	 * @param actorData
 	 * @private
 	 */
-	_prepareVehicleData(actorData) {}
+	_prepareVehicleData(actorData) {
+		const system = this.system;
+		const flags = this.flags;
+	}
 
 	/* -------------------------------------------- */
 
@@ -506,7 +509,6 @@ export default class Actor5e extends Actor {
 	_computeJutsucastingProgression(actorData) {
 		if (actorData.type === "vehicle") return;
 		const ad = actorData.system;
-		const jutsus = ad.jutsus;
 		const isNPC = actorData.type === "npc";
 
 		// Jutsucasting DC
@@ -1898,7 +1900,7 @@ export default class Actor5e extends Actor {
 	 * @deprecated since dnd5e 0.97
 	 */
 	getSpellDC(ability) {
-		console.warn(`The Actor5e#getSpellDC(ability) method has been deprecated in favor of Actor5e#system.abilities[ability].dc`);
+		console.warn(`The Actor5e#getSpellDC(ability) method has been deprecated in favor of Actor5e#data.data.abilities[ability].dc`);
 		return this.system.abilities[ability]?.dc;
 	}
 
@@ -1906,7 +1908,7 @@ export default class Actor5e extends Actor {
 	 * @deprecated since dnd5e 0.97
 	 */
 	getJutsuDC(ability) {
-		console.warn(`The Actor5e#getJutsuDC(ability) method has been deprecated in favor of Actor5e#system.abilities[ability].dc`);
+		console.warn(`The Actor5e#getJutsuDC(ability) method has been deprecated in favor of Actor5e#data.data.abilities[ability].dc`);
 		return this.system.abilities[ability]?.dc;
 	}
 

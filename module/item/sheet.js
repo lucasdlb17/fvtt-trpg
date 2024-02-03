@@ -170,16 +170,16 @@ export default class ItemSheet5e extends ItemSheet {
      */
     _getItemStatus(item) {
         if (item.type === "spell") {
-            return CONFIG.TRPG.spellPreparationModes[item.data.preparation];
+            return CONFIG.TRPG.spellPreparationModes[item.preparation];
         }
         else if (item.type === "jutsu") {
-            return CONFIG.TRPG.jutsuPreparationModes[item.data.preparation];
+            return CONFIG.TRPG.jutsuPreparationModes[item.preparation];
         }
         else if (["weapon", "equipment"].includes(item.type)) {
-            return game.i18n.localize(item.data.equipped ? "TRPG.Equipped" : "TRPG.Unequipped");
+            return game.i18n.localize(item.equipped ? "TRPG.Equipped" : "TRPG.Unequipped");
         }
         else if (item.type === "tool") {
-            return game.i18n.localize(item.data.proficient ? "TRPG.Proficient" : "TRPG.NotProficient");
+            return game.i18n.localize(item.proficient ? "TRPG.Proficient" : "TRPG.NotProficient");
         }
     }
 
@@ -219,7 +219,7 @@ export default class ItemSheet5e extends ItemSheet {
         }
 
         else if (item.type === "equipment") {
-            props.push(CONFIG.TRPG.equipmentTypes[item.data.armor.type]);
+            props.push(CONFIG.TRPG.equipmentTypes[item.system.armor.type]);
             props.push(labels.armor);
         }
 

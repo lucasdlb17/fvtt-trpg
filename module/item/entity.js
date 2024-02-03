@@ -706,6 +706,7 @@ export default class Item5e extends Item {
 			consumeRecharge,
 			consumeResource,
 			consumeSpellLevel,
+			consumeJutsuLevel,
 			consumeUsage,
 			consumeQuantity,
 		});
@@ -784,7 +785,7 @@ export default class Item5e extends Item {
 		// Consume Jutsu Slots
 		if (consumeJutsuLevel) {
 			if (Number.isNumeric(consumeJutsuLevel)) consumeJutsuLevel = `jutsu${consumeJutsuLevel}`;
-			const level = this.actor?.data.data.jutsus[consumeJutsuLevel];
+			const level = this.actor?.system.jutsus[consumeJutsuLevel];
 			const jutsus = Number(level?.value ?? 0);
 			if (jutsus === 0) {
 				const label = game.i18n.localize(`TRPG.JutsuLevel${id.level}`);
@@ -934,7 +935,7 @@ export default class Item5e extends Item {
 			isJutsu: this.type === "jutsu",
 			hasSave: this.hasSave,
 			hasAreaTarget: this.hasAreaTarget,
-			isTool: this.data.type === "tool",
+			isTool: this.type === "tool",
 		};
 		const html = await renderTemplate("systems/trpg/templates/chat/item-card.html", templateData);
 

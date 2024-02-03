@@ -882,7 +882,6 @@
 				"formula": null
 			}
 		},
-
 		"jutsu": {
 			"templates": [ "itemDescription", "activatedEffect", "action" ],
 			"jutsuList": "",
@@ -891,7 +890,6 @@
 			"school": "",
 			"specialCosts": ""
 		},
-
 		"weapon": {
 			"templates": [ "itemDescription", "physicalItem", "activatedEffect", "action", "mountable" ],
 			"weaponType": "simpleM",

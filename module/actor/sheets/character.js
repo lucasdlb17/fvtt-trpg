@@ -8,6 +8,10 @@ import ActorSheet5e from "./base.js";
  */
 export default class ActorSheet5eCharacter extends ActorSheet5e {
 
+    /* -------------------------------------------- */
+    /*  Properties                                  */
+    /* -------------------------------------------- */
+
     /**
      * Define default rendering options for the NPC sheet
      * @return {Object}
