@@ -1,0 +1,14 @@
+<ul class="ability-scores {{#if idj}}idj{{/if}} flexrow">
+    {{#each system.abilities as |ability id|}}
+    {{#if (and (eq id "hon") (eq ../idj false))}}
+    {{else}}
+    <li class="ability {{#if ability.proficient}}proficient{{/if}}" data-ability="{{id}}">
+        <h4 class="ability-name box-title rollable">{{ability.label}}</h4>
+        <input class="ability-score" name="system.abilities.{{id}}.value" type="number" value="{{ability.value}}" placeholder="10" />
+        <div class="ability-modifiers flexrow">
+            <span class="ability-mod" title="Modificador">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+        </div>
+    </li>
+    {{/if}}
+    {{/each}}
+</ul>

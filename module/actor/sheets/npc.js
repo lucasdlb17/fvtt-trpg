@@ -92,7 +92,7 @@ export default class ActorSheet5eNPC extends ActorSheet5e {
 		for (let item of other) {
 			if (item.type === "weapon") features.weapons.items.push(item);
 			else if (item.type === "feat") {
-				if (item.data.activation.type) features.actions.items.push(item);
+				if (item.system.activation.type) features.actions.items.push(item);
 				else features.passive.items.push(item);
 			} else features.equipment.items.push(item);
 		}

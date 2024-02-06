@@ -1,0 +1,30 @@
+<li class="attribute health">
+    <h4 class="attribute-name box-title">{{ localize "TRPG.HitPoints" }}</h4>
+    <div class="attribute-value multiple">
+        <input name="system.attributes.hp.value" type="text" value="{{system.attributes.hp.value}}" placeholder="10" data-dtype="Number" />
+        <span class="sep"> / </span>
+        <input name="system.attributes.hp.max" type="text" value="{{system.attributes.hp.max}}" placeholder="10" data-dtype="Number" />
+    </div>
+    <footer class="attribute-footer">
+        <input name="system.attributes.hp.temp" type="text" class="temphp" placeholder="+{{ localize 'TRPG.Temp' }}" value="{{system.attributes.hp.temp}}" data-dtype="Number" />
+
+    </footer>
+</li>
+{{#if isCharacter}}
+<li class="attribute" style="flex:0 0 45px;">
+    <a class="rest long-rest" title="{{localize 'T20.Rest'}}"><i class="fa-solid fa-bed" style="vertical-align: -webkit-baseline-middle;"></i></a>
+</li>
+{{/if}}
+{{#if (or hasSpells system.details.showSpells (eq idj true))}}
+<li class="attribute health">
+    <h4 class="attribute-name box-title">{{ localize "TRPG.MagicPoints" }}</h4>
+    <div class="attribute-value multiple">
+        <input name="system.attributes.mp.value" type="text" value="{{system.attributes.mp.value}}" placeholder="10" data-dtype="Number" />
+        <span class="sep"> / </span>
+        <input name="system.attributes.mp.max" type="text" value="{{system.attributes.mp.max}}" placeholder="10" data-dtype="Number" />
+    </div>
+    <footer class="attribute-footer">
+        <input name="system.attributes.mp.temp" type="text" class="temphp" placeholder="+{{ localize 'TRPG.Temp' }}" value="{{system.attributes.mp.temp}}" data-dtype="Number" />
+    </footer>
+</li>
+{{/if}}

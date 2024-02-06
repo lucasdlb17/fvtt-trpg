@@ -1660,13 +1660,13 @@ export default class Item5e extends Item {
 		if (!isCharacterClass) return;
 
 		// Prompt to add new class features
-		const addFeatures = changed["name"] || (changed.data && ["subclass", "levels"].some((k) => k in changed.data));
+		const addFeatures = changed["name"] || (changed.system && ["subclass", "levels"].some((k) => k in changed.system));
 		if (!addFeatures || options.addFeatures === false) return;
 		this.parent
 			.getClassFeatures({
 				className: changed.name || this.name,
-				subclassName: changed.data?.subclass || this.system.subclass,
-				level: changed.data?.levels || this.system.levels,
+				subclassName: changed.system?.subclass || this.system.subclass,
+				level: changed.system?.levels || this.system.levels,
 			})
 			.then((features) => {
 				return this.parent.addEmbeddedItems(features, options.promptAddFeatures);

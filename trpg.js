@@ -150,6 +150,7 @@ Hooks.once("setup", function () {
         "currenciesIDJ",
         "damageResistanceTypes",
         "damageTypes",
+        "deity",
         "distanceUnits",
         "equipmentTypes",
         "healingTypes",
@@ -195,6 +196,7 @@ Hooks.once("setup", function () {
         "armorProficiencies",
         "currencies",
         "currenciesIDJ",
+        "deity",
         "distanceUnits",
         "movementUnits",
         "itemActionTypes",
@@ -272,7 +274,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
     chat.displayChatActionButtons(app, html, data);
 
     // Highlight critical success or failure die
-    chat.highlightCriticalSuccessFailure(app, html, data);
+    //chat.highlightCriticalSuccessFailure(app, html, data);
 
     // Optionally collapse the content
     if (game.settings.get("trpg", "autoCollapseItemCards")) html.find(".card-content").hide();

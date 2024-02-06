@@ -20,7 +20,7 @@ export default class ProficiencySelector extends TraitSelector {
 
     /** @inheritdoc */
     async getData() {
-        const attr = foundry.utils.getProperty(this.object.data, this.attribute);
+        const attr = foundry.utils.getProperty(this.object.system, this.attribute);
         const value = this.options.valueKey ? foundry.utils.getProperty(attr, this.options.valueKey) ?? [] : attr;
 
         this.options.choices = CONFIG.TRPG[`${this.options.type}Proficiencies`];

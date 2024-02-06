@@ -1,0 +1,13 @@
+<ul class="saves-list">
+    {{#each config.saves as |label s|}}
+    {{#with (lookup ../system.saves s) as |save|}}
+    <li class="save flexrow {{#if save.proficient}}proficient{{/if}}" data-save="{{s}}">
+        <input type="hidden" name="system.saves.{{s}}.proficient" value="{{save.proficient}}" data-dtype="Number" />
+        <a class="proficiency-toggle save-proficiency" title="{{save.hover}}">{{{save.icon}}}</a>
+        <h4 class="save-name rollable">{{label}}</h4>
+        <span class="save-ability">{{save.ability}}</span>
+        <span class="save-mod">{{numberFormat save.save decimals=0 sign=true}}</span>
+    </li>
+    {{/with}}
+    {{/each}}
+</ul>

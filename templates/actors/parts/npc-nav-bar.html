@@ -1,0 +1,11 @@
+<nav class="sheet-navigation tabs" data-group="primary">
+    <a class="item active" data-tab="attributes">{{ localize "TRPG.Attributes" }}</a>
+    <a class="item" data-tab="features">{{ localize "TRPG.Features" }}</a>
+    {{#if (eq ./idj true)}}
+    <a class="item" data-tab="jutsuslist">{{ localize "TRPG.Jutsuslist" }}</a>
+    {{else}}
+    <a class="item" data-tab="spellbook">{{ localize "TRPG.Spellbook" }}</a>
+    {{/if}}
+    <a class="item" data-tab="effects">{{ localize "TRPG.Effects" }}</a>
+    <a class="item" data-tab="biography">{{ localize "TRPG.Biography" }}</a>
+</nav>

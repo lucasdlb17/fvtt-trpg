@@ -25,7 +25,7 @@ export default class ActorResistancesConfig extends DocumentSheet {
 
     /** @inheritdoc */
     getData(options) {
-        const resistances = foundry.utils.getProperty(this.document.data._source, "data.traits.resistances") || {};
+        const resistances = foundry.utils.getProperty(this.document.system._source, "data.traits.resistances") || {};
         const data = {
             resistances: {}
         };

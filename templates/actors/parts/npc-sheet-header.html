@@ -1,0 +1,55 @@
+<header class="sheet-header flexrow">
+    <img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" />
+
+    <section class="header-details flexrow">
+        {{> "systems/trpg/templates/actors/parts/actor-warnings.html"}}
+
+        <h1 class="charname">
+            <input name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'TRPG.Name' }}" />
+        </h1>
+
+        <aside class="header-exp flexcol">
+            <div class="charlevel" title="{{multiclassLabels}}">
+                <label>{{ localize "TRPG.Level" }}</label>
+                <input name="system.details.level" type="number" value="{{system.details.level}}" min="0" placeholder="1" />
+            </div>
+
+            <div class="cr">
+                <label>{{ localize "TRPG.AbbreviationCR" }}</label>
+                <input name="system.details.cr" type="text" value="{{labels.cr}}" placeholder="1" />
+            </div>
+
+            <div class="experience">
+                <span>{{system.details.xp.value}} XP</span>
+            </div>
+        </aside>
+
+        {{!-- Character Summary --}}
+        <ul class="summary flexrow">
+            <li class="creature-type">
+                <span title="{{labels.type}}">{{labels.type}}</span>
+                <a class="config-button" data-action="type" title="{{localize 'TRPG.CreatureTypeConfig'}}"><i class="fas fa-cog"></i></a>
+            </li>
+            <li>
+                <input type="text" name="system.details.background" value="{{system.details.background}}" placeholder="{{ localize 'TRPG.Background' }}" />
+            </li>
+            <li>
+                <input type="text" name="system.details.source" value="{{system.details.source}}" placeholder="{{ localize 'TRPG.Source' }}" />
+            </li>
+        </ul>
+        <ul class="summary flexrow">
+            <li>
+                <input type="text" name="system.details.gender" value="{{system.details.gender}}" placeholder="{{ localize 'TRPG.Gender' }}" />
+            </li>
+            <li>
+                <input type="text" name="system.details.age" value="{{system.details.age}}" placeholder="{{ localize 'TRPG.Age' }}" />
+            </li>
+            <li>
+                <input type="text" name="system.details.deity" value="{{system.details.deity}}" placeholder="{{ localize 'TRPG.Deity' }}" />
+            </li>
+            <li>
+                <input type="text" name="system.details.alignment" value="{{system.details.alignment}}" placeholder="{{ localize 'TRPG.Alignment' }}" />
+            </li>
+        </ul>
+    </section>
+</header>

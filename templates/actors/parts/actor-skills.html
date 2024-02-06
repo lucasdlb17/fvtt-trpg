@@ -1,0 +1,13 @@
+<ul class="skills-list">
+    {{#each config.skills as |label s|}}
+    {{#with (lookup ../system.skills s) as |skill|}}
+    <li class="skill flexrow {{#if skill.proficient}}proficient{{/if}}" data-skill="{{s}}">
+        <input type="hidden" name="system.skills.{{s}}.proficient" value="{{skill.proficient}}" data-dtype="Number" />
+        <a class="proficiency-toggle skill-proficiency" title="{{skill.hover}}">{{{skill.icon}}}</a>
+        <h4 class="skill-name rollable">{{label}}{{#if skill.st}}*{{/if}}{{#if skill.pda}}+{{/if}}</h4>
+        <span class="skill-ability">{{skill.ability}}</span>
+        <span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true}}</span>
+    </li>
+    {{/with}}
+    {{/each}}
+</ul>

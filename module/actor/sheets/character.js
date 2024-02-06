@@ -149,13 +149,13 @@ export default class ActorSheet5eCharacter extends ActorSheet5e {
         // Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
         const spellbook = this._prepareSpellbook(data, spells);
         const nPreparedSpells = spells.filter(s => {
-            return (s.data.level > 0) && (s.system.preparation.mode === "prepared") && s.system.preparation.prepared;
+            return (s.system.level > 0) && (s.system.preparation.mode === "prepared") && s.system.preparation.prepared;
         }).length;
 
         // Organize Jutsuslist and count the number of prepared jutsus (excluding always, at will, etc...)
         const jutsuslist = this._prepareJutsuslist(data, jutsus);
         const nPreparedJutsus = jutsus.filter(s => {
-            return (s.data.level > 0);
+            return (s.system.level > 0);
         }).length;
 
         // Organize Features

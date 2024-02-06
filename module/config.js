@@ -50,6 +50,10 @@ TRPG.alignments = {
 
 /* -------------------------------------------- */
 
+TRPG.deity = {};
+
+/* -------------------------------------------- */
+
 /**
  * An enumeration of item attunement types
  * @enum {number}

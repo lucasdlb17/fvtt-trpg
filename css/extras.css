@@ -31,7 +31,8 @@
 	appearance: none;
 }
 
-.dnd5e.sheet.actor ul.skills-list li.skill .skill-mod {
+.dnd5e.sheet.actor ul.skills-list li.skill .skill-mod,
+.dnd5e.sheet.actor .saves-list .save .save-mod {
 	text-align: center;
 }
 
@@ -39,7 +40,47 @@
 	scrollbar-width: thin;
 }
 
-.dnd5e.sheet.actor ul.skills-list li.skill .save-proficiency {
+.dnd5e.sheet.actor ul.skills-list li.skill .skill-proficiency {
+	flex: 0 0 16px;
+	line-height: 18px;
+}
+/*Save Customization */
+.dnd5e.sheet.actor .saves-list > .save > .save-cust-bonus,
+.dnd5e.sheet.actor .attribute .save .save-cust-bonus,
+.dnd5e.sheet.actor .saves-list > .save > .save-ability-select {
+	flex: 0 0 1px;
+	margin-right: 2px;
+	font-family: Signika;
+	height: 1rem;
+}
+
+.dnd5e.sheet.actor .saves-list > .save > .save-cust-bonus,
+.dnd5e.sheet.actor .attribute .save .save-cust-bonus {
+	border: 1px gray solid;
+	padding: 0;
+	text-align: center;
+}
+
+.dnd5e.sheet.actor .saves-list > .save > .save-ability-select {
+	padding: 0 2px;
+	text-align-last: center;
+	-moz-text-align-last: center;
+	-ms-text-align-last: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.dnd5e.sheet.actor ul.saves-list li.save .save-mod,
+.dnd5e.sheet.actor .saves-list .save .save-mod {
+	text-align: center;
+}
+
+.dnd5e.sheet.actor .tab.attributes {
+	scrollbar-width: thin;
+}
+
+.dnd5e.sheet.actor ul.saves-list li.save .save-proficiency {
 	flex: 0 0 16px;
 	line-height: 18px;
 }

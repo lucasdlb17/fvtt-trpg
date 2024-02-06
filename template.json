@@ -151,7 +151,10 @@
 					"jutsucasting": "wis"
 				},
 				"details": {
+					"age": "",
 					"alignment": "",
+					"deity": "",
+					"gender": "",
 					"race": ""
 				},
 				"saves": {

@@ -10,6 +10,16 @@
         </select>
     </div>
 
+    <div class="form-group">
+        <label>{{localize "TRPG.Movement"}}</label>
+        <a class="config-button" data-action="movement" title="{{localize 'TRPG.MovementConfig'}}"><i class="fas fa-cog"></i></a>
+        <ul class="traits-list">
+            {{#each movement as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
     {{#unless isVehicle}}
     <div class="form-group">
         <label>{{localize "TRPG.Senses"}}</label>

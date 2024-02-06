@@ -8,6 +8,7 @@ import ProficiencySelector from "../../apps/proficiency-selector.js";
 import PropertyAttribution from "../../apps/property-attribution.js";
 import ActorSensesConfig from "../../apps/senses-config.js";
 import ActorResistancesConfig from "../../apps/resistances-config.js";
+import LongRestDialog from "../../apps/long-rest.js";
 import TraitSelector from "../../apps/trait-selector.js";
 import { TRPG } from "../../config.js";
 import Item5e from "../../item/entity.js";
@@ -678,8 +679,7 @@ export default class ActorSheet5e extends ActorSheet {
 			// Owned Item management
 			html.find(".item-create").click(this._onItemCreate.bind(this));
 			html.find(".item-delete").click(this._onItemDelete.bind(this));
-			html.find(".item-uses input")
-				.click((ev) => ev.target.select())
+			html.find(".item-uses input").click((ev) => ev.target.select())
 				.change(this._onUsesChange.bind(this));
 			html.find(".slot-max-override").click(this._onSpellSlotOverride.bind(this));
 			html.find(".slot-max-override").click(this._onJutsuSlotOverride.bind(this));
@@ -759,6 +759,9 @@ export default class ActorSheet5e extends ActorSheet {
 		const button = event.currentTarget;
 		let app;
 		switch (button.dataset.action) {
+			case "rest":
+				app = new LongRestDialog.longRestDialog(this.object);
+				break;
 			case "armor":
 				app = new ActorArmorConfig(this.object);
 				break;
@@ -1248,12 +1251,14 @@ export default class ActorSheet5e extends ActorSheet {
 export function injectActorSheet(app, html, data) {
 	if (!game.settings.get("trpg", "customizeSkills")) return;
 	html.find(".skills-list").addClass("skill-customize");
+	html.find(".saves-list").addClass("save-customize");
 
 	html.find(".resistance-list").addClass("resistance-customize");
 
 	const resistanceRowSelector = ".resistance-list .resistance";
 
 	const skillRowSelector = ".skills-list .skill";
+	const saveRowSelector = ".saves-list .save";
 
 	const actor = app.actor;
 
@@ -1318,6 +1323,70 @@ export function injectActorSheet(app, html, data) {
 
 		skillElem.find(".skill-ability").after(selectElement);
 		skillElem.find(".skill-ability").detach();
+		selectElement.after(textBoxElement);
+	});
+
+	html.find(saveRowSelector).each(function () {
+		const saveElem = $(this);
+		const saveKey = $(this).attr("data-save");
+		const bonusKey = `${saveKey}.save-bonus`;
+		const selectedAbility = actor.system.saves[saveKey].ability;
+
+		let selectElement = $("<select>");
+		selectElement.addClass("save-ability-select");
+		const abilities = game.settings.get("trpg", "idjMode") ? Object.keys(actor.system.abilities) : Object.keys(actor.system.abilities).filter((e) => e !== "hon");
+		abilities.forEach((ability) => {
+			let abilityOption = $("<option>");
+			let abilityKey = ability.charAt(0).toUpperCase() + ability.slice(1);
+			let abilityString = game.i18n.localize(`TRPG.Ability${abilityKey}`).slice(0, 3);
+
+			abilityOption.attr("value", ability);
+
+			if (ability === selectedAbility) {
+				abilityOption.attr("selected", "true");
+			}
+
+			abilityOption.text(abilityString);
+			selectElement.append(abilityOption);
+		});
+
+		selectElement.change(function (event) {
+			let newData = { data: { saves: {} } };
+			newData.data.saves[saveKey] = { ability: event.target.value };
+			actor.update(newData);
+		});
+
+		let textBoxElement = $('<input type="text" size=2>');
+		textBoxElement.addClass("save-cust-bonus");
+		textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+
+		textBoxElement.click(function () {
+			$(this).select();
+		});
+
+		textBoxElement.change(async function (event) {
+			const bonusValue = event.target.value;
+			if (bonusValue === "-" || bonusValue === "0") {
+				await actor.unsetFlag("trpg", bonusKey);
+				textBoxElement.val("-");
+			} else {
+				try {
+					const rollResult = await new Roll(`1d20 + ${bonusValue}`).roll({ async: false });
+					const valid = !isNaN(rollResult._total);
+
+					if (valid) {
+						await actor.setFlag("trpg", bonusKey, bonusValue);
+					} else {
+						textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+					}
+				} catch (err) {
+					textBoxElement.val(actor.getFlag("trpg", bonusKey) || "-");
+				}
+			}
+		});
+
+		saveElem.find(".save-ability").after(selectElement);
+		saveElem.find(".save-ability").detach();
 		selectElement.after(textBoxElement);
 	});
 
